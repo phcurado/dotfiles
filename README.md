@@ -1,7 +1,9 @@
 # Dotfiles
 
-```Bash
-ln -s ~/.dotfiles/.zshrc .zshrc
-ln -s ~/.dotfiles/.gitconfig .gitconfig
-ln -s ~/.dotfiles/.vimrc .vimrc
+Experimental dotfiles for development environment.
+
+## Install
+
+```Shell
+./install.bash
 ```
