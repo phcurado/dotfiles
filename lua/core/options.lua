@@ -13,3 +13,4 @@ vim.opt.shiftround = true
 vim.opt.shiftwidth = 2
 vim.opt.relativenumber = true
 vim.wo.number = true
+vim.opt.termguicolors = true
