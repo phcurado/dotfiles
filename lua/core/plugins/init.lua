@@ -1,3 +1,4 @@
+require("core.plugins.harpoon")
 require("core.plugins.lualine")
 require("core.plugins.mason")
 require("core.plugins.nvim-tree")
