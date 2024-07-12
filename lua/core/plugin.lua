@@ -42,6 +42,7 @@ require("lazy").setup({
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
-  {'akinsho/toggleterm.nvim', version = "*", config = true}
+  {"akinsho/toggleterm.nvim", version = "*", config = true},
+  {"elixir-tools/elixir-tools.nvim", version = "*", event = { "BufReadPre", "BufNewFile" }, config = true}
 })
 

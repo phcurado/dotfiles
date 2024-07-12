@@ -1,6 +1,6 @@
 require('mason').setup()
 require("mason-lspconfig").setup({
-  ensure_installed = {"elixirls"}
+  ensure_installed = {"lua_ls", "elixirls"}
 })
 
 require("mason-lspconfig").setup_handlers {
