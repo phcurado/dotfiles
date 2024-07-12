@@ -11,3 +11,11 @@ require("mason-lspconfig").setup_handlers {
     -- do nothing since elixir-tools will handle the configuration
   end
 }
+
+local lspconfig = require("lspconfig")
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+lspconfig.elixirls.setup({
+  cmd = { "elixir-ls" },
+  -- set default capabilities for cmp lsp completion source
+  capabilities = capabilities,
+})

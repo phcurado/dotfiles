@@ -13,7 +13,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.5',
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.5',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   {
@@ -42,7 +43,17 @@ require("lazy").setup({
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
-  {"akinsho/toggleterm.nvim", version = "*", config = true},
-  {"elixir-tools/elixir-tools.nvim", version = "*", event = { "BufReadPre", "BufNewFile" }, config = true},
-  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'}
+  { "akinsho/toggleterm.nvim",        version = "*", config = true },
+  { "elixir-tools/elixir-tools.nvim", version = "*", event = { "BufReadPre", "BufNewFile" },      config = true },
+  { 'akinsho/bufferline.nvim',        version = "*", dependencies = 'nvim-tree/nvim-web-devicons' },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      -- install different completion source
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+    },
+    config = true
+  },
 })

@@ -1,4 +1,5 @@
 require("core.plugins.bufferline")
+require("core.plugins.cmp")
 require("core.plugins.elixir-tools")
 require("core.plugins.harpoon")
 require("core.plugins.lualine")

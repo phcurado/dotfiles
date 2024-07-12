@@ -1,5 +1,8 @@
 {
   "bufferline.nvim": { "branch": "main", "commit": "99337f63f0a3c3ab9519f3d1da7618ca4f91cffe" },
+  "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
+  "cmp-nvim-lsp": { "branch": "main", "commit": "39e2eda76828d88b773cc27a3f61d2ad782c922d" },
+  "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "dracula.nvim": { "branch": "main", "commit": "fdf503e52ec1c8aae07353604d891fe5a3ed5201" },
   "elixir-tools.nvim": { "branch": "main", "commit": "5e7596be469be0800e9cbe3415de971f7286c3d0" },
   "harpoon": { "branch": "harpoon2", "commit": "0378a6c428a0bed6a2781d459d7943843f374bce" },
@@ -7,6 +10,7 @@
   "lualine.nvim": { "branch": "master", "commit": "6a40b530539d2209f7dc0492f3681c8c126647ad" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "37a336b653f8594df75c827ed589f1c91d91ff6c" },
   "mason.nvim": { "branch": "main", "commit": "f96a31855fa8aea55599cea412fe611b85a874ed" },
+  "nvim-cmp": { "branch": "main", "commit": "a110e12d0b58eefcf5b771f533fc2cf3050680ac" },
   "nvim-lspconfig": { "branch": "master", "commit": "216deb2d1b5fbf24398919228208649bbf5cbadf" },
   "nvim-tree.lua": { "branch": "master", "commit": "f9ff00bc06d7cb70548a3847d7a2a05e928bc988" },
   "nvim-treesitter": { "branch": "master", "commit": "972aa544efb56e2f2f53c5f3c2537e43467dd5cb" },
