@@ -46,5 +46,3 @@ require("lazy").setup({
   {"elixir-tools/elixir-tools.nvim", version = "*", event = { "BufReadPre", "BufNewFile" }, config = true},
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'}
 })
-
-require("bufferline").setup{}

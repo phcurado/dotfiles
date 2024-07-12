@@ -6,5 +6,5 @@ require("elixir").setup({
     enable = true,
     cmd = "elixir-ls"
   },
-  projectionist = {enable = true},
+  projectionist = { enable = true },
 })
