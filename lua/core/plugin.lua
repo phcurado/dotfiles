@@ -43,6 +43,8 @@ require("lazy").setup({
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
   {"akinsho/toggleterm.nvim", version = "*", config = true},
-  {"elixir-tools/elixir-tools.nvim", version = "*", event = { "BufReadPre", "BufNewFile" }, config = true}
+  {"elixir-tools/elixir-tools.nvim", version = "*", event = { "BufReadPre", "BufNewFile" }, config = true},
+  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'}
 })
 
+require("bufferline").setup{}
