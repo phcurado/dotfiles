@@ -1,7 +1,11 @@
 require("core.options")
 require("core.keymaps")
-require("core.plugin")
-require("core.plugins")
+require("core.lazy")
+require("lazy").setup({
+  spec = {
+    { import = "plugins" },
+  },
+  install = { colorscheme = { "dracula" } },
+  checker = { enabled = true },
+})
 
--- Set color scheme
-vim.cmd[[colorscheme dracula]]
