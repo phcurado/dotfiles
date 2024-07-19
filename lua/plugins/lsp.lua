@@ -1,7 +1,9 @@
 return {
   {
     "williamboman/mason.nvim",
-    opts = {}
+    config = function ()
+      require("mason").setup()
+    end
   },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -27,6 +29,7 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
       lspconfig.elixirls.setup({
         cmd = { "elixir-ls" },
         -- set default capabilities for cmp lsp completion source
@@ -61,5 +64,4 @@ return {
       }
     end
   }
-
 }

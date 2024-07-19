@@ -5,7 +5,8 @@ return {
     config = function()
       require("elixir").setup({
         nextls = {
-          enable = false
+          enable = false,
+          cmd = "nextls"
         },
         elixirls = {
           enable = true,
