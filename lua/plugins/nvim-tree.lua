@@ -16,12 +16,4 @@ return {
 			vim.keymap.set("n", "<c-n>", ":NvimTreeToggle<CR>")
 		end,
 	},
-	{
-		"mbbill/undotree",
-		event = "VeryLazy",
-		cofig = function()
-			local undotree = require("undotree")
-			undotree.setup()
-		end,
-	},
 }

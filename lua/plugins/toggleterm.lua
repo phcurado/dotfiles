@@ -2,12 +2,21 @@ return {
 	{
 		"akinsho/toggleterm.nvim",
 		config = function()
-			require("toggleterm").setup({
-				size = 20,
+			local toggleterm = require("toggleterm")
+
+			toggleterm.setup({
+				size = 15,
 				open_mapping = [[<c-\>]],
+				start_in_insert = true,
 				persist_size = true,
-				direction = "float",
+				direction = "horizontal",
+				autochdir = true,
 				close_on_exit = true,
+				float_opts = {
+					border = "double",
+					width = 100,
+					height = 20,
+				},
 			})
 
 			function _G.set_terminal_keymaps()
@@ -30,6 +39,8 @@ return {
 				direction = "float",
 				float_opts = {
 					border = "double",
+					width = 150,
+					height = 50,
 				},
 				-- function to run on opening the terminal
 				on_open = function(term)
