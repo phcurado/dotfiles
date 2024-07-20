@@ -17,6 +17,9 @@ return {
 				function(server_name)
 					require("lspconfig")[server_name].setup({})
 				end,
+				["lua_ls"] = function()
+					-- do nothing since lspconfig will handle the configuration
+				end,
 				["elixirls"] = function()
 					-- do nothing since elixir-tools will handle the configuration
 				end,
