@@ -17,6 +17,7 @@ return {
 					"dockerfile",
 					"gitignore",
 				},
+				ignore_install = {},
 				sync_install = false,
 				auto_install = true,
 

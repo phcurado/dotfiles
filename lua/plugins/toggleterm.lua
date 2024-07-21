@@ -48,19 +48,19 @@ return {
 					vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<esc>", "<esc>", { noremap = true, silent = true })
 				end,
 				-- function to run on closing the terminal
-				on_close = function(term)
+				on_close = function()
 					vim.cmd("startinsert!")
 				end,
 			})
 
-			function _lazygit_toggle()
+			function _Lazygit_toggle()
 				lazygit:toggle()
 			end
 
 			vim.api.nvim_set_keymap(
 				"n",
 				"<leader>g",
-				"<cmd>lua _lazygit_toggle()<CR>",
+				"<cmd>lua _Lazygit_toggle()<CR>",
 				{ noremap = true, silent = true }
 			)
 		end,
