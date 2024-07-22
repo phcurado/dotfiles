@@ -27,6 +27,9 @@ vim.opt.autowrite = true
 vim.opt.autoread = true
 vim.opt.shiftround = false
 
+-- Setting conceallevel for Obsidian
+vim.opt_local.conceallevel = 2
+
 -- prevent commenting next line
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
