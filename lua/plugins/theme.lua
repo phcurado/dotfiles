@@ -21,9 +21,9 @@ return {
 		priority = 1000,
 		config = function()
 			-- require("gruvbox").setup({
-			-- 	contrast = "hard", -- can be "hard", "soft" or empty string
+			-- 	contrast = "soft", -- can be "hard", "soft" or empty string
 			-- })
-			-- vim.cmd.colorscheme("gruvbox")
+			vim.cmd.colorscheme("gruvbox")
 		end,
 	},
 	{
@@ -32,8 +32,8 @@ return {
 		priority = 1000,
 		config = function()
 			-- :h gruvbox-material.txt
-			vim.g.gruvbox_material_enable_italic = true
-			vim.cmd.colorscheme("gruvbox-material")
+			-- vim.g.gruvbox_material_enable_italic = true
+			-- vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
 }
