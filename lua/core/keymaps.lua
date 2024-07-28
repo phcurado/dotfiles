@@ -23,10 +23,12 @@ vim.keymap.set("n", "<leader>sh", ":split<CR>")
 -- start a terminal with iex
 vim.keymap.set("n", "<leader>ex", ":below 18 sp<CR>:term<CR>iiex", { silent = true })
 
--- undotree
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-
 -- Buffer changes
 vim.keymap.set("n", "<leader>l", ":bnext<cr>", opts)
 vim.keymap.set("n", "<leader>h", ":bprevious<cr>", opts)
 vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts)
+
+-- Vim plugins keymaps
+
+-- undotree
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
