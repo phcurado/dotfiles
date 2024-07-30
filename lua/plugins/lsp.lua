@@ -38,6 +38,19 @@ return {
 				capabilities = capabilities,
 			})
 
+			-- lspconfig.nextls.setup({
+			-- 	cmd = { "nextls", "--stdio" },
+			-- 	init_options = {
+			-- 		extensions = {
+			-- 			credo = { enable = true },
+			-- 		},
+			-- 		experimental = {
+			-- 			completions = { enable = true },
+			-- 		},
+			-- 	},
+			-- 	capabilities = capabilities,
+			-- })
+
 			lspconfig.lua_ls.setup({
 				settings = {
 					Lua = {
