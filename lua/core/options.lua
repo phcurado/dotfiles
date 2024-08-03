@@ -13,7 +13,7 @@ vim.opt.expandtab = true
 -- UI
 vim.opt.relativenumber = true
 vim.wo.number = true
-vim.opt.cursorline = true
+vim.opt.cursorline = false -- removing cursor line to make the interface more clean
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.termguicolors = true

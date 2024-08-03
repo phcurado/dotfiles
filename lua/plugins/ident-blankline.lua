@@ -1,12 +1,13 @@
+-- Disabling this plugin for now since it makes the interface cluttered
 return {
 	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = {},
-		config = function()
-			require("ibl").setup({
-				scope = { enabled = false },
-			})
-		end,
+		-- "lukas-reineke/indent-blankline.nvim",
+		-- main = "ibl",
+		-- opts = {},
+		-- config = function()
+		-- 	require("ibl").setup({
+		-- 		scope = { enabled = false },
+		-- 	})
+		-- end,
 	},
 }

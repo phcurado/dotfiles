@@ -24,8 +24,8 @@ vim.keymap.set("n", "<leader>sh", ":split<CR>")
 vim.keymap.set("n", "<leader>ex", ":below 18 sp<CR>:term<CR>iiex", { silent = true })
 
 -- Buffer changes
-vim.keymap.set("n", "<leader>l", ":bnext<cr>", opts)
-vim.keymap.set("n", "<leader>h", ":bprevious<cr>", opts)
+vim.keymap.set("n", "<C-l>", ":bnext<cr>", opts)
+vim.keymap.set("n", "<C-h>", ":bprevious<cr>", opts)
 vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts)
 
 -- Vim plugins keymaps
