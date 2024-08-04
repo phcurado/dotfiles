@@ -41,7 +41,11 @@ return {
 		priority = 1000,
 		config = function()
 			-- :h gruvbox-material.txt
-			-- vim.g.gruvbox_material_enable_italic = true
+			vim.g.gruvbox_material_background = "hard"
+			--
+			-- For better performance
+			vim.g.gruvbox_material_better_performance = 1
+			vim.g.gruvbox_material_enable_italic = true
 			-- vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
