@@ -5,7 +5,7 @@ return {
 			local toggleterm = require("toggleterm")
 
 			toggleterm.setup({
-				size = 15,
+				size = 25,
 				open_mapping = [[<c-\>]],
 				start_in_insert = true,
 				persist_size = true,
