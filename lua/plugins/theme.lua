@@ -31,6 +31,7 @@ return {
 			require("gruvbox").setup({
 				-- contrast = "soft", -- can be "hard", "soft" or empty string
 			})
+			-- vim.opt.background = "dark"
 			-- vim.cmd.colorscheme("gruvbox")
 		end,
 	},
@@ -55,17 +56,5 @@ return {
 		lazy = false,
 		priority = 1000,
 		opts = {},
-	},
-	{
-
-		"uloco/bluloco.nvim",
-		lazy = false,
-		priority = 1000,
-		dependencies = { "rktjmp/lush.nvim" },
-		config = function()
-			require("bluloco").setup({
-				transparent = true,
-			})
-		end,
 	},
 }

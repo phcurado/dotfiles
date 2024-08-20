@@ -26,6 +26,8 @@ vim.opt.laststatus = 2
 vim.opt.autowrite = true
 vim.opt.autoread = true
 vim.opt.shiftround = false
+-- Persist undo
+vim.opt.undofile = true
 
 -- Setting conceallevel for Obsidian
 vim.opt_local.conceallevel = 2
