@@ -2,6 +2,8 @@
 
 Dotfile configuration for `archlinux`.
 
+<img src="images/arch.png" alt="main screen">
+
 ## Install
 
 To setup the configuration files, it is recommended to install:
@@ -16,7 +18,19 @@ To setup the configuration files, it is recommended to install:
 Clone this repository in the main `$HOME` folder.
 
 ```bash
-git clone git@github.com:phcurado/dotfiles.git
-cd dotfiles
-stow . # It might be required to delete .bashrc and/or .zshrc files, the stow cmd will notify in case of any conflicts
+$ git clone git@github.com:phcurado/dotfiles.git
+$ cd dotfiles
+```
+
+Then use the GNU `stow` to create symlinks:
+
+```bash
+$ stow .
+```
+
+Some files might conflict, `stow` will throw an error and list the files that already exists on the OS.
+It's possible to override the existent files, adding the `--adopt` argument on stow:
+
+```bash
+$ stow --adopt .
 ```

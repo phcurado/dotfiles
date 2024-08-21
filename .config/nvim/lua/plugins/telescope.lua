@@ -17,6 +17,16 @@ return {
 					colorscheme = {
 						enable_preview = true,
 					},
+					live_grep = {
+						file_ignore_patterns = { ".git" },
+						additional_args = function(_)
+							return { "--hidden" }
+						end,
+					},
+					find_files = {
+						file_ignore_patterns = { ".git" },
+						hidden = true,
+					},
 				},
 				extensions = {
 					fzf = {
@@ -26,12 +36,6 @@ return {
 						case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 					},
 				},
-				-- TODO: check why this bugs the grep
-				-- defaults = {
-				-- 	vimgrep_arguments = {
-				-- 		"--hidden",
-				-- 	},
-				-- },
 			})
 
 			require("telescope").load_extension("fzf")
