@@ -23,6 +23,7 @@ export FLYCTL_INSTALL="/home/phcurado/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 alias tmux="tmux -2"
+alias ls="eza --icons=always"
 
 # Keys
 bindkey "^[[1;5C" forward-word

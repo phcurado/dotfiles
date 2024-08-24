@@ -13,6 +13,7 @@ return {
 					"html",
 					"css",
 					"markdown",
+					"markdown_inline",
 					"bash",
 					"dockerfile",
 					"gitignore",

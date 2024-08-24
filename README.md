@@ -15,11 +15,18 @@ To setup the configuration files, it is recommended to install:
 - [Stow](https://www.gnu.org/software/stow/manual/stow.html)
 - [Paru](https://github.com/Morganamilo/paru)
 
-Clone this repository in the main `$HOME` folder.
+When setting up, first clone this repository in the main `$HOME` folder.
 
 ```bash
+$ cd ~/
 $ git clone git@github.com:phcurado/dotfiles.git
 $ cd dotfiles
+```
+
+Install the packages with:
+
+```bash
+$ pacman -S - < pkgs.txt
 ```
 
 Then use the GNU `stow` to create symlinks:
