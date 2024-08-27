@@ -32,3 +32,7 @@ vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts)
 
 -- undotree
 vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+
+-- Exra commands
+
+vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
