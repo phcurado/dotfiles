@@ -24,7 +24,6 @@ return {
 						end,
 					},
 					find_files = {
-						file_ignore_patterns = { ".git" },
 						hidden = true,
 					},
 				},
