@@ -35,4 +35,13 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 -- Exra commands
 
-vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
+-- vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
+vim.keymap.set("n", "<leader>cp", ':lua require("telescope_filepaths").list_paths()<cr>', opts)
+
+vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
+vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
+
+vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
+vim.keymap.set("n", "<c-n>", "<Plug>(YankyNextEntry)")
