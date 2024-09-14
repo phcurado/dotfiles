@@ -18,12 +18,13 @@ return {
 						enable_preview = true,
 					},
 					live_grep = {
-						file_ignore_patterns = { ".git" },
+						file_ignore_patterns = { ".git/" },
 						additional_args = function(_)
 							return { "--hidden" }
 						end,
 					},
 					find_files = {
+						file_ignore_patterns = { ".git/" },
 						hidden = true,
 					},
 				},
