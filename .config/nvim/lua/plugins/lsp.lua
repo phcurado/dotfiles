@@ -10,7 +10,7 @@ return {
 		dependencies = { "neovim/nvim-lspconfig" },
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "elixirls" },
+				ensure_installed = { "lua_ls", "elixirls", "ts_ls" },
 			})
 
 			require("mason-lspconfig").setup_handlers({
