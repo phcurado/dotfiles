@@ -10,18 +10,19 @@ return {
 		dependencies = { "neovim/nvim-lspconfig" },
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "elixirls", "ts_ls" },
+				ensure_installed = { "lua_ls", "elixirls", "ts_ls", "cssls", "tailwindcss" },
 			})
+
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			require("mason-lspconfig").setup_handlers({
 				function(server_name)
-					require("lspconfig")[server_name].setup({})
+					require("lspconfig")[server_name].setup({
+						capabilities = capabilities,
+					})
 				end,
 				["lua_ls"] = function()
 					-- do nothing since lspconfig will handle the configuration
-				end,
-				["elixirls"] = function()
-					-- do nothing since elixir-tools will handle the configuration
 				end,
 			})
 		end,
@@ -31,12 +32,6 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-			lspconfig.elixirls.setup({
-				cmd = { "elixir-ls" },
-				-- set default capabilities for cmp lsp completion source
-				capabilities = capabilities,
-			})
 
 			lspconfig.lua_ls.setup({
 				settings = {
@@ -63,6 +58,7 @@ return {
 						},
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 	},

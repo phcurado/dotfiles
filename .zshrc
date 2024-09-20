@@ -29,6 +29,7 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 alias tmux="tmux -2"
 alias ls="eza --icons=always"
+alias cat="bat"
 alias n="nvim"
 
 # Keys
