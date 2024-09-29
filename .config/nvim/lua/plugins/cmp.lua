@@ -6,6 +6,7 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-emoji",
+			"hrsh7th/cmp-cmdline",
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -16,6 +17,7 @@ return {
 					{ name = "buffer" },
 					{ name = "path" },
 					{ name = "emoji" },
+					{ name = "nvim_lsp_signature_help" },
 				}),
 				-- using default mapping preset
 				mapping = cmp.mapping.preset.insert({
