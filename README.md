@@ -26,7 +26,13 @@ $ cd dotfiles
 Install the packages with:
 
 ```bash
-$ pacman -S - < pkgs.txt
+$ paru -S - < pkgs.txt
+```
+
+or using the `Makefile`
+
+```bash
+$ make install
 ```
 
 Then use the GNU `stow` to create symlinks:
@@ -40,4 +46,16 @@ It's possible to override the existent files, adding the `--adopt` argument on s
 
 ```bash
 $ stow --adopt .
+```
+
+To save the current system dependencies in the `pkgs.txt` file run:
+
+```bash
+$ paru -Qqen > pkgs.txt
+```
+
+or using the `Makefile`
+
+```bash
+$ make tofile
 ```

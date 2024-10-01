@@ -16,6 +16,7 @@ ffmpegthumbnailer
 firefox
 flatpak
 fzf
+graphviz
 gst-plugin-pipewire
 htop
 imagemagick
@@ -43,6 +44,7 @@ pipewire-pulse
 plasma-meta
 plasma-workspace
 postgresql
+rainfrog
 ripgrep
 smartmontools
 sof-firmware

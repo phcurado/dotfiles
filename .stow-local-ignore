@@ -23,3 +23,6 @@ _darcs
 ^/COPYING
 
 /images
+
+Makefile
+pkgs.txt
