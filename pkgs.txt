@@ -44,7 +44,6 @@ pipewire-pulse
 plasma-meta
 plasma-workspace
 postgresql
-rainfrog
 ripgrep
 smartmontools
 sof-firmware
