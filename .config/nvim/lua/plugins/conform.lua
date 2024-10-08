@@ -14,7 +14,9 @@ return {
 					markdown = { "prettier" },
 					javascript = { "prettier" },
 					typescript = { "prettier" },
+					astro = { "prettier" },
 				},
+
 				format_on_save = {
 					lsp_fallback = true,
 					async = false,
