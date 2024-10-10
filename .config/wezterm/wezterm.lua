@@ -18,6 +18,8 @@ config.window_padding = {
 	bottom = 0,
 }
 
+config.window_background_opacity = 0.98
+
 wezterm.on("gui-startup", function(cmd)
 	local tab, pane, window = mux.spawn_window(cmd or {})
 	window:gui_window():maximize()

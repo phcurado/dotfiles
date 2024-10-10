@@ -20,7 +20,10 @@ return {
 		name = "catppuccin",
 		priority = 1000,
 		config = function()
-			-- require("catppuccin").load()
+			require("catppuccin").setup({
+				transparent_background = true,
+			})
+			-- vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 	{
@@ -47,7 +50,7 @@ return {
 			vim.g.gruvbox_material_better_performance = 1
 			vim.g.gruvbox_material_enable_italic = true
 			-- vim.g.gruvbox_material_foreground = "mix"
-			-- vim.g.gruvbox_material_transparent_background = 1
+			vim.g.gruvbox_material_transparent_background = 1
 			vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
