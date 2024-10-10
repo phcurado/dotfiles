@@ -36,6 +36,9 @@ return {
 						file_ignore_patterns = { ".git/" },
 						hidden = true,
 					},
+					buffers = {
+						initial_mode = "normal",
+					},
 				},
 				extensions = {
 					fzf = {
@@ -53,6 +56,7 @@ return {
 						},
 					},
 					preview = {
+						filesize_limit = 0.1,
 						mime_hook = function(filepath, bufnr, opts)
 							local is_image = function(filepath)
 								local image_extensions = { "png", "jpg", "svg" } -- Supported image formats
