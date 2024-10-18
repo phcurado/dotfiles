@@ -19,6 +19,7 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
+		opts = {},
 		config = function()
 			require("catppuccin").setup({
 				transparent_background = true,
@@ -73,6 +74,16 @@ return {
 		opts = {},
 		config = function()
 			-- vim.cmd.colorscheme("kanagawa-wave")
+		end,
+	},
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+		config = function()
+			-- vim.cmd.colorscheme("rose-pine")
 		end,
 	},
 }

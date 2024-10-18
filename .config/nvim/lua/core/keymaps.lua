@@ -45,3 +45,7 @@ vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_refere
 
 -- vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
 vim.keymap.set("n", "<leader>cp", ':lua require("telescope_filepaths").list_paths()<cr>', opts)
+
+-- vim-translator
+-- vim.keymap.set({ "n", "v" }, "<leader>tee", ":TranslateR --target_lang=et <CR>", { noremap = true })
+-- vim.keymap.set({ "n", "v" }, "<leader>ten", ":TranslateR --source_lang=et --target_lang=en <CR>", { noremap = true })
