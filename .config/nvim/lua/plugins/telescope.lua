@@ -1,5 +1,3 @@
-local builtin = require("telescope.builtin")
-
 return {
 	{
 		"nvim-telescope/telescope.nvim",
@@ -12,11 +10,11 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>ff", builtin.find_files, desc = "Find files" },
-			{ "<leader>fg", builtin.live_grep, desc = "Live grep" },
-			{ "<leader>fb", builtin.buffers, desc = "Buffers" },
-			{ "<leader>fh", builtin.help_tags, desc = "Help tags" },
-			{ "<leader>fr", builtin.resume, desc = "Resume" },
+			{ "<leader>ff", require("telescope.builtin").find_files, desc = "Find files" },
+			{ "<leader>fg", require("telescope.builtin").live_grep, desc = "Live grep" },
+			{ "<leader>fb", require("telescope.builtin").buffers, desc = "Buffers" },
+			{ "<leader>fh", require("telescope.builtin").help_tags, desc = "Help tags" },
+			{ "<leader>fr", require("telescope.builtin").resume, desc = "Resume" },
 		},
 		config = function()
 			local actions = require("telescope.actions")
@@ -53,6 +51,9 @@ return {
 						i = {
 							["<C-s>"] = actions.cycle_previewers_next,
 							["<C-a>"] = actions.cycle_previewers_prev,
+						},
+						n = {
+							["<leader>bd"] = actions.delete_buffer,
 						},
 					},
 					preview = {
