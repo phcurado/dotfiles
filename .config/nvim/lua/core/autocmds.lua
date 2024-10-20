@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function(args)
 		local colorscheme = args.match
-		write_file(theme.filename, colorscheme)
+		write_file(theme.path, colorscheme)
 		vim.notify("Color scheme changed to " .. colorscheme, vim.log.levels.INFO)
 	end,
 })
