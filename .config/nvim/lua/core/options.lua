@@ -32,14 +32,6 @@ vim.opt.undofile = true
 -- Setting conceallevel for Obsidian
 vim.opt_local.conceallevel = 2
 
--- prevent commenting next line
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.formatoptions:remove({ "r", "o" })
-	end,
-})
-
 -- blink cursor: https://neovim.io/doc/user/options.html#'guicursor'
 vim.opt.guicursor =
 	"n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
