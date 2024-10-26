@@ -23,7 +23,7 @@ return {
 				mapping = cmp.mapping.preset.insert({
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-e>"] = cmp.mapping.abort(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<CR>"] = cmp.mapping.confirm({ select = false }),
 				}),
 				snippet = {
 					-- you must specify a snippet engine
@@ -33,6 +33,8 @@ return {
 						vim.snippet.expand(args.body)
 					end,
 				},
+				preselect = cmp.PreselectMode.None,
+				completion = { completeopt = "menu,menuone,noselect" },
 			})
 			cmp.setup.cmdline(":", {
 				mapping = cmp.mapping.preset.cmdline(),

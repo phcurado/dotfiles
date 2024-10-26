@@ -36,6 +36,7 @@ return {
 					},
 					buffers = {
 						initial_mode = "normal",
+						theme = "dropdown",
 					},
 				},
 				extensions = {
@@ -53,7 +54,7 @@ return {
 							["<C-a>"] = actions.cycle_previewers_prev,
 						},
 						n = {
-							["<leader>bd"] = actions.delete_buffer,
+							["<leader>d"] = actions.delete_buffer,
 						},
 					},
 					preview = {

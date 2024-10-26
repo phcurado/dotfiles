@@ -1,0 +1,7 @@
+[init]
+	defaultBranch = main
+[user]
+	email = phcurado@gmail.com
+	name = Paulo Curado
+[core]
+	editor = nvim
