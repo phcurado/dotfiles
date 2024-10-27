@@ -25,4 +25,7 @@ _darcs
 /images
 
 Makefile
-pkgs.txt
+
+/arch-pkgs
+
+.tool-versions

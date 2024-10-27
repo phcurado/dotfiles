@@ -2,7 +2,15 @@
 
 Dotfile configuration for `archlinux`.
 
-<img src="images/arch.png" alt="main screen">
+## Screenshots
+
+<img src="images/dashboard.png" alt="main screen with dashboard plugin">
+
+<img src="images/cmdline.png" alt="cmd line with noice plugin">
+
+<img src="images/telescope.png" alt="Telescope plugin">
+
+<img src="images/gitdiff.png" alt="git diff with Neogit plugin">
 
 ## Install
 
@@ -26,7 +34,7 @@ $ cd dotfiles
 Install the packages with:
 
 ```bash
-$ paru -S - < pkgs.txt
+$ paru -S - < arch-pkgs/pkgs.txt
 ```
 
 or using the `Makefile`
@@ -51,7 +59,7 @@ $ stow --adopt .
 To save the current system dependencies in the `pkgs.txt` file run:
 
 ```bash
-$ paru -Qqen > pkgs.txt
+$ paru -Qqen > arch-pkgs/pkgs.txt
 ```
 
 or using the `Makefile`

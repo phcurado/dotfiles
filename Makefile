@@ -1,8 +1,8 @@
 install:
-	paru -S - < pkgs.txt
+	paru -S - < arch-pkgs/pkgs.txt
 
 show:
 	paru -Qqen
 
 tofile:
-	paru -Qqen > pkgs.txt
+	paru -Qqen > arch-pkgs/pkgs.txt

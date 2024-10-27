@@ -4,6 +4,8 @@ base-devel
 bash-completion
 bat
 bluez-utils
+btop
+chafa
 devtools
 discord
 dolphin
@@ -16,6 +18,7 @@ ffmpegthumbnailer
 firefox
 flatpak
 fzf
+github-cli
 graphviz
 gst-plugin-pipewire
 htop
@@ -37,6 +40,7 @@ network-manager-applet
 networkmanager
 obsidian
 p7zip
+pacman-contrib
 pipewire
 pipewire-alsa
 pipewire-jack
@@ -44,6 +48,7 @@ pipewire-pulse
 plasma-meta
 plasma-workspace
 postgresql
+potrace
 ripgrep
 smartmontools
 sof-firmware

@@ -54,7 +54,7 @@ return {
 							["<C-a>"] = actions.cycle_previewers_prev,
 						},
 						n = {
-							["<leader>d"] = actions.delete_buffer,
+							["dd"] = actions.delete_buffer,
 						},
 					},
 					preview = {
