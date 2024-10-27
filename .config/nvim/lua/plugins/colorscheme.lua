@@ -4,6 +4,9 @@ return {
 		lazy = false,
 		priority = 1000,
 		config = function()
+			require("dracula").setup({
+				transparent_bg = true,
+			})
 			-- vim.cmd.colorscheme("dracula")
 		end,
 	},
@@ -33,6 +36,7 @@ return {
 		priority = 1000,
 		config = function()
 			require("gruvbox").setup({
+				transparent_mode = true,
 				-- contrast = "soft", -- can be "hard", "soft" or empty string
 			})
 			-- vim.opt.background = "dark"
@@ -83,6 +87,11 @@ return {
 		priority = 1000,
 		opts = {},
 		config = function()
+			require("rose-pine").setup({
+				styles = {
+					transparency = true,
+				},
+			})
 			-- vim.cmd.colorscheme("rose-pine")
 		end,
 	},
