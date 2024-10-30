@@ -15,6 +15,7 @@ return {
 			cmp.setup({
 				-- add different completion source
 				sources = cmp.config.sources({
+					{ name = "rg" },
 					{ name = "nvim_lsp" },
 					{ name = "buffer" },
 					{ name = "path" },
@@ -50,6 +51,14 @@ return {
 						before = function(entry, vim_item)
 							return vim_item
 						end,
+					}),
+				},
+				window = {
+					completion = cmp.config.window.bordered({
+						winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+					}),
+					documentation = cmp.config.window.bordered({
+						winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
 					}),
 				},
 			})

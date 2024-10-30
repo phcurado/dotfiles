@@ -22,7 +22,8 @@ return {
 			require("telescope").setup({
 				pickers = {
 					colorscheme = {
-						enable_preview = true,
+						-- Disabling preview since colorschemes are now saved in a cache file
+						enable_preview = false,
 					},
 					live_grep = {
 						file_ignore_patterns = { ".git/" },
@@ -31,6 +32,7 @@ return {
 						end,
 					},
 					find_files = {
+						find_command = { "rg", "--files", "--sortr=modified" },
 						file_ignore_patterns = { ".git/" },
 						hidden = true,
 					},
