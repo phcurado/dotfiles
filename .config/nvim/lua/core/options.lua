@@ -30,7 +30,7 @@ vim.opt.shiftround = false
 vim.opt.undofile = true
 
 -- Setting conceallevel for Obsidian
-vim.opt_local.conceallevel = 2
+vim.opt.conceallevel = 2
 
 -- blink cursor: https://neovim.io/doc/user/options.html#'guicursor'
 vim.opt.guicursor =

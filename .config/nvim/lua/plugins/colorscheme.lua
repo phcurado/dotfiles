@@ -95,4 +95,18 @@ return {
 			-- vim.cmd.colorscheme("rose-pine")
 		end,
 	},
+	{
+		"Mofiqul/vscode.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+		config = function()
+			require("vscode").setup({
+				-- transparent = true,
+				italic_comments = true,
+				underline_links = true,
+				disable_nvimtree_bg = true,
+			})
+		end,
+	},
 }

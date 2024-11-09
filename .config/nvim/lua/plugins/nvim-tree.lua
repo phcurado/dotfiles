@@ -13,6 +13,9 @@ return {
 			vim.g.loaded_netrw = 1
 			vim.g.loaded_netrwPlugin = 1
 			require("nvim-tree").setup({
+				update_focused_file = {
+					enable = true,
+				},
 				disable_netrw = true,
 				view = {
 					width = 60,
