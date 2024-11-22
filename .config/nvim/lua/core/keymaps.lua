@@ -28,6 +28,9 @@ vim.keymap.set("n", "<C-l>", ":bnext<cr>", opts)
 vim.keymap.set("n", "<C-h>", ":bprevious<cr>", opts)
 -- vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts) -- Disabling :bdelete keymaps for the bufdelete plugin
 
+-- Pasting options
+vim.keymap.set("n", "p", "]p", opts)
+
 -- Vim plugins keymaps
 
 -- undotree
