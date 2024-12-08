@@ -13,8 +13,11 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
 vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
 
 -- Move selected lines in visual mode up or down, awesome!
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+-- Deprecated in favour of mini.move plugin
+-- vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv")
+-- vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv")
+-- vim.keymap.set("v", "<C-h>", "<gv")
+-- vim.keymap.set("v", "<C-l>", ">gv")
 
 -- split windows
 vim.keymap.set("n", "<leader>sv", ":vs<CR>")
