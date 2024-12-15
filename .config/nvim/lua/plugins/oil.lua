@@ -1,11 +1,16 @@
 return {
 	{
 		"stevearc/oil.nvim",
-		opts = {},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+			vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 			require("oil").setup({
+				columns = {
+					"size",
+					"mtime",
+					"icon",
+				},
+
 				view_options = {
 					-- Show files and directories that start with "."
 					show_hidden = true,

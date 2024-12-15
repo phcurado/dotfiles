@@ -59,7 +59,7 @@ return {
 
 			vim.api.nvim_set_keymap(
 				"n",
-				"<leader>g",
+				"<leader>h",
 				"<cmd>lua _Lazygit_toggle()<CR>",
 				{ noremap = true, silent = true }
 			)
