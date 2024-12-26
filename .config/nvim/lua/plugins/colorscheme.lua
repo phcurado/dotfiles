@@ -5,7 +5,7 @@ return {
 		priority = 1000,
 		config = function()
 			require("dracula").setup({
-				transparent_bg = true,
+				transparent_bg = false,
 			})
 			-- vim.cmd.colorscheme("dracula")
 		end,
@@ -66,7 +66,7 @@ return {
 		opts = {},
 		config = function()
 			require("tokyonight").setup({
-				transparent = true,
+				transparent = false,
 			})
 			-- vim.cmd.colorscheme("tokyonight-storm")
 		end,

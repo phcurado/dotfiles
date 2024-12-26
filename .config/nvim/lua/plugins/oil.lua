@@ -6,8 +6,6 @@ return {
 			vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 			require("oil").setup({
 				columns = {
-					"size",
-					"mtime",
 					"icon",
 				},
 

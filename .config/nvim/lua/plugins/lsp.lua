@@ -13,7 +13,7 @@ return {
 				ensure_installed = { "lua_ls", "elixirls", "ts_ls", "cssls", "tailwindcss" },
 			})
 
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			require("mason-lspconfig").setup_handlers({
 				function(server_name)
@@ -32,7 +32,7 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			lspconfig.lua_ls.setup({
 				settings = {
