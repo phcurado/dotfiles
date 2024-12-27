@@ -1,0 +1,4 @@
+font-family = "SourceCodeVF"
+gtk-titlebar = false
+background-opacity = 0.9
+background-blur-radius = 20
