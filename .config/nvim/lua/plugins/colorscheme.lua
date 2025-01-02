@@ -25,7 +25,7 @@ return {
 		opts = {},
 		config = function()
 			require("catppuccin").setup({
-				transparent_background = true,
+				transparent_background = false,
 			})
 			-- vim.cmd.colorscheme("catppuccin")
 		end,
@@ -36,10 +36,10 @@ return {
 		priority = 1000,
 		config = function()
 			require("gruvbox").setup({
-				transparent_mode = true,
+				transparent_mode = false,
 				-- contrast = "soft", -- can be "hard", "soft" or empty string
 			})
-			-- vim.opt.background = "dark"
+			-- vim.opt.background = "light"
 			-- vim.cmd.colorscheme("gruvbox")
 		end,
 	},

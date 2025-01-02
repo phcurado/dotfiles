@@ -1,4 +1,5 @@
-font-family = "SourceCodeVF"
+font-family = "SourceCodeVF Bold"
+theme = gruvbox-material 
 gtk-titlebar = false
-background-opacity = 0.9
+background-opacity = 1
 background-blur-radius = 20
