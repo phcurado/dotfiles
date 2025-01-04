@@ -39,6 +39,10 @@ return {
 				menu = {
 					border = "rounded",
 					winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+
+					draw = {
+						treesitter = { "lsp" },
+					},
 				},
 				documentation = {
 					auto_show = true,
