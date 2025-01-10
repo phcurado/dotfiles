@@ -9,7 +9,11 @@ return {
 			-- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
 			-- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
 			-- See the full "keymap" documentation for information on defining your own keymap.
-			keymap = { preset = "super-tab" },
+			keymap = {
+				preset = "super-tab",
+				-- Adding tab and enter for accepting the completion
+				["<CR>"] = { "accept", "fallback" },
+			},
 
 			appearance = {
 				-- Sets the fallback highlight groups to nvim-cmp's highlight groups
@@ -33,9 +37,7 @@ return {
 						enabled = true,
 					},
 				},
-				list = {
-					selection = "auto_insert",
-				},
+				list = { selection = { preselect = false, auto_insert = true } },
 				menu = {
 					border = "rounded",
 					winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
