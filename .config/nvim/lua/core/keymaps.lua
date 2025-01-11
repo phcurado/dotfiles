@@ -51,3 +51,10 @@ vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_refere
 
 -- vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
 vim.keymap.set("n", "<leader>cp", ':lua require("telescope_filepaths").list_paths()<cr>', opts)
+
+-- quickfix list
+vim.keymap.set("n", "<leader>qr", ":call setqflist([])<CR> ", { noremap = true })
+vim.keymap.set("n", "<leader>qo", ":copen<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>qc", ":cclose<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true })
