@@ -26,6 +26,7 @@ eval "$(/usr/bin/mise activate zsh)"
 
 export FLYCTL_INSTALL="/home/phcurado/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
+export EDITOR=nvim
 
 alias tmux="tmux -2"
 alias ls="eza --icons=always"
