@@ -29,7 +29,7 @@ vim.keymap.set("n", "<leader>ex", ":below 18 sp<CR>:term<CR>iiex", { silent = tr
 -- Buffer changes
 vim.keymap.set("n", "<C-l>", ":bnext<cr>", opts)
 vim.keymap.set("n", "<C-h>", ":bprevious<cr>", opts)
--- vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts) -- Disabling :bdelete keymaps for the bufdelete plugin
+-- vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts) -- Disabling :bdelete keymaps for the snacks bufdelete plugin
 
 -- Pasting options
 vim.keymap.set("n", "p", "]p", opts)
