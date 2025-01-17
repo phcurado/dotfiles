@@ -15,7 +15,7 @@ return {
 			"nvim-telescope/telescope.nvim",
 		},
 		keys = {
-			{ "<leader>g", ":lua require('neogit').open()<CR>", desc = "Open Neogit" },
+			{ "<leader>gg", ":lua require('neogit').open()<CR>", desc = "Open Neogit" },
 		},
 		config = true,
 	},
