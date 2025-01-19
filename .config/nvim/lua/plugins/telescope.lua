@@ -10,11 +10,11 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>ff", require("telescope.builtin").find_files, desc = "Find files" },
-			{ "<leader>fg", require("telescope.builtin").live_grep, desc = "Live grep" },
-			{ "<leader>fb", require("telescope.builtin").buffers, desc = "Buffers" },
+			-- { "<leader>ff", require("telescope.builtin").find_files, desc = "Find files" },
+			-- { "<leader>fg", require("telescope.builtin").live_grep, desc = "Live grep" },
+			-- { "<leader>fb", require("telescope.builtin").buffers, desc = "Buffers" },
 			{ "<leader>fh", require("telescope.builtin").help_tags, desc = "Help tags" },
-			{ "<leader>fr", require("telescope.builtin").resume, desc = "Resume" },
+			-- { "<leader>fr", require("telescope.builtin").resume, desc = "Resume" },
 		},
 		config = function()
 			local actions = require("telescope.actions")
@@ -96,19 +96,11 @@ return {
 	},
 	{
 		"ibhagwan/fzf-lua",
-		-- optional for icon support
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		-- or if using mini.icons/mini.nvim
-		-- dependencies = { "echasnovski/mini.icons" },
 		opts = {},
 
 		config = function()
-			-- require("fzf-lua").setup({ keymap = { builtin = { true, ["<Esc>"] = "hide" } } })
-			require("fzf-lua").setup({
-				"telescope",
-				winopts = { preview = { default = "bat" } },
-				keymap = { builtin = { true, ["<Esc>"] = "hide" } },
-			})
+			require("fzf-lua").setup({})
 		end,
 	},
 }

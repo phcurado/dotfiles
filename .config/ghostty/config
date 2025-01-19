@@ -1,5 +1,10 @@
-font-family = "SourceCodeVF Bold"
-theme = gruvbox-material 
+font-family = SourceCodeVF
+font-size = 12
+theme = catppuccin-frappe
 gtk-titlebar = false
-background-opacity = 1
+background-opacity = 0.95
 background-blur-radius = 20
+font-synthetic-style = bold
+font-variation=wght=800
+mouse-hide-while-typing = true
+window-decoration = true
