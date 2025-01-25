@@ -38,11 +38,11 @@ return {
 		input = { enabled = true },
 		notifier = {
 			enabled = true,
-			timeout = 3000,
+			timeout = 4000,
 		},
 		quickfile = { enabled = true },
 		-- Disabling scroll since it have some bugs
-		-- scroll = { enabled = true },
+		scroll = { enabled = false },
 		statuscolumn = { enabled = true },
 		words = { enabled = true },
 	},
@@ -52,7 +52,14 @@ return {
 			function()
 				Snacks.bufdelete()
 			end,
-			desc = "Delete Buffer",
+			desc = "Delete the current buffer",
+		},
+		{
+			"<leader>bD",
+			function()
+				Snacks.bufdelete.other()
+			end,
+			desc = "Delete all buffers except the current one",
 		},
 		{
 			"<leader>gB",
