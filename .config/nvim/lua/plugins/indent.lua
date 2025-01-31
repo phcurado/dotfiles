@@ -9,9 +9,6 @@ return {
 			indent = {
 				enable = true,
 			},
-			line_num = {
-				enable = true,
-			},
 		})
 	end,
 }

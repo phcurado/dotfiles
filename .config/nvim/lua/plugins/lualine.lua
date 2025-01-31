@@ -7,6 +7,7 @@ return {
 				disabled_filetypes = {
 					"NvimTree",
 				},
+				-- icons_enabled = true,
 				component_separators = { left = "|", right = "|" },
 			},
 			sections = {

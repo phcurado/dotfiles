@@ -9,8 +9,8 @@ return {
 					{ "icon", add_padding = false },
 				},
 				float = {
-					max_width = 0.75,
-					max_height = 0.75,
+					max_width = 0.85,
+					max_height = 0.85,
 				},
 				view_options = {
 					-- Show files and directories that start with "."

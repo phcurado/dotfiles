@@ -4,6 +4,9 @@ return {
 	lazy = false,
 	opts = {
 		bigfile = { enabled = true },
+		explorer = {
+			layout = { preset = "sidebar", preview = false },
+		},
 		dashboard = {
 			sections = {
 				{ section = "header" },
@@ -68,6 +71,13 @@ return {
 			end,
 			desc = "Git Browse",
 			mode = { "n", "v" },
+		},
+		{
+			"<leader>n",
+			function()
+				Snacks.picker.explorer()
+			end,
+			desc = "Toggle tree explorer",
 		},
 		{
 			"<leader>N",
