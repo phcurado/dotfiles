@@ -4,11 +4,11 @@ Dotfile configuration for `archlinux`.
 
 ## Screenshots
 
-<img src="images/dashboard.png" alt="main screen with dashboard plugin">
+<img src="images/dashboard.png" alt="main screen with snacks dashboard">
 
 <img src="images/cmdline.png" alt="cmd line with noice plugin">
 
-<img src="images/telescope.png" alt="Telescope plugin">
+<img src="images/finder.png" alt="Finder plugin">
 
 <img src="images/gitdiff.png" alt="git diff with Neogit plugin">
 

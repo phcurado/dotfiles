@@ -9,6 +9,7 @@ return {
     },
     dashboard = {
       sections = {
+        -- { section = "terminal", cmd = "fortune -s | cowsay", hl = "header", padding = 1, indent = 8 },
         { section = "header" },
         { section = "keys", gap = 1, padding = 1 },
         {
@@ -37,6 +38,7 @@ return {
         { section = "startup" },
       },
     },
+
     indent = { enabled = false },
     input = { enabled = true },
     notifier = {
@@ -82,7 +84,15 @@ return {
     {
       "<leader>ff",
       function()
-        Snacks.picker.files()
+        Snacks.picker.files({
+          finder = "files",
+          format = "file",
+          show_empty = true,
+          hidden = true,
+          ignored = false,
+          follow = false,
+          supports_live = true,
+        })
       end,
       desc = "Find files",
     },
@@ -90,7 +100,15 @@ return {
     {
       "<leader>fg",
       function()
-        Snacks.picker.grep()
+        Snacks.picker.grep({
+          finder = "grep",
+          regex = true,
+          format = "file",
+          show_empty = true,
+          live = true, -- live grep by default
+          supports_live = true,
+          hidden = true,
+        })
       end,
       desc = "Live Grep",
     },
