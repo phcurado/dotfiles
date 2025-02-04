@@ -4,7 +4,7 @@ local config = wezterm.config_builder()
 
 config.automatically_reload_config = true
 config.enable_tab_bar = true
-config.color_scheme = "Gruvbox Dark (Gogh)"
+config.color_scheme = "Vs Code Dark+ (Gogh)"
 -- config.color_scheme = "Vs Code Dark+ (Gogh)"
 -- config.colors = require("colors/kanagawa-lotus")
 config.font = wezterm.font("SourceCodeVF", { weight = "DemiBold" })

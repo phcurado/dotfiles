@@ -1,7 +1,7 @@
 -- define common options
 local opts = {
-	noremap = true, -- non-recursive
-	silent = true, -- do not show message
+  noremap = true, -- non-recursive
+  silent = true, -- do not show message
 }
 
 -- Move up and down with JK
@@ -50,7 +50,6 @@ vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_refere
 -- Exra commands
 
 -- vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
-vim.keymap.set("n", "<leader>cp", ':lua require("telescope_filepaths").list_paths()<cr>', opts)
 
 -- quickfix list
 vim.keymap.set("n", "<leader>qr", ":call setqflist([])<CR> ", { noremap = true, desc = "Clean quickfix list" })
