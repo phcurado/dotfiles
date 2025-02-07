@@ -4,10 +4,11 @@ local config = wezterm.config_builder()
 
 config.automatically_reload_config = true
 config.enable_tab_bar = true
-config.color_scheme = "Vs Code Dark+ (Gogh)"
+config.color_scheme = "Gruvbox Dark (Gogh)"
 -- config.color_scheme = "Vs Code Dark+ (Gogh)"
 -- config.colors = require("colors/kanagawa-lotus")
-config.font = wezterm.font("SourceCodeVF", { weight = "DemiBold" })
+-- config.font = wezterm.font("SourceCodeVF", { weight = "DemiBold" })
+config.font = wezterm.font("JetBrains Mono", { weight = "DemiBold" })
 config.font_size = 12
 config.use_fancy_tab_bar = false
 -- config.window_decorations = "TITLE | RESIZE"
@@ -20,7 +21,7 @@ config.window_padding = {
 	bottom = 0,
 }
 
-config.window_background_opacity = 0.95
+config.window_background_opacity = 0.9
 
 wezterm.on("gui-startup", function(cmd)
 	local tab, pane, window = mux.spawn_window(cmd or {})

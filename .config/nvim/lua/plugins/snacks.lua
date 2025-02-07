@@ -149,8 +149,6 @@ return {
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
-        vim.print = _G.dd -- Override print to use snacks for `:=` command
-        -- Create some toggle mappings
         Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>rN")
         Snacks.toggle
           .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
