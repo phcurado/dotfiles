@@ -1,0 +1,10 @@
+[tools]
+awscli = "2.17.18"
+kubectl = "1.30.3"
+terraform = "1.9.6"
+kotlin = "2.0.20"
+elixir = "1.18.1-otp-27"
+erlang = "27.1.2"
+node = "22.10.0"
+yarn = "4.6.0"
+deno = "2.1.9"
