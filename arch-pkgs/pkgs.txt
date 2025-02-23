@@ -7,6 +7,7 @@ bat
 bluez-utils
 btop
 chafa
+cowsay
 devtools
 discord
 dolphin
@@ -18,6 +19,7 @@ fd
 ffmpegthumbnailer
 firefox
 flatpak
+fortune-mod
 fzf
 ghostty
 github-cli
@@ -36,6 +38,8 @@ libpulse
 libva-intel-driver
 linux
 linux-firmware
+mediainfo
+mise
 nano
 neovim
 network-manager-applet

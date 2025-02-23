@@ -9,7 +9,7 @@ config.color_scheme = "Gruvbox Dark (Gogh)"
 -- config.colors = require("colors/kanagawa-lotus")
 -- config.font = wezterm.font("SourceCodeVF", { weight = "DemiBold" })
 config.font = wezterm.font("JetBrains Mono", { weight = "DemiBold" })
-config.font_size = 12
+config.font_size = 13
 config.use_fancy_tab_bar = false
 -- config.window_decorations = "TITLE | RESIZE"
 config.window_decorations = "RESIZE"
