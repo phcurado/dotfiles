@@ -50,6 +50,9 @@ return {
     scroll = { enabled = false },
     statuscolumn = { enabled = true },
     words = { enabled = true },
+    picker = {
+      ui_select = true,
+    },
   },
   keys = {
     {

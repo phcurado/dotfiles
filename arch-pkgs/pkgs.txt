@@ -4,6 +4,7 @@ base
 base-devel
 bash-completion
 bat
+bitwarden
 bluez-utils
 btop
 chafa
@@ -38,6 +39,7 @@ libpulse
 libva-intel-driver
 linux
 linux-firmware
+luarocks
 mediainfo
 mise
 nano

@@ -1,10 +1,13 @@
-font-family = SourceCodeVF
-font-size = 12
-theme = catppuccin-frappe
+font-family = JetBrains Mono
+font-size = 14
 gtk-titlebar = false
-background-opacity = 0.95
+background-blur = true
+background-opacity = 0.9
 background-blur-radius = 20
 font-synthetic-style = bold
-font-variation=wght=800
+font-variation=wght=600
 mouse-hide-while-typing = true
 window-decoration = true
+# Paddings
+window-padding-x = 0
+window-padding-y = 0

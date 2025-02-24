@@ -13,5 +13,6 @@ return {
         path = "~/Documents/phcurado@gmail.com",
       },
     },
+    ui = { enable = false },
   },
 }
