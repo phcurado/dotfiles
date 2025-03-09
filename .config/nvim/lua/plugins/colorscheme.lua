@@ -17,7 +17,9 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      -- require("onedark").load()
+      require("onedark").setup({
+        transparent = config.transparent_background,
+      })
     end,
   },
   {
@@ -79,6 +81,10 @@ return {
     priority = 1000,
     opts = {},
     config = function()
+      -- Default options:
+      require("kanagawa").setup({
+        transparent = config.transparent_background,
+      })
       -- vim.cmd.colorscheme("kanagawa-lotus")
     end,
   },
@@ -116,7 +122,9 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      require("nord").setup({})
+      require("nord").setup({
+        transparent = config.transparent_background,
+      })
     end,
   },
 }

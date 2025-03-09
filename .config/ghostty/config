@@ -1,13 +1,14 @@
 font-family = JetBrains Mono
-font-size = 14
+font-size = 13
 gtk-titlebar = false
 background-blur = true
-background-opacity = 0.9
+background-opacity = 0.90
 background-blur-radius = 20
 font-synthetic-style = bold
 font-variation=wght=600
 mouse-hide-while-typing = true
 window-decoration = true
+cursor-invert-fg-bg = true
 # Paddings
 window-padding-x = 0
 window-padding-y = 0

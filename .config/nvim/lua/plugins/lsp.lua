@@ -78,6 +78,7 @@ return {
             eelixir = "html-eex",
             heex = "html-eex",
           },
+          capabilities = capabilities,
         },
       })
     end,
