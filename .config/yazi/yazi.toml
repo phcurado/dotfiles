@@ -58,7 +58,7 @@ play = [
 	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
 ]
 video = [
-	{ run = 'vlc "$1"', block = true, desc = "Open VLC", for = "unix" },
+	{ run = 'vlc "$1" &', block = false, desc = "Open VLC", for = "unix" },
 ]
 
 [open]
