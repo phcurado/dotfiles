@@ -1,4 +1,4 @@
 -- Global config
 return {
-  transparent_background = true,
+  transparent_background = false,
 }
