@@ -24,8 +24,14 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 eval "$(zoxide init zsh)"
 eval "$(/usr/bin/mise activate zsh)"
 
-export FLYCTL_INSTALL="/home/phcurado/.fly"
+export FLYCTL_INSTALL="$HOME/.fly"
+export CHROME_EXECUTABLE="brave"
+
+# Paths
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
+export PATH="$HOME/flutter/bin:$PATH"
+
+# Editor and aliases
 export EDITOR=nvim
 
 alias tmux="tmux -2"

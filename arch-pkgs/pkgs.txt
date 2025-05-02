@@ -8,6 +8,8 @@ bitwarden
 bluez-utils
 btop
 chafa
+clang
+cmake
 cowsay
 devtools
 discord
@@ -46,6 +48,7 @@ nano
 neovim
 network-manager-applet
 networkmanager
+ninja
 noto-fonts-cjk
 obs-studio
 obsidian
