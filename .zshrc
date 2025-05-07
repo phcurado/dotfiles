@@ -29,7 +29,6 @@ export CHROME_EXECUTABLE="brave"
 
 # Paths
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
-export PATH="$HOME/flutter/bin:$PATH"
 
 # Editor and aliases
 export EDITOR=nvim
