@@ -37,6 +37,7 @@ iwd
 kate
 konsole
 lazygit
+less
 libpulse
 libva-intel-driver
 linux
