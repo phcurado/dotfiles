@@ -127,4 +127,10 @@ return {
       })
     end,
   },
+  {
+    "AhmedAbdulrahman/aylin.vim",
+    lazy = false,
+    priority = 1000,
+    branch = "0.5-nvim",
+  },
 }
