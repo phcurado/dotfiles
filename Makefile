@@ -6,3 +6,6 @@ show:
 
 tofile:
 	paru -Qqen > arch-pkgs/pkgs.txt
+
+cleanCache:
+	paru -Sccd 
