@@ -1,16 +1,5 @@
 return {
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        suggestion = { enabled = false }, -- Enable inline suggestions
-        panel = { enabled = false }, -- Disable the panel
-      })
-    end,
-  },
-  {
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",

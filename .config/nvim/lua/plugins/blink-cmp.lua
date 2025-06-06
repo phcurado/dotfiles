@@ -5,7 +5,7 @@ return {
     dependencies = {
       "rafamadriz/friendly-snippets",
       "moyiz/blink-emoji.nvim",
-      "giuxtaposition/blink-cmp-copilot",
+      "fang2hou/blink-copilot",
     },
     version = "*",
     opts = {
@@ -18,7 +18,9 @@ return {
         -- Adding tab and enter for accepting the completion
         ["<CR>"] = { "accept", "fallback" },
       },
-
+      fuzzy = {
+        implementation = "lua",
+      },
       appearance = {
         -- Sets the fallback highlight groups to nvim-cmp's highlight groups
         -- Useful for when your theme doesn't support blink.cmp
@@ -69,18 +71,9 @@ return {
         providers = {
           copilot = {
             name = "copilot",
-            module = "blink-cmp-copilot",
-            score_offset = 100,
+            module = "blink-copilot",
+            score_offset = 1000,
             async = true,
-            transform_items = function(_, items)
-              local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-              local kind_idx = #CompletionItemKind + 1
-              CompletionItemKind[kind_idx] = "Copilot"
-              for _, item in ipairs(items) do
-                item.kind = kind_idx
-              end
-              return items
-            end,
           },
           emoji = {
             module = "blink-emoji",
