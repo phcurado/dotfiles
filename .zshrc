@@ -42,6 +42,9 @@ alias n="nvim"
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+# Enable vi mode
+bindkey -v
+
 source <(fzf --zsh)
 
 eval "$(starship init zsh)"
