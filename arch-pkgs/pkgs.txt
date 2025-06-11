@@ -67,6 +67,7 @@ smartmontools
 sof-firmware
 spectacle
 spotify-launcher
+spotify-player
 starship
 stow
 tmux
