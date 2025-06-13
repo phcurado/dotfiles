@@ -1,0 +1,47 @@
+(
+    device: (
+        // Normal, Clockwise, CounterClockwise, UpsideDown
+        orientation: Normal,
+        rows: 3,
+        cols: 4,
+        knobs: 2,
+    ),
+    layers: [
+        // layer 1
+        (
+            buttons: [
+                [(delay: 0, mapping: "ctrl-f1"), (delay: 0, mapping:"ctrl-f2"), (delay: 0, mapping: "ctrl-f3"), (delay: 0, mapping: "ctrl-f4")],
+                [(delay: 0, mapping: "win-left"), (delay: 0, mapping: "win-pageup"), (delay: 0, mapping: "win-pagedown"), (delay: 0, mapping: "win-right")],
+                [(delay: 0, mapping: "ctrl-shift-win-left"), (delay: 0, mapping: "escape"), (delay: 0, mapping: "alt-tab"), (delay: 0, mapping: "ctrl-shift-win-right")],
+            ],
+            knobs: [
+                (ccw: (delay: 0, mapping: "volumedown"), press: (delay: 0, mapping: "mute"), cw: (delay: 0, mapping: "volumeup")),
+                (ccw: (delay: 0, mapping: "wheelup"), press: (delay: 0, mapping: "screenlock"), cw: (delay: 0, mapping: "wheeldown")),
+            ],
+        ),
+        // layer 2
+        (
+            buttons: [
+                [(delay: 0, mapping: "click"), (delay: 0, mapping: "rclick"), (delay: 0, mapping: "mclick"), (delay: 0, mapping: "mclick")],
+                [(delay: 0, mapping: "click"), (delay: 0, mapping: "rclick"), (delay: 0, mapping: "mclick"), (delay: 0, mapping: "mclick")],
+                [(delay: 0, mapping: "ctrl-wheelup"), (delay: 0, mapping: "ctrl-wheeldown"), (delay: 0, mapping: "2"), (delay: 0, mapping: "mclick")],
+            ],
+            knobs: [
+                (ccw: (delay: 0, mapping: "2"), press: (delay: 0, mapping: "2"), cw: (delay: 0, mapping: "2")),
+                (ccw: (delay: 0, mapping: "2"), press: (delay: 0, mapping: "2"), cw: (delay: 0, mapping: "2")),
+            ],
+        ),
+        // layer 3
+        (
+            buttons: [
+                [(delay: 0, mapping: "ctrl-m"), (delay: 0, mapping: "ctrl-slash"), (delay: 0, mapping: "space"), (delay: 0, mapping: "space")],
+                [(delay: 0, mapping: "ctrl-m"), (delay: 0, mapping: "ctrl-slash"), (delay: 0, mapping: "space"), (delay: 0, mapping: "space")],
+                [(delay: 0, mapping: "ctrl-rightbracket"), (delay: 0, mapping: "ctrl-leftbracket"), (delay: 0, mapping: "right"), (delay: 0, mapping: "space")],
+            ],
+            knobs: [
+                (ccw: (delay: 0, mapping: "3"), press: (delay: 0, mapping: "3"), cw: (delay: 0, mapping: "3")),
+                (ccw: (delay: 0, mapping: "3"), press: (delay: 0, mapping: "3"), cw: (delay: 0, mapping: "3")),
+            ],
+        ),
+    ],
+)

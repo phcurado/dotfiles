@@ -1,0 +1,38 @@
+---
+- name: Setup Macropad
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Clone macropad_tool repository
+      git:
+        repo: "https://github.com/kamaaina/macropad_tool.git"
+        dest: "~/macropad_tool"
+        clone: yes
+        update: false
+
+    - name: Copy custom macropad config from dotfiles to macropad_tool
+      copy:
+        src: "~/dotfiles/macropad/mapping.ron"
+        dest: "~/macropad_tool/"
+        remote_src: yes
+
+    - name: Build macropad tool with cargo
+      command: "cargo build --release"
+      args:
+        chdir: "~/macropad_tool"
+
+    - name: Copy 80-macropad.rules to /etc/udev/rules.d
+      copy:
+        src: "~/macropad_tool/80-macropad.rules"
+        dest: "/etc/udev/rules.d/80-macropad.rules"
+        remote_src: yes
+      become: true
+
+    - name: Trigger udev to reload rules
+      command: "sudo udevadm trigger"
+      become: true
+
+    - name: Program macropad tool
+      command: "./target/release/macropad-tool program -c mapping.ron"
+      args:
+        chdir: "~/macropad_tool"

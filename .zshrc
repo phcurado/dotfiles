@@ -18,8 +18,15 @@ compinit
 
 zstyle ':completion:*' menu select
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.config/zsh/.antigen/antigen.zsh
+
+# Plugins
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
+antigen apply
+
+# Configurations
 
 eval "$(zoxide init zsh)"
 eval "$(/usr/bin/mise activate zsh)"

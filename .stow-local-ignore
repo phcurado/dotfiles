@@ -29,3 +29,6 @@ Makefile
 /arch-pkgs
 
 .tool-versions
+
+/ansible-scripts
+/macropad

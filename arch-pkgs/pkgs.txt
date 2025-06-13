@@ -1,4 +1,5 @@
 7zip
+ansible-core
 ark
 base
 base-devel
@@ -87,6 +88,3 @@ yazi
 zoxide
 zram-generator
 zsh
-zsh-autosuggestions
-zsh-completions
-zsh-syntax-highlighting
