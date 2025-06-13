@@ -18,14 +18,8 @@ compinit
 
 zstyle ':completion:*' menu select
 
-source ~/.config/zsh/.antigen/antigen.zsh
-
-# Plugins
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-completions
-antigen bundle jeffreytse/zsh-vi-mode
-antigen apply
+source ~/.config/zsh/.antidote/antidote.zsh
+antidote load
 
 # Configurations
 
