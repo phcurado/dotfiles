@@ -24,6 +24,7 @@ source ~/.config/zsh/.antigen/antigen.zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
+antigen bundle jeffreytse/zsh-vi-mode
 antigen apply
 
 # Configurations
@@ -48,9 +49,6 @@ alias n="nvim"
 # Keys
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
-
-# Enable vi mode
-bindkey -v
 
 source <(fzf --zsh)
 
