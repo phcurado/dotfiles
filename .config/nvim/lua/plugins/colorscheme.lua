@@ -1,5 +1,3 @@
-local config = require("core.config")
-
 return {
   {
     "Mofiqul/dracula.nvim",
@@ -7,9 +5,8 @@ return {
     priority = 1000,
     config = function()
       require("dracula").setup({
-        transparent_bg = config.transparent_background,
+        transparent_bg = vim.g.transparent_background,
       })
-      -- vim.cmd.colorscheme("dracula")
     end,
   },
   {
@@ -18,7 +15,7 @@ return {
     priority = 1000,
     config = function()
       require("onedark").setup({
-        transparent = config.transparent_background,
+        transparent = vim.g.transparent_background,
       })
     end,
   },
@@ -29,7 +26,7 @@ return {
     opts = {},
     config = function()
       require("catppuccin").setup({
-        transparent_background = config.transparent_background,
+        transparent_background = vim.g.transparent_background,
       })
       -- vim.cmd.colorscheme("catppuccin")
     end,
@@ -40,7 +37,7 @@ return {
     priority = 1000,
     config = function()
       require("gruvbox").setup({
-        transparent_mode = config.transparent_background,
+        transparent_mode = vim.g.transparent_background,
         -- contrast = "soft", -- can be "hard", "soft" or empty string
       })
       -- vim.opt.background = "light"
@@ -59,7 +56,7 @@ return {
       vim.g.gruvbox_material_better_performance = 1
       vim.g.gruvbox_material_enable_italic = true
       -- vim.g.gruvbox_material_foreground = "mix"
-      vim.g.gruvbox_material_transparent_background = config.transparent_background and 1 or 0
+      vim.g.gruvbox_material_transparent_background = vim.g.transparent_background and 1 or 0
       -- vim.cmd.colorscheme("gruvbox-material")
     end,
   },
@@ -70,7 +67,7 @@ return {
     opts = {},
     config = function()
       require("tokyonight").setup({
-        transparent = config.transparent_background,
+        transparent = vim.g.transparent_background,
       })
       -- vim.cmd.colorscheme("tokyonight-storm")
     end,
@@ -83,7 +80,7 @@ return {
     config = function()
       -- Default options:
       require("kanagawa").setup({
-        transparent = config.transparent_background,
+        transparent = vim.g.transparent_background,
       })
       -- vim.cmd.colorscheme("kanagawa-lotus")
     end,
@@ -97,7 +94,7 @@ return {
     config = function()
       require("rose-pine").setup({
         styles = {
-          transparency = config.transparent_background,
+          transparency = vim.g.transparent_background,
         },
       })
       -- vim.cmd.colorscheme("rose-pine")
@@ -110,7 +107,7 @@ return {
     opts = {},
     config = function()
       require("vscode").setup({
-        transparent = config.transparent_background,
+        transparent = vim.g.transparent_background,
         italic_comments = true,
         underline_links = true,
         disable_nvimtree_bg = true,
@@ -123,7 +120,7 @@ return {
     priority = 1000,
     config = function()
       require("nord").setup({
-        transparent = config.transparent_background,
+        transparent = vim.g.transparent_background,
       })
     end,
   },
