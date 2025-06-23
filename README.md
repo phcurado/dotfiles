@@ -27,7 +27,8 @@ When setting up, first clone this repository in the main `$HOME` folder.
 
 ```bash
 cd ~/
-git clone git@github.com:phcurado/dotfiles.git
+
+git clone --recurse-submodules -j8 git@github.com:phcurado/dotfiles.git
 cd dotfiles
 ```
 
