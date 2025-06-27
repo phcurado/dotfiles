@@ -18,9 +18,9 @@ return {
         -- Adding tab and enter for accepting the completion
         ["<CR>"] = { "accept", "fallback" },
       },
-      fuzzy = {
-        implementation = "lua",
-      },
+      -- fuzzy = {
+      --   implementation = "lua",
+      -- },
       appearance = {
         -- Sets the fallback highlight groups to nvim-cmp's highlight groups
         -- Useful for when your theme doesn't support blink.cmp
@@ -68,6 +68,9 @@ return {
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { "lsp", "path", "snippets", "buffer", "emoji", "copilot", "codecompanion" },
+        per_filetype = {
+          sql = { "snippets", "dadbod", "buffer" },
+        },
         providers = {
           copilot = {
             name = "copilot",
@@ -81,6 +84,7 @@ return {
             score_offset = 15, -- Tune by preference
             opts = { insert = true }, -- Insert emoji (default) or complete its name
           },
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
       completion = {
@@ -93,8 +97,6 @@ return {
         list = { selection = { preselect = false, auto_insert = true } },
         menu = {
           border = "rounded",
-          winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
-
           draw = {
             treesitter = { "lsp" },
           },
@@ -104,17 +106,15 @@ return {
           auto_show_delay_ms = 200,
           window = {
             border = "rounded",
-            winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
           },
         },
       },
-      -- signature = {
-      -- 	enabled = true,
-      -- 	window = {
-      -- 		border = "rounded",
-      -- 		winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
-      -- 	},
-      -- },
+      signature = {
+        enabled = true,
+        window = {
+          border = "rounded",
+        },
+      },
     },
     opts_extend = { "sources.default" },
   },
