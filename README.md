@@ -31,7 +31,6 @@ git clone --recurse-submodules -j8 git@github.com:phcurado/dotfiles.git
 cd dotfiles
 ```
 
-
 ## Main packages
 
 Main packages for the dotfiles to work correctly:
@@ -47,6 +46,7 @@ cd paru
 makepkg -si
 
 ```
+
 ### Neovim
 
 Neovim is my preferred text editor, which can be installed using:
@@ -169,7 +169,7 @@ sudo systemctl start bluetooth.service
 sudo systemctl enable bluetooth.service
 ```
 
-I also use a macropad with some useful macros to switch between windows, open applications, etc. You can find the configuration for the macropad in the `macropad` folder. The configuration is inside the `macropad/macropad.ron` file. I configured mine using the [macropad_tool](https://github.com/kamaaina/macropad_tool). You can customize the configuration inside the ron file and then upload it to the macropad using the ansible script:
+I also use a macropad with some useful macros to switch between windows, open applications, etc. You can find the configuration inside the `macropad/macropad.ron` file. I configured mine using the [macropad_tool](https://github.com/kamaaina/macropad_tool). You can customize the configuration inside the ron file and then upload it to the macropad using the ansible script:
 
 ```bash
 ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
