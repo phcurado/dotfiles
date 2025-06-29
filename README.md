@@ -132,7 +132,7 @@ Since we are applying these files on a fresh install, most likely there won't be
 
 ## Additional packages
 
-The packages can be installed using `paru` with the `pkgs.txt` file located in the `arch-pkgs` folder:
+Additional packages can be installed using `paru` with the `pkgs.txt` file located in the `arch-pkgs` folder:
 
 ```bash
 paru -S - < arch-pkgs/pkgs.txt
@@ -144,7 +144,7 @@ or using the `Makefile`
 make install
 ```
 
-But it's recommended to check the `arch-pkgs/pkgs.txt` file and remove any packages that you don't want to install. Below you can find how to install the packages manually:
+But it's recommended to check the `arch-pkgs/pkgs.txt` file and remove any packages that you don't want to install.
 
 To save the current system dependencies in the `pkgs.txt` file run:
 
