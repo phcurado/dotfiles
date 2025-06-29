@@ -25,7 +25,7 @@
       copy:
         src: "~/macropad_tool/80-macropad.rules"
         dest: "/etc/udev/rules.d/80-macropad.rules"
-        remote_src: yes
+        force: no
       become: true
 
     - name: Trigger udev to reload rules
