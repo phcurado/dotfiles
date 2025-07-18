@@ -91,7 +91,7 @@ return {
           finder = "files",
           format = "file",
           show_empty = true,
-          hidden = true,
+          hidden = false,
           ignored = false,
           follow = false,
           supports_live = true,

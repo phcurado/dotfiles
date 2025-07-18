@@ -10,7 +10,7 @@ return {
     workspaces = {
       {
         name = "phcurado",
-        path = "~/Documents/phcurado@gmail.com",
+        path = "~/Documents/phcurado/obsidian",
       },
     },
     ui = { enable = false },
