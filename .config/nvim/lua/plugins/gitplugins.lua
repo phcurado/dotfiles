@@ -12,7 +12,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
     },
     keys = {
       { "<leader>gg", ":lua require('neogit').open()<CR>", desc = "Open Neogit" },
