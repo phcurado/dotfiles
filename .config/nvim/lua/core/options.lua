@@ -17,7 +17,7 @@ vim.opt.cursorline = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.termguicolors = true
-vim.opt.diffopt = "internal,filler,closeoff,vertical"
+vim.opt.diffopt = "internal,filler,closeoff,vertical,linematch:40"
 
 -- Config
 vim.opt.clipboard = "unnamedplus"

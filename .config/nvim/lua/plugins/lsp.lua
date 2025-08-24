@@ -19,6 +19,7 @@ return {
           "ts_ls",
           "cssls",
           "tailwindcss",
+          "harper_ls",
         },
         automatic_installation = true,
       })
@@ -87,6 +88,8 @@ return {
       lspconfig.cssls.setup({
         capabilities = capabilities,
       })
+
+      lspconfig.harper_ls.setup({})
     end,
   },
 }

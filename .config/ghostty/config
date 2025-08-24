@@ -1,7 +1,7 @@
 font-family = JetBrains Mono
 font-size = 13
 gtk-titlebar = false
-background-blur = true
+background-blur = false
 background-opacity = 0.90
 background-blur-radius = 20
 font-synthetic-style = bold

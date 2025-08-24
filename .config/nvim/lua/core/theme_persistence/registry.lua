@@ -32,17 +32,6 @@ return {
     end,
   },
 
-  gruvbox = {
-    label = "Gruvbox",
-    module = "gruvbox",
-    match = "^gruvbox",
-    setup = function(opts)
-      require("gruvbox").setup({
-        transparent_mode = opts.transparent,
-      })
-    end,
-  },
-
   ["gruvbox-material"] = {
     label = "Gruvbox Material",
     module = nil, -- loaded via globals
@@ -51,6 +40,17 @@ return {
       vim.g.gruvbox_material_better_performance = 1
       vim.g.gruvbox_material_enable_italic = true
       vim.g.gruvbox_material_transparent_background = opts.transparent and 1 or 0
+    end,
+  },
+
+  gruvbox = {
+    label = "Gruvbox",
+    module = "gruvbox",
+    match = "gruvbox",
+    setup = function(opts)
+      require("gruvbox").setup({
+        transparent_mode = opts.transparent,
+      })
     end,
   },
 

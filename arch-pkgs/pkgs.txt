@@ -9,6 +9,7 @@ fastfetch
 ffmpegthumbnailer
 ghostty
 git
+git-delta
 github-cli
 inotify-tools
 luarocks
