@@ -14,7 +14,7 @@
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "dracula.nvim": { "branch": "main", "commit": "df528c869b09fbdc7578e6ccc7ff6faf44a2046d" },
   "dressing.nvim": { "branch": "master", "commit": "2d7c2db2507fa3c4956142ee607431ddb2828639" },
-  "dropbar.nvim": { "branch": "master", "commit": "a0ad7e24e9dfde6f0b11f6a436f56aeceaf58e9b" },
+  "dropbar.nvim": { "branch": "master", "commit": "5fdf8e3cf887a8e2087452fc5ae50bb146b79048" },
   "flash.nvim": { "branch": "main", "commit": "3c942666f115e2811e959eabbdd361a025db8b63" },
   "flutter-tools.nvim": { "branch": "main", "commit": "65b7399804315a1160933b64292d3c5330aa4e9f" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
@@ -47,7 +47,6 @@
   "nvim-notify": { "branch": "master", "commit": "397c7c1184745fca649e5104de659e6392ef5a4d" },
   "nvim-surround": { "branch": "main", "commit": "a868c256c861044beb9794b4dd126480dcdfbdad" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
-  "nvim-treesitter-context": { "branch": "master", "commit": "66a9b5fa9e806918b5fe3dba00c6cce7e230abd2" },
   "nvim-web-devicons": { "branch": "master", "commit": "6e51ca170563330e063720449c21f43e27ca0bc1" },
   "obsidian.nvim": { "branch": "main", "commit": "ae1f76a75c7ce36866e1d9342a8f6f5b9c2caf9b" },
   "octo.nvim": { "branch": "master", "commit": "6dabe62fb6678804ad38fb0f060854a5d1d4a7ef" },
@@ -82,6 +81,6 @@
   "vscode.nvim": { "branch": "main", "commit": "cb9df0873c10a21d05362455ae3bb355eadcef6b" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" },
   "yanky.nvim": { "branch": "main", "commit": "04775cc6e10ef038c397c407bc17f00a2f52b378" },
-  "yazi.nvim": { "branch": "main", "commit": "88a74bddd74d51cfe01706a86dcc69cb79259862" },
+  "yazi.nvim": { "branch": "main", "commit": "595d50ccd7244e47fcd8f65f49fe3955fd509699" },
   "zoxide.vim": { "branch": "master", "commit": "520d1abeb71ba42989a842251f8ba5c46be89aab" }
 }

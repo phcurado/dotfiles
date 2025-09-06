@@ -38,7 +38,6 @@ return {
         { section = "startup" },
       },
     },
-
     indent = { enabled = false },
     input = { enabled = true },
     notifier = {
@@ -52,6 +51,10 @@ return {
     words = { enabled = true },
     picker = {
       ui_select = true,
+      layout = {
+        preset = "ivy",
+        layout = { position = "bottom", backdrop = 70 },
+      },
     },
   },
   keys = {
@@ -99,7 +102,6 @@ return {
       end,
       desc = "Find files",
     },
-
     {
       "<leader>fg",
       function()
@@ -128,6 +130,13 @@ return {
         Snacks.picker.resume()
       end,
       desc = "Resume",
+    },
+    {
+      "<leader>/",
+      function()
+        Snacks.picker.lines()
+      end,
+      desc = "Search lines",
     },
     {
       "<leader>N",
