@@ -51,10 +51,6 @@ return {
     words = { enabled = true },
     picker = {
       ui_select = true,
-      layout = {
-        preset = "ivy",
-        layout = { position = "bottom", backdrop = 70 },
-      },
     },
   },
   keys = {
@@ -98,6 +94,10 @@ return {
           ignored = false,
           follow = false,
           supports_live = true,
+          layout = {
+            preset = "ivy",
+            layout = { position = "bottom", backdrop = 70 },
+          },
         })
       end,
       desc = "Find files",
@@ -113,6 +113,10 @@ return {
           live = true, -- live grep by default
           supports_live = true,
           hidden = true,
+          layout = {
+            preset = "ivy",
+            layout = { position = "bottom", backdrop = 70 },
+          },
         })
       end,
       desc = "Live Grep",
@@ -120,7 +124,12 @@ return {
     {
       "<leader>fb",
       function()
-        Snacks.picker.buffers()
+        Snacks.picker.buffers({
+          layout = {
+            preset = "ivy",
+            layout = { position = "bottom", backdrop = 70 },
+          },
+        })
       end,
       desc = "Search buffers",
     },
