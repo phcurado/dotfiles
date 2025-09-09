@@ -15,7 +15,7 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
-          "expert",
+          "elixirls",
           "ts_ls",
           "cssls",
           "tailwindcss",
@@ -25,18 +25,18 @@ return {
       })
 
       -- elixirls
-      -- lspconfig.elixirls.setup({
-      --   cmd = {
-      --     vim.fn.stdpath("data") .. "/mason/packages/elixir-ls/language_server.sh",
-      --   },
-      --   capabilities = capabilities,
-      --   settings = {
-      --     elixirLS = {
-      --       dialyzerEnabled = false,
-      --       fetchDeps = false,
-      --     },
-      --   },
-      -- })
+      lspconfig.elixirls.setup({
+        cmd = {
+          vim.fn.stdpath("data") .. "/mason/packages/elixir-ls/language_server.sh",
+        },
+        capabilities = capabilities,
+        settings = {
+          elixirLS = {
+            dialyzerEnabled = false,
+            fetchDeps = false,
+          },
+        },
+      })
 
       -- lspconfig.lexical.setup({
       --   cmd = { "expert" },
