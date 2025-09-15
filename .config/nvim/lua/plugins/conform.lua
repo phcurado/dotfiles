@@ -12,6 +12,7 @@ return {
           json = { "prettier" },
           yaml = { "prettier" },
           markdown = { "prettier" },
+          mdx = { "prettier" },
           javascript = { "prettier" },
           typescript = { "prettier" },
           astro = { "prettier" },
