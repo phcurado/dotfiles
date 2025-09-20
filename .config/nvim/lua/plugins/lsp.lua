@@ -9,87 +9,55 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
-      local lspconfig = require("lspconfig")
-
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
           "elixirls",
+          "expert",
           "ts_ls",
           "cssls",
           "tailwindcss",
           "harper_ls",
         },
         automatic_installation = true,
-      })
-
-      -- elixirls
-      lspconfig.elixirls.setup({
-        cmd = {
-          vim.fn.stdpath("data") .. "/mason/packages/elixir-ls/language_server.sh",
-        },
-        capabilities = capabilities,
-        settings = {
-          elixirLS = {
-            dialyzerEnabled = false,
-            fetchDeps = false,
+        automatic_enable = {
+          exclude = {
+            "elixirls",
+            "expert",
+            "lua_ls",
           },
         },
       })
 
-      -- lspconfig.lexical.setup({
-      --   cmd = { "expert" },
-      --   capabilities = capabilities,
-      -- })
-
-      -- lua_ls
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-        on_init = function(client)
-          local path = client.workspace_folders and client.workspace_folders[1].name
-          if
-            path
-            and path ~= vim.fn.stdpath("config")
-            and (vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc"))
-          then
-            return
-          end
-          client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-            runtime = { version = "LuaJIT" },
-            workspace = {
-              checkThirdParty = false,
-              library = { vim.env.VIMRUNTIME },
+      -- luals
+      vim.lsp.config["luals"] = {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
+        settings = {
+          Lua = {
+            runtime = {
+              version = "LuaJIT",
             },
-          })
-        end,
-        settings = {
-          Lua = {},
-        },
-      })
-
-      -- tailwindcss
-      lspconfig.tailwindcss.setup({
-        capabilities = capabilities,
-        init_options = {
-          userLanguages = {
-            elixir = "html-eex",
-            eelixir = "html-eex",
-            heex = "html-eex",
           },
         },
+      }
+
+      -- elixir expert
+      vim.lsp.config["expert"] = {
+        cmd = { "expert" },
+        root_markers = { "mix.exs", ".git" },
+        filetypes = { "elixir", "eelixir", "heex" },
+      }
+
+      -- global
+      vim.lsp.config("*", {
+        -- capabilities = capabilities,
+        root_markers = { ".git" },
       })
 
-      -- others
-      lspconfig.ts_ls.setup({
-        capabilities = capabilities,
-      })
-
-      lspconfig.cssls.setup({
-        capabilities = capabilities,
-      })
-
-      lspconfig.harper_ls.setup({})
+      vim.lsp.enable("luals")
+      vim.lsp.enable("expert")
     end,
   },
 }

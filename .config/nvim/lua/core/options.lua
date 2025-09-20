@@ -11,6 +11,7 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
 -- UI
+vim.o.winborder = "rounded"
 vim.opt.relativenumber = true
 vim.wo.number = true
 vim.opt.cursorline = true
