@@ -75,6 +75,38 @@ return {
       })
     end,
   },
+  ["kanagawa-wave"] = {
+    label = "Kanagawa Wave",
+    module = "kanagawa",
+    match = "^kanagawa%-wave",
+    setup = function(opts)
+      require("kanagawa").setup({
+        transparent = opts.transparent,
+      })
+    end,
+  },
+
+  ["kanagawa-lotus"] = {
+    label = "Kanagawa Wave",
+    module = "kanagawa",
+    match = "^kanagawa%-lotus",
+    setup = function(opts)
+      require("kanagawa").setup({
+        transparent = opts.transparent,
+      })
+    end,
+  },
+
+  ["kanagawa-dragon"] = {
+    label = "Kanagawa Wave",
+    module = "kanagawa",
+    match = "^kanagawa%-dragon",
+    setup = function(opts)
+      require("kanagawa").setup({
+        transparent = opts.transparent,
+      })
+    end,
+  },
 
   ["rose-pine"] = {
     label = "Rose Pine",

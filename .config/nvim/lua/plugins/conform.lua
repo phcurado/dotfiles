@@ -17,6 +17,7 @@ return {
           typescript = { "prettier" },
           astro = { "prettier" },
           bash = { "shfmt" },
+          python = { "black" },
         },
 
         format_on_save = function(bufnr)
