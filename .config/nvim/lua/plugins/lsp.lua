@@ -43,6 +43,8 @@ return {
         },
       }
 
+      vim.lsp.enable("gleam")
+
       -- elixir expert
       vim.lsp.config["expert"] = {
         cmd = { "expert" },
