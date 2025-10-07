@@ -15,6 +15,7 @@ inotify-tools
 luarocks
 mise
 neovim
+obsidian
 postgresql
 starship
 stow
