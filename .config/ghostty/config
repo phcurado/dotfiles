@@ -1,10 +1,10 @@
-font-family = JetBrains Mono
-font-size = 13
+font-family = 0xProto Nerd Font
+font-size = 14
 gtk-titlebar = false
 background-blur = false
 background-opacity = 0.90
 background-blur-radius = 20
-font-synthetic-style = bold
+font-synthetic-style = false
 font-variation=wght=600
 mouse-hide-while-typing = true
 window-decoration = true

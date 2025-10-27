@@ -57,6 +57,9 @@ paru neovim
 
 ### Ghostty
 
+> [!INFO]
+> Ghostty is configured to use the font [0xProto Nerd Font](https://github.com/0xType/0xProto), make sure you install it or change the font configuration [.config/ghostty/config](.config/ghostty/config) to a font that you have installed on your system. After installing `ghostty`, you can list the fonts with the command `ghostty +list-fonts`
+
 [Ghostty](https://ghostty.org/) is a terminal emulator that provides a modern and feature-rich command-line experience. To install Ghostty, you can use the following command:
 
 ```bash
