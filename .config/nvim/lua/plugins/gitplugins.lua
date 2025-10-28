@@ -22,4 +22,11 @@ return {
       })
     end,
   },
+  {
+    "sindrets/diffview.nvim",
+    config = function()
+      vim.keymap.set("n", "<leader>dc", ":DiffviewClose<CR>", { noremap = true, desc = "Close Diffview" })
+      require("diffview").setup({})
+    end,
+  },
 }

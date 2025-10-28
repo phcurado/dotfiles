@@ -214,4 +214,17 @@ return {
       })
     end,
   },
+
+  ["github_dark_dimmed"] = {
+    label = "Github Dark Dimmed",
+    module = "github-theme",
+    match = "^github_dark_dimmed",
+    setup = function(opts)
+      require("github-theme").setup({
+        options = {
+          transparent = opts.transparent,
+        },
+      })
+    end,
+  },
 }

@@ -9,4 +9,5 @@ return {
   { "rose-pine/neovim", name = "rose-pine" },
   { "Mofiqul/vscode.nvim" },
   { "gbprod/nord.nvim" },
+  { "projekt0n/github-nvim-theme" },
 }
