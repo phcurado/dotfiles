@@ -18,6 +18,7 @@ return {
           astro = { "prettierd" },
           bash = { "shfmt" },
           python = { "black" },
+          terraform = { "tofu" },
         },
 
         format_on_save = function(bufnr)
