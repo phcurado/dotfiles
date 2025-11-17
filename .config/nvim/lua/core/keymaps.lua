@@ -50,9 +50,3 @@ vim.keymap.set("n", "<leader>qo", ":copen<CR>", { noremap = true, desc = "Open q
 vim.keymap.set("n", "<leader>qc", ":cclose<CR>", { noremap = true, desc = "Close quickfix list" })
 vim.keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, desc = "Next quickfix list" })
 vim.keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, desc = "Prev quickfix list" })
-
--- FzfLua
-vim.keymap.set("n", "<leader>ff", ":FzfLua files<CR>", { noremap = true, desc = "Find files" })
-vim.keymap.set("n", "<leader>fg", ":FzfLua grep<CR>", { noremap = true, desc = "Live grep" })
-vim.keymap.set("n", "<leader>fb", ":FzfLua buffers<CR>", { noremap = true, desc = "Buffers" })
-vim.keymap.set("n", "<leader>fr", ":FzfLua resume<CR>", { noremap = true, desc = "Resume" })

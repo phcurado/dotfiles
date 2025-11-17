@@ -27,7 +27,7 @@ return {
         ensure_installed = {
           "lua_ls",
           "elixirls",
-          "expert",
+          -- "expert",
           "ts_ls",
           "cssls",
           "tailwindcss",
@@ -42,7 +42,7 @@ return {
         automatic_enable = {
           exclude = {
             "elixirls",
-            "expert",
+            -- "expert",
             "lua_ls",
           },
         },
@@ -65,11 +65,18 @@ return {
       vim.lsp.enable("gleam")
 
       -- elixir expert
-      vim.lsp.config["expert"] = {
-        cmd = { "expert" },
+      vim.lsp.config["elixirls"] = {
+        cmd = { "elixir-ls" },
         root_markers = { "mix.exs", ".git" },
         filetypes = { "elixir", "eelixir", "heex" },
       }
+
+      -- -- elixir expert
+      -- vim.lsp.config["expert"] = {
+      --   cmd = { "expert" },
+      --   root_markers = { "mix.exs", ".git" },
+      --   filetypes = { "elixir", "eelixir", "heex" },
+      -- }
 
       -- global
       vim.lsp.config("*", {
@@ -78,7 +85,8 @@ return {
       })
 
       vim.lsp.enable("luals")
-      vim.lsp.enable("expert")
+      vim.lsp.enable("elixirls")
+      -- vim.lsp.enable("expert")
     end,
   },
 }
