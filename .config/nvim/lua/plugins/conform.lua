@@ -15,10 +15,10 @@ return {
           mdx = { "prettierd" },
           javascript = { "prettierd" },
           typescript = { "prettierd" },
-          astro = { "prettierd" },
+          astro = { "prettier" },
           bash = { "shfmt" },
           python = { "black" },
-          terraform = { "tofu" },
+          terraform = { "tofu_fmt" },
         },
 
         format_on_save = function(bufnr)
@@ -26,7 +26,7 @@ return {
           if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
             return
           end
-          return { lsp_fallback = true, async = false, timeout_ms = 500 }
+          return { lsp_fallback = true, async = false, timeout_ms = 1000 }
         end,
       })
 

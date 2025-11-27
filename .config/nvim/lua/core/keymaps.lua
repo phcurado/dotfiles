@@ -25,7 +25,7 @@ vim.keymap.set("n", "<C-h>", ":bprevious<cr>", opts)
 -- vim.keymap.set("n", "<leader>d", ":bdelete<cr>", opts) -- Disabling :bdelete keymaps for the snacks bufdelete plugin
 
 -- Pasting options
-vim.keymap.set("n", "p", "]p", opts)
+-- vim.keymap.set("n", "p", "]p", opts)
 
 -- Vim plugins keymaps
 

@@ -30,15 +30,20 @@ export FLYCTL_INSTALL="$HOME/.fly"
 export CHROME_EXECUTABLE="brave"
 
 # Paths
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # Editor and aliases
 export EDITOR=nvim
 
 alias tmux="tmux -2"
+alias t="tmux"
 alias ls="eza --icons=always"
 alias cat="bat"
 alias n="nvim"
+# dir
+alias ..="cd .."
+alias ...="cd ../.."
 
 # Keys
 bindkey "^[[1;5C" forward-word

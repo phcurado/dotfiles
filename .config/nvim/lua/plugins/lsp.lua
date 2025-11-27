@@ -11,9 +11,12 @@ return {
       require("mason-tool-installer").setup({
         ensure_installed = {
           "markdownlint",
+          "prettier",
           "prettierd",
           "shfmt",
           "stylua",
+          "black",
+          "tflint",
         },
         auto_update = true,
       })
@@ -49,7 +52,7 @@ return {
       })
 
       -- luals
-      vim.lsp.config["luals"] = {
+      vim.lsp.config["lua_ls"] = {
         cmd = { "lua-language-server" },
         filetypes = { "lua" },
         root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
@@ -72,11 +75,11 @@ return {
       }
 
       -- -- elixir expert
-      -- vim.lsp.config["expert"] = {
-      --   cmd = { "expert" },
-      --   root_markers = { "mix.exs", ".git" },
-      --   filetypes = { "elixir", "eelixir", "heex" },
-      -- }
+      -- vim.lsp.config('expert', {
+      --   cmd = { 'expert', '--stdio' },
+      --   root_markers = { 'mix.exs', '.git' },
+      --   filetypes = { 'elixir', 'eelixir', 'heex' },
+      -- })
 
       -- global
       vim.lsp.config("*", {
