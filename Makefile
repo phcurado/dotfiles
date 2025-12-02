@@ -15,12 +15,13 @@ cleanCache:
 
 # Secrets (AGE key for SOPS) - run before `stow .`
 secrets.setup:
-	@op read "op://Personal/SOPS AGE Key/notes" > .config/mise/age.txt
-	@chmod 600 .config/mise/age.txt
+	@mkdir -p .config/sops/age
+	@op read "op://Personal/SOPS AGE Key/notes" > .config/sops/age/keys.txt
+	@chmod 600 .config/sops/age/keys.txt
 	@echo "AGE key restored from 1Password"
 
 secrets.backup:
 	@echo "Store this in 1Password as 'SOPS AGE Key' (notes field):"
 	@echo "---"
-	@cat .config/mise/age.txt
+	@cat .config/sops/age/keys.txt
 	@echo "---"

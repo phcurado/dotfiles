@@ -52,17 +52,18 @@ This dotfiles setup uses [SOPS](https://github.com/getsops/sops) with [AGE](http
 **On a new machine:**
 
 ```bash
-make secrets.setup    # Restores key from 1Password to .config/mise/age.txt
+make secrets.setup    # Restores key from 1Password to .config/sops/age/keys.txt
 ```
 
 **Backup your key** (if generating a new one):
 
 ```bash
-age-keygen -o .config/mise/age.txt
+mkdir -p .config/sops/age
+age-keygen -o .config/sops/age/keys.txt
 make secrets.backup   # Shows key to copy to 1Password
 ```
 
-The `age.txt` file is gitignored and never committed.
+The `keys.txt` file is gitignored and never committed.
 
 ## Main Packages
 
