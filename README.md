@@ -12,44 +12,74 @@ Dotfile configuration for `archlinux`.
 
 <img src="images/gitdiff.png" alt="git diff with Neogit plugin">
 
-## Install
-
-To setup the configuration files, it is recommended to install:
-
-- [Neovim](https://neovim.io)
-- [Ghostty](https://ghostty.org/)
-- [Zsh](https://wiki.archlinux.org/title/Zsh)
-- [Starship](https://starship.rs)
-- [Stow](https://www.gnu.org/software/stow/manual/stow.html)
-- [Paru](https://github.com/Morganamilo/paru)
-
-When setting up, first clone this repository in the main `$HOME` folder.
+## Quick Start
 
 ```bash
+# 1. Install prerequisites
+sudo pacman -S --needed base-devel git stow
+
+# 2. Install paru (AUR helper)
+git clone https://aur.archlinux.org/paru.git /tmp/paru
+cd /tmp/paru && makepkg -si
+
+# 3. Install core packages
+paru -S mise zsh neovim ghostty tmux starship
+
+# 4. Clone dotfiles
 cd ~/
 git clone --recurse-submodules -j8 git@github.com:phcurado/dotfiles.git
 cd dotfiles
+
+# 5. Restore secrets from 1Password (optional, for SOPS encryption)
+make secrets.setup
+
+# 6. Create symlinks
+stow .
+
+# 7. Install tool versions
+mise install
+
+# 8. Set zsh as default shell
+chsh -s /usr/bin/zsh
 ```
 
-## Main packages
+Reboot or log out/in to apply shell changes.
 
-Main packages for the dotfiles to work correctly:
+## Secrets Management
+
+This dotfiles setup uses [SOPS](https://github.com/getsops/sops) with [AGE](https://github.com/FiloSottile/age) for encrypting secrets in projects. The AGE private key is stored in 1Password and restored locally.
+
+**On a new machine:**
+
+```bash
+make secrets.setup    # Restores key from 1Password to .config/mise/age.txt
+```
+
+**Backup your key** (if generating a new one):
+
+```bash
+age-keygen -o .config/mise/age.txt
+make secrets.backup   # Shows key to copy to 1Password
+```
+
+The `age.txt` file is gitignored and never committed.
+
+## Main Packages
 
 ### Paru
 
-[Paru](https://github.com/Morganamilo/paru) is an AUR helper, which simplifies the process of installing packages from the Arch User Repository (AUR). To install Paru, you can follow these steps:
+[Paru](https://github.com/Morganamilo/paru) is an AUR helper for installing packages from the Arch User Repository.
 
 ```bash
 sudo pacman -S --needed base-devel
 git clone https://aur.archlinux.org/paru.git
 cd paru
 makepkg -si
-
 ```
 
 ### Neovim
 
-Neovim is my preferred text editor, which can be installed using:
+[Neovim](https://neovim.io) is my preferred text editor.
 
 ```bash
 paru neovim
@@ -57,10 +87,10 @@ paru neovim
 
 ### Ghostty
 
-> [!IMPORTANT]
-> Ghostty is configured to use the font [0xProto Nerd Font](https://github.com/0xType/0xProto), make sure you install it or change the font configuration [.config/ghostty/config](.config/ghostty/config) to a font that you have installed on your system. After installing `ghostty`, you can list the fonts with the command `ghostty +list-fonts`.
+[Ghostty](https://ghostty.org/) is a modern terminal emulator.
 
-[Ghostty](https://ghostty.org/) is a terminal emulator that provides a modern and feature-rich command-line experience. To install Ghostty, you can use the following command:
+> [!IMPORTANT]
+> Ghostty is configured to use the font [0xProto Nerd Font](https://github.com/0xType/0xProto). Install it or change the font in [.config/ghostty/config](.config/ghostty/config). List available fonts with `ghostty +list-fonts`.
 
 ```bash
 paru ghostty
@@ -68,43 +98,37 @@ paru ghostty
 
 ### Tmux
 
-tmux is a terminal multiplexer that allows you to run multiple terminal sessions within a single window. To install tmux, you can use the following command:
+[tmux](https://github.com/tmux/tmux) is a terminal multiplexer.
 
 ```bash
 paru tmux
 ```
 
-To install tmux plugins, open a tmux session and press `prefix + I` (where `prefix` is usually `Ctrl + b` but I customized to `Ctrl + a`). This will automatically install the plugins defined in the `.tmux.conf` file.
+To install plugins, open a tmux session and press `prefix + I` (prefix is `Ctrl + a`).
 
 ### Mise
 
-[Mise](https://github.com/jdx/mise) is similar to [asdf](https://asdf-vm.com/), useful for managing versions of programming languages and tools. To install Mise, you can use the following command:
+[Mise](https://github.com/jdx/mise) manages versions of programming languages and tools.
 
 ```bash
 paru mise
-```
-
-This dotfiles repository includes a `mise.toml` file that defines the versions of programming languages and tools that I use. To install the specified versions, run:
-
-```bash
-mise install
+mise install   # Install versions from mise.toml
 ```
 
 ### Zsh
 
-Follow the [Zsh wiki](https://wiki.archlinux.org/title/Zsh) to install Zsh and set it as the default shell.
-In short, you can run:
+[Zsh](https://wiki.archlinux.org/title/Zsh) is my preferred shell.
 
 ```bash
 paru zsh
 chsh -s /usr/bin/zsh
 ```
 
-Then reboot your system or log out and log back in to apply the changes.
+Reboot or log out/in to apply.
 
 ### Starship
 
-[Starship](https://starship.rs) is a cross-shell prompt that can be installed using:
+[Starship](https://starship.rs) is a cross-shell prompt.
 
 ```bash
 paru starship
@@ -112,67 +136,61 @@ paru starship
 
 ### GNU Stow
 
-[GNU Stow](https://www.gnu.org/software/stow/manual/stow.html) is a symlink farm manager that allows you to manage your dotfiles. To install Stow, you can use the following command:
+[GNU Stow](https://www.gnu.org/software/stow/manual/stow.html) manages symlinks for dotfiles.
 
 ```bash
 paru stow
-```
-
-Then use the GNU `stow` to create symlinks:
-
-```bash
 stow .
 ```
 
-Some files might conflict, `stow` will throw an error and list the files that already exists on the OS.
-It's possible to override the existent files, adding the `--adopt` argument on stow:
+If files conflict, use `--adopt` to override:
 
 ```bash
 stow --adopt .
 ```
 
-Since we are applying these files on a fresh install, most likely there won't be any conflicts but if you are applying these files on an existing system, you might want to check the files that will be overridden.
+## Additional Packages
 
-## Additional packages
-
-Additional packages can be installed using `paru` with the `pkgs.txt` file located in the `arch-pkgs` folder:
-
-```bash
-paru -S - < arch-pkgs/pkgs.txt
-```
-
-or using the `Makefile`
+Install packages from the saved list:
 
 ```bash
 make install
+# or: paru -S - < arch-pkgs/pkgs.txt
 ```
 
-But it's recommended to check the `arch-pkgs/pkgs.txt` file and remove any packages that you don't want to install.
-
-To save the current system dependencies in the `pkgs.txt` file run:
-
-```bash
-paru -Qqen > arch-pkgs/pkgs.txt
-```
-
-or using the `Makefile`
+Save current packages to file:
 
 ```bash
 make tofile
+# or: paru -Qqen > arch-pkgs/pkgs.txt
 ```
 
-This might add a lot of packages, that may be specific to your system, so it's recommended to check the `arch-pkgs/pkgs.txt` file and remove any packages that you don't want to install.
+Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-specific.
 
-## Additional configuration
+## Makefile Commands
 
-After a fresh install, something that I noticed is that the bluetooth service is not enabled by default. To enable it, you can run:
+| Command               | Description                              |
+| --------------------- | ---------------------------------------- |
+| `make install`        | Install packages from arch-pkgs/pkgs.txt |
+| `make show`           | List installed packages                  |
+| `make tofile`         | Save installed packages to pkgs.txt      |
+| `make cleanCache`     | Clean paru cache                         |
+| `make secrets.setup`  | Restore AGE key from 1Password           |
+| `make secrets.backup` | Show AGE key for backup to 1Password     |
+
+## Additional Configuration
+
+### Bluetooth
+
+Enable bluetooth service:
 
 ```bash
-sudo systemctl start bluetooth.service
-sudo systemctl enable bluetooth.service
+sudo systemctl enable --now bluetooth.service
 ```
 
-I also use a macropad with some useful macros to switch between windows, open applications, etc. You can find the configuration inside the `macropad/macropad.ron` file. I configured mine using the [macropad_tool](https://github.com/kamaaina/macropad_tool). You can customize the configuration inside the ron file and then upload it to the macropad using the ansible script:
+### Macropad
+
+Macropad configuration is in `macropad/macropad.ron`. Upload using:
 
 ```bash
 ansible-playbook --ask-become-pass ansible-scripts/macropad.yml

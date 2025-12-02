@@ -1,3 +1,6 @@
+.PHONY: install show tofile cleanCache secrets.setup secrets.backup
+
+# Arch packages
 install:
 	paru -S - < arch-pkgs/pkgs.txt
 
@@ -8,4 +11,16 @@ tofile:
 	paru -Qqen > arch-pkgs/pkgs.txt
 
 cleanCache:
-	paru -Sccd 
+	paru -Sccd
+
+# Secrets (AGE key for SOPS) - run before `stow .`
+secrets.setup:
+	@op read "op://Personal/SOPS AGE Key/notes" > .config/mise/age.txt
+	@chmod 600 .config/mise/age.txt
+	@echo "AGE key restored from 1Password"
+
+secrets.backup:
+	@echo "Store this in 1Password as 'SOPS AGE Key' (notes field):"
+	@echo "---"
+	@cat .config/mise/age.txt
+	@echo "---"
