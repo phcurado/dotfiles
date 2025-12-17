@@ -27,6 +27,7 @@ return {
           "python",
           "toml",
           "yaml",
+          "go",
         },
         ignore_install = {},
         sync_install = false,

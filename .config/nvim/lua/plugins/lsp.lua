@@ -39,6 +39,7 @@ return {
           "denols",
           "bashls",
           "basedpyright",
+          "gopls",
         },
 
         automatic_installation = true,
@@ -67,19 +68,15 @@ return {
 
       vim.lsp.enable("gleam")
 
-      -- elixir expert
+      -- elixir
       vim.lsp.config["elixirls"] = {
         cmd = { "elixir-ls" },
         root_markers = { "mix.exs", ".git" },
         filetypes = { "elixir", "eelixir", "heex" },
       }
 
-      -- -- elixir expert
-      -- vim.lsp.config('expert', {
-      --   cmd = { 'expert', '--stdio' },
-      --   root_markers = { 'mix.exs', '.git' },
-      --   filetypes = { 'elixir', 'eelixir', 'heex' },
-      -- })
+      -- golang
+      vim.lsp.config["gopls"] = {}
 
       -- global
       vim.lsp.config("*", {
@@ -89,7 +86,7 @@ return {
 
       vim.lsp.enable("luals")
       vim.lsp.enable("elixirls")
-      -- vim.lsp.enable("expert")
+      vim.lsp.enable("gopls")
     end,
   },
 }
