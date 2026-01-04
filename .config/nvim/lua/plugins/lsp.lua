@@ -17,6 +17,8 @@ return {
           "stylua",
           "black",
           "tflint",
+          "templ",
+          "pgformatter",
         },
         auto_update = true,
       })
@@ -40,6 +42,8 @@ return {
           "bashls",
           "basedpyright",
           "gopls",
+          "helm_ls",
+          "postgres_lsp",
         },
 
         automatic_installation = true,
@@ -84,9 +88,11 @@ return {
         root_markers = { ".git" },
       })
 
-      vim.lsp.enable("luals")
+      vim.lsp.enable("lua_ls")
       vim.lsp.enable("elixirls")
       vim.lsp.enable("gopls")
+      vim.lsp.enable("helm_ls")
+      vim.lsp.enable("postgres-language-server")
     end,
   },
 }

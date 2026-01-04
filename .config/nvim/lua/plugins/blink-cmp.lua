@@ -5,7 +5,6 @@ return {
     dependencies = {
       "rafamadriz/friendly-snippets",
       "moyiz/blink-emoji.nvim",
-      "fang2hou/blink-copilot",
     },
     version = "*",
     opts = {
@@ -21,7 +20,6 @@ return {
         -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = "mono",
         kind_icons = {
-          Copilot = "",
           Text = "󰉿",
           Method = "󰊕",
           Function = "󰊕",
@@ -58,17 +56,11 @@ return {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { "lsp", "path", "snippets", "buffer", "emoji", "copilot", "codecompanion" },
+        default = { "lsp", "path", "snippets", "buffer", "emoji" },
         per_filetype = {
           sql = { "snippets", "dadbod", "buffer" },
         },
         providers = {
-          copilot = {
-            name = "copilot",
-            module = "blink-copilot",
-            score_offset = 1000,
-            async = true,
-          },
           emoji = {
             module = "blink-emoji",
             name = "Emoji",

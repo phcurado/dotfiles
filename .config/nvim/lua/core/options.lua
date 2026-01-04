@@ -19,6 +19,16 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.termguicolors = true
 vim.opt.diffopt = "internal,filler,closeoff,vertical,linematch:40"
+vim.opt.signcolumn = "yes"
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
+
+-- Cases
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+---
 
 -- Config
 vim.opt.clipboard = "unnamedplus"

@@ -19,6 +19,9 @@ return {
           bash = { "shfmt" },
           python = { "black" },
           terraform = { "tofu_fmt" },
+          sql = { "pg_format" },
+          go = { "goimports", "gofmt" },
+          templ = { "templ" },
         },
 
         format_on_save = function(bufnr)
