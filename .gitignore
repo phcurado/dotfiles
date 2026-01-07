@@ -1,3 +1,7 @@
 age.txt
 keys.txt
 *.key
+
+# TPM plugins (managed by TPM, not git)
+.config/tmux/plugins/*
+!.config/tmux/plugins/tpm
