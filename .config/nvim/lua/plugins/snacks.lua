@@ -165,12 +165,6 @@ return {
           .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
           :map("<leader>cr")
       end,
-
-      vim.api.nvim_create_user_command("SnacksColorScheme", function(args)
-        vim.cmd(":lua Snacks.picker.colorschemes()")
-      end, {
-        desc = "List colorschemes",
-      }),
     })
   end,
 }
