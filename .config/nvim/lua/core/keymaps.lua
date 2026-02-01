@@ -26,7 +26,6 @@ vim.keymap.set("n", "<C-h>", ":bprevious<cr>", opts)
 -- Nice to have
 vim.keymap.set("n", "<leader>w", ":w<CR>", opts) -- Quick save
 vim.keymap.set("n", "<Esc>", ":noh<CR>", opts) -- Clear search highlight
-vim.keymap.set("n", "yy", "^vg_y", { desc = "Yank line content" }) -- Yank will not copy \n
 
 -- Vim plugins keymaps
 

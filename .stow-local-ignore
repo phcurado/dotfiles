@@ -22,7 +22,7 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
-/images
+^/images
 
 Makefile
 

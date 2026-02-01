@@ -12,6 +12,7 @@
   ],
   "modules-right": [
     "pulseaudio",
+    "bluetooth",
     "network",
     "cpu",
     "memory",
@@ -31,9 +32,17 @@
     "format": "{icon}",
     "on-click": "activate",
     "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
       "active": " ",
     },
     "sort-by-number": true,
+    "persistent-workspaces": {
+      "*": 5
+    }
   },
   "clock": {
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -68,8 +77,20 @@
     "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     "interval": 5,
   },
+  "bluetooth": {
+    "format": "󰂯 ",
+    "format-on": "󰂯 ",
+    "format-off": "󰂲 ",
+    "format-connected": "󰂱 {num_connections}",
+    "format-disabled": "󰂲 ",
+    "tooltip-format": "{controller_alias}\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "on-click": "ghostty -e bluetui"
+  },
   "network": {
-    "format": "{ifname}",
+    "interface": "wlan0",
+    "format": " ",
     "format-wifi": "  {signalStrength}%",
     "format-disconnected": "Not connected",
     "tooltip-format": "  {ifname} via {gwaddr}",
@@ -78,7 +99,7 @@
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50,
     "interval": 5,
-    "on-click": "nm-connection-editor"
+    "on-click": "ghostty -e impala"
   },
   "pulseaudio": {
     "format": "{icon}  {volume}%",

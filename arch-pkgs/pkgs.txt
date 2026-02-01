@@ -1,6 +1,8 @@
 7zip
 bat
+bluetui
 btop
+cava
 chafa
 discord
 docker
@@ -11,12 +13,18 @@ fastfetch
 ffmpegthumbnailer
 ghostty
 git
+grim
 git-delta
 github-cli
+hypridle
 hyprland
+hyprlock
 hyprpaper
+hyprshutdown-git
 hyprpolkitagent
 inotify-tools
+impala
+iwd
 luarocks
 mise
 neovim
@@ -26,6 +34,8 @@ paru
 postgresql
 qt5-wayland
 qt6-wayland
+sddm
+slurp
 starship
 stow
 tailscale
@@ -35,6 +45,7 @@ ttf-0xproto-nerd
 unzip
 vicinae-bin
 waybar
+wlogout
 wpaperd
 wl-clipboard
 yazi

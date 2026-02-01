@@ -14,6 +14,8 @@ Dotfile configuration for `archlinux`.
 
 ## Quick Start
 
+After a fresh Arch install, you'll be in a TTY. Run these steps to get a working desktop:
+
 ```bash
 # 1. Install prerequisites
 sudo pacman -S --needed base-devel git stow
@@ -22,28 +24,33 @@ sudo pacman -S --needed base-devel git stow
 git clone https://aur.archlinux.org/paru.git /tmp/paru
 cd /tmp/paru && makepkg -si
 
-# 3. Install core packages
-paru -S mise zsh neovim ghostty tmux starship
-
-# 4. Clone dotfiles
+# 3. Clone dotfiles
 cd ~/
 git clone --recurse-submodules -j8 git@github.com:phcurado/dotfiles.git
 cd dotfiles
 
-# 5. Restore secrets from 1Password (optional, for SOPS encryption)
-make secrets.setup
+# 4. Install all packages
+paru -S - < arch-pkgs/pkgs.txt
 
-# 6. Create symlinks
+# 5. Create symlinks
 stow .
 
-# 7. Install tool versions
-mise install
+# 6. Install system configs (iwd for WiFi)
+./install-system.sh
+
+# 7. Enable services
+sudo systemctl enable --now iwd
+sudo systemctl enable --now bluetooth.service
+sudo systemctl enable sddm
 
 # 8. Set zsh as default shell
 chsh -s /usr/bin/zsh
+
+# 9. Reboot
+reboot
 ```
 
-Reboot or log out/in to apply shell changes.
+SDDM will start on boot. Select Hyprland and login. Open a terminal with `Super + Q` and connect to WiFi using `impala`.
 
 ## Secrets Management
 
@@ -196,3 +203,22 @@ Macropad configuration is in `macropad/macropad.ron`. Upload using:
 ```bash
 ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
 ```
+
+### Hyprland
+
+[Hyprland](https://hyprland.org/) is my window manager (Wayland). Start it from TTY with `Hyprland`.
+
+WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkManager. The system config (`/etc/iwd/main.conf`) is installed via `./install-system.sh`.
+
+#### Keybindings
+
+| Key                  | Action               |
+| -------------------- | -------------------- |
+| `Super + Q`          | Terminal             |
+| `Super + Space`      | App launcher         |
+| `Super + C`          | Close window         |
+| `Super + M`          | Power menu (wlogout) |
+| `Super + L`          | Lock screen          |
+| `Super + Ctrl + W/S` | Next/prev wallpaper  |
+| `Print`              | Screenshot (full)    |
+| `Super + Print`      | Screenshot (region)  |
