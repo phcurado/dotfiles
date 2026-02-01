@@ -35,6 +35,7 @@ ttf-0xproto-nerd
 unzip
 vicinae-bin
 waybar
+wpaperd
 wl-clipboard
 yazi
 xdg-desktop-portal-hyprland
