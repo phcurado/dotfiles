@@ -27,6 +27,7 @@ impala
 iwd
 luarocks
 mise
+nautilus
 neovim
 obs-studio
 obsidian

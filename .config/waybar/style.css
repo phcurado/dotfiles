@@ -57,11 +57,27 @@ button:hover {
 #temperature,
 #network,
 #bluetooth,
-#pulseaudio {
+#pulseaudio,
+#custom-media {
   padding: 0 10px;
   margin: 0 4px;
   color: @text;
   border: none;
+}
+
+#window {
+  margin-right: 10px;
+}
+
+#custom-media {
+  color: #1db954;
+  font-size: 14px;
+}
+
+#custom-cava {
+  color: #a78bfa;
+  font-size: 14px;
+  letter-spacing: -2px;
 }
 
 .modules-right,
