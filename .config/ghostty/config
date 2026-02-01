@@ -12,4 +12,4 @@ cursor-invert-fg-bg = true
 # Paddings
 window-padding-x = 0
 window-padding-y = 0
-fullscreen=true
+fullscreen=false

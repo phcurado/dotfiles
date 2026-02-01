@@ -32,7 +32,7 @@ return {
         ensure_installed = {
           "lua_ls",
           "elixirls",
-          -- "expert",
+          "rust_analyzer",
           "ts_ls",
           "cssls",
           "tailwindcss",
@@ -50,7 +50,6 @@ return {
         automatic_enable = {
           exclude = {
             "elixirls",
-            -- "expert",
             "lua_ls",
           },
         },
@@ -90,6 +89,7 @@ return {
 
       vim.lsp.enable("lua_ls")
       vim.lsp.enable("elixirls")
+      vim.lsp.enable("rust_analyzer")
       vim.lsp.enable("gopls")
       vim.lsp.enable("helm_ls")
       vim.lsp.enable("postgres-language-server")
