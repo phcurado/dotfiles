@@ -49,6 +49,6 @@ alias ...="cd ../.."
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-source <(fzf --zsh)
+zvm_after_init_commands+=('source <(fzf --zsh)')
 
 eval "$(starship init zsh)"

@@ -14,7 +14,6 @@ git
 git-delta
 github-cli
 hyprland
-hyprlauncher
 hyprpaper
 hyprpolkitagent
 inotify-tools
@@ -34,6 +33,7 @@ tmux
 tree
 ttf-0xproto-nerd
 unzip
+vicinae-bin
 waybar
 wl-clipboard
 yazi
