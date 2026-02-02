@@ -226,6 +226,17 @@ WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkMa
 | `Super + C`          | Close window         |
 | `Super + M`          | Power menu (wlogout) |
 | `Super + L`          | Lock screen          |
+| `Super + T`          | Voice typing (hold)  |
 | `Super + Ctrl + W/S` | Next/prev wallpaper  |
 | `Print`              | Screenshot (full)    |
 | `Super + Print`      | Screenshot (region)  |
+
+#### Voice Typing (Voxtype)
+
+[Voxtype](https://github.com/peteonrails/voxtype) provides voice-to-text. Before first use, download the Whisper model:
+
+```bash
+voxtype setup --download
+```
+
+Hold `Super + T` to record, release to transcribe.

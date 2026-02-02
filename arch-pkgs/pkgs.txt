@@ -45,9 +45,11 @@ tree
 ttf-0xproto-nerd
 unzip
 vicinae-bin
+voxtype
 waybar
 wl-clipboard
 wlogout
+wtype
 wpaperd
 xdg-desktop-portal-hyprland
 yazi
