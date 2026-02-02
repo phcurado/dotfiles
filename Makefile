@@ -2,7 +2,7 @@
 
 # Arch packages
 install:
-	paru -S - < arch-pkgs/pkgs.txt
+	xargs paru -S --needed < arch-pkgs/pkgs.txt
 
 show:
 	paru -Qqen

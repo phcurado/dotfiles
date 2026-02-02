@@ -30,7 +30,7 @@ git clone --recurse-submodules -j8 git@github.com:phcurado/dotfiles.git
 cd dotfiles
 
 # 4. Install all packages
-paru -S - < arch-pkgs/pkgs.txt
+make install
 
 # 5. Create symlinks
 stow .
@@ -39,14 +39,18 @@ stow .
 ./install-system.sh
 
 # 7. Enable services
+sudo systemctl enable --now systemd-resolved
 sudo systemctl enable --now iwd
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable sddm
 
-# 8. Set zsh as default shell
+# 8. Disable NetworkManager if installed (conflicts with iwd)
+sudo systemctl disable --now NetworkManager
+
+# 9. Set zsh as default shell
 chsh -s /usr/bin/zsh
 
-# 9. Reboot
+# 10. Reboot
 reboot
 ```
 
@@ -209,6 +213,9 @@ ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
 [Hyprland](https://hyprland.org/) is my window manager (Wayland). Start it from TTY with `Hyprland`.
 
 WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkManager. The system config (`/etc/iwd/main.conf`) is installed via `./install-system.sh`.
+
+> [!IMPORTANT]
+> iwd requires `systemd-resolved` for DNS resolution. The install script enables it automatically and disables NetworkManager if present (they conflict).
 
 #### Keybindings
 

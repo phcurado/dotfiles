@@ -14,4 +14,19 @@ if [ -f "$DOTFILES_DIR/etc/iwd/main.conf" ]; then
   echo "Installed /etc/iwd/main.conf"
 fi
 
-echo "Done. Restart iwd: sudo systemctl restart iwd"
+if systemctl is-enabled NetworkManager &>/dev/null; then
+  echo "Disabling NetworkManager (conflicts with iwd)..."
+  sudo systemctl disable --now NetworkManager
+fi
+
+if ! systemctl is-enabled systemd-resolved &>/dev/null; then
+  echo "Enabling systemd-resolved (required for DNS)..."
+  sudo systemctl enable --now systemd-resolved
+fi
+
+if ! systemctl is-enabled iwd &>/dev/null; then
+  echo "Enabling iwd..."
+  sudo systemctl enable --now iwd
+fi
+
+echo "Done."

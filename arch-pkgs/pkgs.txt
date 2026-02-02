@@ -20,7 +20,6 @@ hypridle
 hyprland
 hyprlock
 hyprpaper
-hyprshutdown-git
 hyprpolkitagent
 inotify-tools
 impala
