@@ -1,6 +1,7 @@
 7zip
 bat
 bluetui
+brightnessctl
 btop
 cava
 chafa
@@ -11,6 +12,7 @@ dunst
 eza
 fastfetch
 ffmpegthumbnailer
+fuzzel
 ghostty
 git
 git-delta
@@ -29,6 +31,7 @@ luarocks
 mise
 nautilus
 neovim
+niri
 obsidian
 obs-studio
 paru
@@ -51,7 +54,10 @@ wl-clipboard
 wlogout
 wtype
 wpaperd
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
+xwayland-satellite
 yazi
 zoxide
 zsh

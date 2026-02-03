@@ -5,12 +5,12 @@
   "margin-left": 10,
   "margin-right": 10,
   "modules-left": [
-    "hyprland/window",
+    "niri/window",
     "custom/cava",
     "custom/media"
   ],
   "modules-center": [
-    "hyprland/workspaces"
+    "niri/workspaces"
   ],
   "modules-right": [
     "pulseaudio",
@@ -22,15 +22,15 @@
     "battery",
     "clock"
   ],
-  "hyprland/window": {
+  "niri/window": {
     "format": "{}",
     "max-length": 45,
     "rewrite": {
-      "": "Harsh"
+      "": "Desktop"
     },
-    "separate-outputs": true,
+    "separate-outputs": true
   },
-  "hyprland/workspaces": {
+  "niri/workspaces": {
     "format": "{icon}",
     "on-click": "activate",
     "format-icons": {
@@ -39,7 +39,6 @@
       "3": "3",
       "4": "4",
       "5": "5",
-      "active": " ",
     },
     "sort-by-number": true,
     "persistent-workspaces": {

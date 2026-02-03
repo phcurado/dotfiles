@@ -6,7 +6,7 @@
 }
 {
     "label" : "logout",
-    "action" : "hyprshutdown",
+    "action" : "niri msg action quit --skip-confirmation",
     "text" : "Logout",
     "keybind" : "e"
 }
