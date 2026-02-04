@@ -273,6 +273,7 @@ layout {
 // See the binds section below for more spawn examples.
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
+spawn-at-startup "swayidle" "-w"
 spawn-at-startup "waybar"
 spawn-at-startup "wpaperd"
 spawn-at-startup "dunst"
@@ -390,6 +391,7 @@ binds {
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Mod+E hotkey-overlay-title="Open File Manager" { spawn "nautilus"; }
+    Mod+Y hotkey-overlay-title="Voice Typing: voxtype" { spawn "voxtype"; }
     Mod+M hotkey-overlay-title="Logout Menu" { spawn "wlogout"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
 

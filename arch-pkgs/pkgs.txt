@@ -18,12 +18,8 @@ git
 git-delta
 github-cli
 grim
-hypridle
-hyprland
 hyprlock
-hyprpaper
-hyprpolkitagent
-hyprshutdown-git
+swayidle
 impala
 inotify-tools
 iwd
@@ -56,7 +52,6 @@ wtype
 wpaperd
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
-xdg-desktop-portal-hyprland
 xwayland-satellite
 yazi
 zoxide

@@ -54,7 +54,7 @@ chsh -s /usr/bin/zsh
 reboot
 ```
 
-SDDM will start on boot. Select Hyprland and login. Open a terminal with `Super + Q` and connect to WiFi using `impala`.
+SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using `impala`.
 
 ## Secrets Management
 
@@ -208,9 +208,9 @@ Macropad configuration is in `macropad/macropad.ron`. Upload using:
 ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
 ```
 
-### Hyprland
+### Niri
 
-[Hyprland](https://hyprland.org/) is my window manager (Wayland). Start it from TTY with `Hyprland`.
+[Niri](https://github.com/YaLTeR/niri) is my window manager (Wayland scrolling compositor).
 
 WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkManager. The system config (`/etc/iwd/main.conf`) is installed via `./install-system.sh`.
 
@@ -221,15 +221,16 @@ WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkMa
 
 | Key                  | Action               |
 | -------------------- | -------------------- |
-| `Super + Q`          | Terminal             |
-| `Super + Space`      | App launcher         |
-| `Super + C`          | Close window         |
+| `Super + T`          | Terminal             |
+| `Super + D`          | App launcher         |
+| `Super + Q`          | Close window         |
 | `Super + M`          | Power menu (wlogout) |
-| `Super + L`          | Lock screen          |
-| `Super + T`          | Voice typing (hold)  |
+| `Super + Alt + L`    | Lock screen          |
 | `Super + Ctrl + W/S` | Next/prev wallpaper  |
 | `Print`              | Screenshot (full)    |
-| `Super + Print`      | Screenshot (region)  |
+| `Ctrl + Print`       | Screenshot (screen)  |
+| `Alt + Print`        | Screenshot (window)  |
+| `Super + Y`          | Voice typing (hold)  |
 
 #### Voice Typing (Voxtype)
 
@@ -239,4 +240,4 @@ WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkMa
 voxtype setup --download
 ```
 
-Hold `Super + T` to record, release to transcribe.
+Hold `Super + Y` to record, release to transcribe.
