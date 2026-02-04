@@ -15,9 +15,9 @@ cleanCache:
 
 # Secrets (AGE key for SOPS) - run before `stow .`
 secrets.setup:
-	@mkdir -p .config/sops/age
+	@mkdir -p ~/.config/sops/age
 	@op read "op://Personal/SOPS AGE Key/notes" > ~/.config/sops/age/keys.txt
-	@chmod 600 .config/sops/age/keys.txt
+	@chmod 600 ~/.config/sops/age/keys.txt
 	@echo "AGE key restored from 1Password"
 
 secrets.backup:
