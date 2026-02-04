@@ -1,7 +1,0 @@
-[default]
-duration = "5m"
-sorting = "random"
-mode = "center"
-
-[any]
-path = "~/dotfiles/.config/wallpapers/"
