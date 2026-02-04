@@ -34,7 +34,6 @@ stow .
 # 6. Enable services
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now bluetooth.service
-sudo systemctl enable sddm
 
 # 7. Set zsh as default shell
 chsh -s /usr/bin/zsh
