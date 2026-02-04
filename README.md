@@ -4,13 +4,9 @@ Dotfile configuration for `archlinux`.
 
 ## Screenshots
 
-<img src="images/dashboard.png" alt="main screen with snacks dashboard">
+<img src="images/main.png" alt="Main Screen">
 
-<img src="images/cmdline.png" alt="cmd line with noice plugin">
-
-<img src="images/finder.png" alt="Finder plugin">
-
-<img src="images/gitdiff.png" alt="git diff with Neogit plugin">
+<img src="images/dashboard.png" alt="Neovim with Snacks Dashboard">
 
 ## Quick Start
 
@@ -35,26 +31,19 @@ make install
 # 5. Create symlinks
 stow .
 
-# 6. Install system configs (iwd for WiFi)
-./install-system.sh
-
-# 7. Enable services
-sudo systemctl enable --now systemd-resolved
-sudo systemctl enable --now iwd
+# 6. Enable services
+sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable sddm
 
-# 8. Disable NetworkManager if installed (conflicts with iwd)
-sudo systemctl disable --now NetworkManager
-
-# 9. Set zsh as default shell
+# 7. Set zsh as default shell
 chsh -s /usr/bin/zsh
 
-# 10. Reboot
+# 8. Reboot
 reboot
 ```
 
-SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using `impala`.
+SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using noctalia's network panel.
 
 ## Secrets Management
 
@@ -212,25 +201,22 @@ ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
 
 [Niri](https://github.com/YaLTeR/niri) is my window manager (Wayland scrolling compositor).
 
-WiFi uses iwd + [Impala](https://github.com/pythops/impala) instead of NetworkManager. The system config (`/etc/iwd/main.conf`) is installed via `./install-system.sh`.
-
-> [!IMPORTANT]
-> iwd requires `systemd-resolved` for DNS resolution. The install script enables it automatically and disables NetworkManager if present (they conflict).
+[Noctalia Shell](https://github.com/noctalia-dev/noctalia-shell) provides the desktop shell (bar, notifications, launcher, lock screen, etc). WiFi is managed via NetworkManager through noctalia's network panel.
 
 #### Keybindings
 
-| Key                  | Action               |
-| -------------------- | -------------------- |
-| `Super + T`          | Terminal             |
-| `Super + D`          | App launcher         |
-| `Super + Q`          | Close window         |
-| `Super + M`          | Power menu (wlogout) |
-| `Super + Alt + L`    | Lock screen          |
-| `Super + Ctrl + W/S` | Next/prev wallpaper  |
-| `Print`              | Screenshot (full)    |
-| `Ctrl + Print`       | Screenshot (screen)  |
-| `Alt + Print`        | Screenshot (window)  |
-| `Super + Y`          | Voice typing (hold)  |
+| Key                | Action              |
+| ------------------ | ------------------- |
+| `Super + T`        | Terminal            |
+| `Super + Space`    | App launcher        |
+| `Super + Q`        | Close window        |
+| `Super + M`        | Session menu        |
+| `Super + Alt + L`  | Lock screen         |
+| `Super + Ctrl + W` | Random wallpaper    |
+| `Print`            | Screenshot (full)   |
+| `Ctrl + Print`     | Screenshot (screen) |
+| `Alt + Print`      | Screenshot (window) |
+| `Super + Y`        | Voice typing (hold) |
 
 #### Voice Typing (Voxtype)
 
