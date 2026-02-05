@@ -39,6 +39,7 @@ slurp
 starship
 stow
 swayidle
+syncthing
 tailscale
 tmux
 tree

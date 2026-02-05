@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Syncthing
+Comment=File Synchronization
+Exec=xdg-open http://localhost:8384/
+Icon=syncthing
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;

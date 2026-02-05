@@ -67,7 +67,7 @@ enabled = true
 # .en models are English-only but faster and more accurate for English
 # large-v3-turbo is faster than large-v3 with minimal accuracy loss (recommended for GPU)
 # Or provide absolute path to a custom .bin model file
-model = "tiny.en"
+model = "base.en"
 
 # Language for transcription
 # Options:

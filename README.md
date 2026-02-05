@@ -31,38 +31,23 @@ make install
 # 5. Create symlinks
 stow --no-folding .
 
-# 6. Enable services
-sudo systemctl enable --now NetworkManager
-sudo systemctl enable --now bluetooth.service
-
-# 7. Set zsh as default shell
+# 6. Set zsh as default shell
 chsh -s /usr/bin/zsh
 
-# 8. Reboot
+# 7. Reboot
 reboot
 ```
 
 SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using noctalia's network panel.
 
-## Secrets Management
+## System Configuration
 
-Personally I use [SOPS](https://github.com/getsops/sops) with [AGE](https://github.com/FiloSottile/age) for encrypting secrets in projects. My AGE private key is stored in 1Passowrd and it's restored locally using 1Password.
-
-**On a new machine:**
+Enable required system services after installing packages:
 
 ```bash
-make secrets.setup    # Restores key from 1Password to ~/.config/sops/age/keys.txt
+sudo systemctl enable --now NetworkManager
+sudo systemctl enable sddm
 ```
-
-**Backup your key** (if generating a new one):
-
-```bash
-mkdir -p .config/sops/age
-age-keygen -o .config/sops/age/keys.txt
-make secrets.backup   # Shows key to copy to 1Password
-```
-
-The `keys.txt` file is gitignored and never committed.
 
 ## Main Packages
 
@@ -183,22 +168,6 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 
 ## Additional Configuration
 
-### Bluetooth
-
-Enable bluetooth service:
-
-```bash
-sudo systemctl enable --now bluetooth.service
-```
-
-### Macropad
-
-Macropad configuration is in `macropad/macropad.ron`. Upload using:
-
-```bash
-ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
-```
-
 ### Niri
 
 [Niri](https://github.com/YaLTeR/niri) is my window manager (Wayland scrolling compositor).
@@ -237,3 +206,49 @@ voxtype setup model  # Select transcription model
 
 > [!NOTE]
 > Voxtype is still experimental on this config
+
+## Optional Services
+
+### Bluetooth
+
+```bash
+sudo systemctl enable --now bluetooth.service
+```
+
+### Syncthing
+
+[Syncthing](https://syncthing.net/) is a continuous file synchronization program.
+
+```bash
+systemctl --user enable --now syncthing
+```
+
+Access the web UI at [localhost:8384](http://localhost:8384/) or search "Syncthing" in the app launcher.
+
+### Secrets Management (SOPS + AGE)
+
+Personally I use [SOPS](https://github.com/getsops/sops) with [AGE](https://github.com/FiloSottile/age) for encrypting secrets in projects. My AGE private key is stored in 1Password and it's restored locally using the OP cli.
+
+**On a new machine:**
+
+```bash
+make secrets.setup    # Restores key from 1Password to ~/.config/sops/age/keys.txt
+```
+
+**Backup your key** (if generating a new one):
+
+```bash
+mkdir -p .config/sops/age
+age-keygen -o .config/sops/age/keys.txt
+make secrets.backup   # Shows key to copy to 1Password
+```
+
+The `keys.txt` file is gitignored and never committed.
+
+### Macropad
+
+Macropad configuration is in `macropad/macropad.ron`. Upload using:
+
+```bash
+ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
+```
