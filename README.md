@@ -29,7 +29,7 @@ cd dotfiles
 make install
 
 # 5. Create symlinks
-stow .
+stow --no-folding .
 
 # 6. Enable services
 sudo systemctl enable --now NetworkManager
@@ -46,12 +46,12 @@ SDDM will start on boot. Select niri and login. Open a terminal with `Super + T`
 
 ## Secrets Management
 
-This dotfiles setup uses [SOPS](https://github.com/getsops/sops) with [AGE](https://github.com/FiloSottile/age) for encrypting secrets in projects. The AGE private key is stored in 1Password and restored locally.
+Personally I use [SOPS](https://github.com/getsops/sops) with [AGE](https://github.com/FiloSottile/age) for encrypting secrets in projects. My AGE private key is stored in 1Passowrd and it's restored locally using 1Password.
 
 **On a new machine:**
 
 ```bash
-make secrets.setup    # Restores key from 1Password to .config/sops/age/keys.txt
+make secrets.setup    # Restores key from 1Password to ~/.config/sops/age/keys.txt
 ```
 
 **Backup your key** (if generating a new one):
@@ -72,10 +72,13 @@ The `keys.txt` file is gitignored and never committed.
 
 ```bash
 sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git
-cd paru
+git clone https://aur.archlinux.org/paru.git /tmp/paru
+cd /tmp/paru
 makepkg -si
 ```
+
+> [!NOTE]
+> All packages below are included in `arch-pkgs/pkgs.txt` and can be installed at once with `make install`. The individual install commands are shown for reference only.
 
 ### Neovim
 
@@ -140,13 +143,13 @@ paru starship
 
 ```bash
 paru stow
-stow .
+stow --no-folding .
 ```
 
 If files conflict, use `--adopt` to override:
 
 ```bash
-stow --adopt .
+stow --no-folding --adopt .
 ```
 
 ## Additional Packages
@@ -155,7 +158,7 @@ Install packages from the saved list:
 
 ```bash
 make install
-# or: paru -S - < arch-pkgs/pkgs.txt
+# or: paru -S --needed - < arch-pkgs/pkgs.txt
 ```
 
 Save current packages to file:
@@ -225,4 +228,12 @@ ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
 voxtype setup --download
 ```
 
-Hold `Super + Y` to record, release to transcribe.
+Press `Super + Y` to start recording, press again to stop and transcribe.
+
+```bash
+voxtype setup gpu    # Enable GPU acceleration (Vulkan)
+voxtype setup model  # Select transcription model
+```
+
+> [!NOTE]
+> Voxtype is still experimental on this config

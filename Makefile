@@ -1,8 +1,8 @@
 .PHONY: install show tofile cleanCache secrets.setup secrets.backup
 
-# Arch packages
+# Arch packages install, got from here: https://superuser.com/questions/1061612/how-do-you-make-a-list-file-for-pacman-to-install-from
 install:
-	xargs paru -S --needed < arch-pkgs/pkgs.txt
+	paru -S --needed - < arch-pkgs/pkgs.txt
 
 show:
 	paru -Qqen
@@ -13,7 +13,7 @@ tofile:
 cleanCache:
 	paru -Sccd
 
-# Secrets (AGE key for SOPS) - run before `stow .`
+# Secrets (AGE key for SOPS)
 secrets.setup:
 	@mkdir -p ~/.config/sops/age
 	@op read "op://Personal/SOPS AGE Key/notes" > ~/.config/sops/age/keys.txt
