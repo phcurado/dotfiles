@@ -279,6 +279,7 @@ layout {
 // See the binds section below for more spawn examples.
 
 spawn-at-startup "swayidle" "-w"
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 spawn-at-startup "ghostty"
 spawn-at-startup "brave"
 

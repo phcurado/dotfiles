@@ -29,6 +29,7 @@ noctalia-shell
 obsidian
 obs-studio
 paru
+polkit-kde-agent
 postgresql
 power-profiles-daemon
 qt5-wayland
