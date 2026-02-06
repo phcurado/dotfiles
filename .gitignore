@@ -5,3 +5,6 @@ keys.txt
 # TPM plugins (managed by TPM, not git)
 .config/tmux/plugins/*
 !.config/tmux/plugins/tpm
+
+# Noctalia plugins that are cloned during installation
+.config/noctalia/plugins/*
