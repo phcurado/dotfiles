@@ -2,7 +2,7 @@
 
 # Arch packages install, got from here: https://superuser.com/questions/1061612/how-do-you-make-a-list-file-for-pacman-to-install-from
 install:
-	paru -S --needed - < arch-pkgs/pkgs.txt
+	paru -S --needed --noconfirm - < arch-pkgs/pkgs.txt
 
 show:
 	paru -Qqen

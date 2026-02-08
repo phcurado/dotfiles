@@ -3,7 +3,16 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
+      -- disable treesitter for large files
+      vim.api.nvim_create_autocmd("BufReadPost", {
+        callback = function(args)
+          if vim.api.nvim_buf_line_count(args.buf) > 50000 then
+            vim.treesitter.stop(args.buf)
+          end
+        end,
+      })
+
+      require("nvim-treesitter").setup({
         ensure_installed = {
           "lua",
           "elixir",
@@ -32,16 +41,6 @@ return {
         ignore_install = {},
         sync_install = false,
         auto_install = true,
-
-        highlight = {
-          enable = true,
-          -- disable treesitter for large files
-          disable = function(_, bufnr) --
-            return vim.api.nvim_buf_line_count(bufnr) > 50000
-          end,
-          additional_vim_regex_highlighting = false,
-        },
-        indent = { enable = true },
       })
     end,
   },

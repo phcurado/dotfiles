@@ -2,3 +2,4 @@ zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 jeffreytse/zsh-vi-mode
+zsh-users/zsh-history-substring-search

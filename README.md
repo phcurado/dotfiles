@@ -40,15 +40,6 @@ reboot
 
 SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using noctalia's network panel.
 
-## System Configuration
-
-Enable required system services after installing packages:
-
-```bash
-sudo systemctl enable --now NetworkManager
-sudo systemctl enable sddm
-```
-
 ## Main Packages
 
 ### Paru
@@ -179,8 +170,10 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 | Key                | Action              |
 | ------------------ | ------------------- |
 | `Super + T`        | Terminal            |
+| `Super + B`        | Open browser        |
 | `Super + Space`    | App launcher        |
 | `Super + Q`        | Close window        |
+| `Super + Tab`      | Previous workspace  |
 | `Super + M`        | Session menu        |
 | `Super + Alt + L`  | Lock screen         |
 | `Super + Ctrl + W` | Random wallpaper    |
