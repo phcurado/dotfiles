@@ -118,6 +118,7 @@ output "eDP-1" {
 
 output "DP-1" {
     // Lenovo Group Limited LEN P27h-10
+    // off
     mode "2560x1440@59.951"
     scale 1
     transform "normal"
