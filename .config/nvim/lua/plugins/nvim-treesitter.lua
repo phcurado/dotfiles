@@ -1,6 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = ":TSUpdate",
     config = function()
       -- disable treesitter for large files
@@ -12,7 +13,7 @@ return {
         end,
       })
 
-      require("nvim-treesitter").setup({
+      require("nvim-treesitter.configs").setup({
         ensure_installed = {
           "lua",
           "elixir",
@@ -41,6 +42,9 @@ return {
         ignore_install = {},
         sync_install = false,
         auto_install = true,
+        highlight = {
+          enable = true,
+        },
       })
     end,
   },

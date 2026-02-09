@@ -24,11 +24,10 @@ _darcs
 
 ^/images
 
-Makefile
-
-/arch-pkgs
-
+# Root files
 .tool-versions
-
 /ansible-scripts
+/arch-pkgs
 /macropad
+Makefile
+mise.toml
