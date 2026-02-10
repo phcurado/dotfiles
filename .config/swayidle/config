@@ -1,6 +1,6 @@
-timeout 150 'brightnessctl -s set 10' resume 'brightnessctl -r'
+timeout 150 'qs -c noctalia-shell ipc call brightness set 10' resume 'qs -c noctalia-shell ipc call brightness set 100'
 timeout 150 'brightnessctl -sd rgb:kbd_backlight set 0' resume 'brightnessctl -rd rgb:kbd_backlight'
 timeout 300 'qs -c noctalia-shell ipc call lockScreen lock'
-timeout 330 'niri msg action power-off-monitors' resume 'brightnessctl -r'
+timeout 330 'niri msg action power-off-monitors' resume 'qs -c noctalia-shell ipc call brightness set 100'
 timeout 1800 'systemctl suspend'
 before-sleep 'qs -c noctalia-shell ipc call lockScreen lock'

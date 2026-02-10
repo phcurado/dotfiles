@@ -10,31 +10,14 @@ Dotfile configuration for `archlinux`.
 
 ## Quick Start
 
-After a fresh Arch install, you'll be in a TTY. Run these steps to get a working desktop:
+After a fresh Arch install, you'll be in a TTY. Clone the repo and run the setup script:
 
 ```bash
-# 1. Install prerequisites
-sudo pacman -S --needed base-devel git stow
-
-# 2. Install paru (AUR helper)
-git clone https://aur.archlinux.org/paru.git /tmp/paru
-cd /tmp/paru && makepkg -si
-
-# 3. Clone dotfiles
-cd ~/
-git clone --recurse-submodules -j8 git@github.com:phcurado/dotfiles.git
-cd dotfiles
-
-# 4. Install all packages
-make install
-
-# 5. Create symlinks
-stow --no-folding .
-
-# 6. Set zsh as default shell
-chsh -s /usr/bin/zsh
-
-# 7. Reboot
+git clone git@github.com:phcurado/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+# Install script
+./setup.sh
+# Some changes requires system reboot
 reboot
 ```
 

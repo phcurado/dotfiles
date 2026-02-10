@@ -16,12 +16,19 @@ return {
           javascript = { "prettierd" },
           typescript = { "prettierd" },
           astro = { "prettier" },
+          sh = { "shfmt" },
           bash = { "shfmt" },
           python = { "black" },
           terraform = { "tofu_fmt" },
           sql = { "pg_format" },
           go = { "goimports", "gofmt" },
           templ = { "templ" },
+        },
+
+        formatters = {
+          shfmt = {
+            prepend_args = { "-sr" },
+          },
         },
 
         format_on_save = function(bufnr)
