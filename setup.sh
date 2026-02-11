@@ -62,11 +62,35 @@ setShell() {
   fi
 }
 
+setupTools() {
+  read -p "Install mise languages? [y/N] " answer
+
+  if [[ "$answer" = [yY] ]]; then
+    mise install
+    ok "Languages installed"
+    setupRequiredToolsFromLanguages
+  else
+    return
+  fi
+}
+
+setupRequiredToolsFromLanguages() {
+  read -p "Install tree-sitter-cli? [y/N] " answer
+
+  if [[ "$answer" = [yY] ]]; then
+    cargo install tree-sitter-cli
+    ok "tree-sitter-cli installed"
+  else
+    return
+  fi
+}
+
 setup() {
   checkOS
   initSubmodules
   stowFiles
   setShell
+  setupTools
 
   printf "\n\033[1;32mSetup complete!\033[0m Reboot to start using your new configuration.\n"
 }
