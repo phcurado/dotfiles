@@ -430,7 +430,7 @@ binds {
     Mod+E hotkey-overlay-title="Open File Manager" { spawn "nautilus"; }
     Mod+Y hotkey-overlay-title="Voice Typing: voxtype" { spawn "voxtype" "record" "toggle"; }
     Mod+M hotkey-overlay-title="Session Menu" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
-    Mod+B hotkey-overlay-title="Open Browser: firefox" { spawn "firefox"; }
+    Mod+B hotkey-overlay-title="Open Browser: brave" { spawn "brave"; }
     Mod+Alt+L { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.

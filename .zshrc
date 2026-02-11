@@ -15,7 +15,7 @@ setopt HIST_IGNORE_SPACE
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/phcurado/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 
 autoload -Uz compinit
 compinit

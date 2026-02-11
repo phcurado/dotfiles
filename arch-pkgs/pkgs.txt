@@ -1,6 +1,7 @@
 7zip
 bat
 bluetui
+brave-bin
 btop
 cava
 chafa

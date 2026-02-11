@@ -44,7 +44,7 @@ makepkg -si
 [Neovim](https://neovim.io) is my preferred text editor.
 
 ```bash
-paru neovim
+paru -S neovim
 ```
 
 ### Ghostty
@@ -55,7 +55,7 @@ paru neovim
 > Ghostty is configured to use the font [0xProto Nerd Font](https://github.com/0xType/0xProto). Install it or change the font in [.config/ghostty/config](.config/ghostty/config). List available fonts with `ghostty +list-fonts`.
 
 ```bash
-paru ghostty
+paru -S ghostty
 ```
 
 ### Tmux
@@ -63,7 +63,7 @@ paru ghostty
 [tmux](https://github.com/tmux/tmux) is a terminal multiplexer.
 
 ```bash
-paru tmux
+paru -S tmux
 ```
 
 To install plugins, open a tmux session and press `prefix + I` (prefix is `Ctrl + a`).
@@ -73,7 +73,7 @@ To install plugins, open a tmux session and press `prefix + I` (prefix is `Ctrl 
 [Mise](https://github.com/jdx/mise) manages versions of programming languages and tools.
 
 ```bash
-paru mise
+paru -S mise
 mise install   # Install versions from mise.toml
 ```
 
@@ -82,7 +82,7 @@ mise install   # Install versions from mise.toml
 [Zsh](https://wiki.archlinux.org/title/Zsh) is my preferred shell.
 
 ```bash
-paru zsh
+paru -S zsh
 chsh -s /usr/bin/zsh
 ```
 
@@ -93,7 +93,7 @@ Reboot or log out/in to apply.
 [Starship](https://starship.rs) is a cross-shell prompt.
 
 ```bash
-paru starship
+paru -S starship
 ```
 
 ### GNU Stow
@@ -101,7 +101,7 @@ paru starship
 [GNU Stow](https://www.gnu.org/software/stow/manual/stow.html) manages symlinks for dotfiles.
 
 ```bash
-paru stow
+paru -S stow
 stow --no-folding .
 ```
 

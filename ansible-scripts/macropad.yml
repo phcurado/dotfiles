@@ -29,7 +29,7 @@
       become: true
 
     - name: Trigger udev to reload rules
-      command: "sudo udevadm trigger"
+      command: "udevadm trigger"
       become: true
 
     - name: Program macropad tool

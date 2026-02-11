@@ -69,7 +69,6 @@
   "tiny-code-action.nvim": { "branch": "main", "commit": "15bf3e25e25ec5a9d5878e9f57bd65f92ce250a9" },
   "tiny-inline-diagnostic.nvim": { "branch": "main", "commit": "ecce93ff7db4461e942c03e0fcc64bd785df4057" },
   "todo-comments.nvim": { "branch": "main", "commit": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668" },
-  "toggleterm.nvim": { "branch": "main", "commit": "9a88eae817ef395952e08650b3283726786fb5fb" },
   "tokyonight.nvim": { "branch": "main", "commit": "5da1b76e64daf4c5d410f06bcb6b9cb640da7dfd" },
   "trouble.nvim": { "branch": "main", "commit": "bd67efe408d4816e25e8491cc5ad4088e708a69a" },
   "undotree": { "branch": "master", "commit": "fc28931fbfba66ab75d9af23fe46ffbbb9de6e8c" },

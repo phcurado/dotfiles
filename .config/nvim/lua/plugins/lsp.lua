@@ -92,7 +92,7 @@ return {
       vim.lsp.enable("rust_analyzer")
       vim.lsp.enable("gopls")
       vim.lsp.enable("helm_ls")
-      vim.lsp.enable("postgres-language-server")
+      vim.lsp.enable("postgres_lsp")
     end,
   },
 }
