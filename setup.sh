@@ -63,32 +63,39 @@ setShell() {
 }
 
 setupTools() {
-  read -p "Install mise languages? [y/N] " answer
+  read -p "Install mise languages? [Y/n] " answer
 
-  if [[ "$answer" = [yY] ]]; then
-    mise install
-    ok "Languages installed"
-    setupRequiredToolsFromLanguages
-  else
+  if [[ "$answer" = [nN] ]]; then
     return
   fi
+
+  mise install
+  ok "Languages installed"
+  setupRequiredToolsFromLanguages
 }
 
 setupRequiredToolsFromLanguages() {
-  read -p "Install tree-sitter-cli? [y/N] " answer
+  read -p "Install tree-sitter-cli? [Y/n] " answer
 
-  if [[ "$answer" = [yY] ]]; then
-    cargo install tree-sitter-cli
-    ok "tree-sitter-cli installed"
-  else
+  if [[ "$answer" = [nN] ]]; then
     return
   fi
+
+  cargo install tree-sitter-cli
+  ok "tree-sitter-cli installed"
+}
+
+initDMS() {
+  info "Creating DMS config placeholders"
+  touch ~/.config/niri/dms/{colors,layout,alttab}.kdl
+  ok "DMS config initialized"
 }
 
 setup() {
   checkOS
   initSubmodules
   stowFiles
+  initDMS
   setShell
   setupTools
 

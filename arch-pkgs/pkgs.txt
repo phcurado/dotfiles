@@ -26,7 +26,7 @@ nautilus
 neovim
 networkmanager
 niri
-noctalia-shell
+dms-shell-bin
 obsidian
 obs-studio
 paru

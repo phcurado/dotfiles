@@ -6,5 +6,10 @@ keys.txt
 .config/tmux/plugins/*
 !.config/tmux/plugins/tpm
 
-# Noctalia plugins that are cloned during installation
-.config/noctalia/plugins/*
+# DMS auto-generated files (managed by DMS, not git)
+.config/niri/dms/*
+!.config/niri/dms/binds.kdl
+
+# DMS settings (track settings.json, ignore markers)
+.config/DankMaterialShell/*
+!.config/DankMaterialShell/settings.json

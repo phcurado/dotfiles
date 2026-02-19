@@ -21,7 +21,7 @@ cd ~/dotfiles
 reboot
 ```
 
-SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using noctalia's network panel.
+SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using the DMS control center.
 
 ## Main Packages
 
@@ -146,7 +146,7 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 
 [Niri](https://github.com/YaLTeR/niri) is my window manager (Wayland scrolling compositor).
 
-[Noctalia Shell](https://github.com/noctalia-dev/noctalia-shell) provides the desktop shell (bar, notifications, launcher, lock screen, etc). WiFi is managed via NetworkManager through noctalia's network panel.
+[DankMaterialShell](https://danklinux.com/docs/dankmaterialshell/compositors) provides the desktop shell (bar, notifications, launcher, lock screen, etc). WiFi is managed via NetworkManager through the DMS control center.
 
 #### Keybindings
 
@@ -157,7 +157,7 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 | `Super + Space`    | App launcher        |
 | `Super + Q`        | Close window        |
 | `Super + Tab`      | Previous workspace  |
-| `Super + M`        | Session menu        |
+| `Super + M`        | Power menu          |
 | `Super + Alt + L`  | Lock screen         |
 | `Super + Ctrl + W` | Random wallpaper    |
 | `Print`            | Screenshot (full)   |

@@ -11,6 +11,7 @@ environment {
     XDG_SESSION_TYPE "wayland"
     XDG_CURRENT_DESKTOP "niri"
     QT_QPA_PLATFORMTHEME "gtk3"
+    QT_QPA_PLATFORMTHEME_QT6 "gtk3"
 }
 
 // Input device configuration.
@@ -79,52 +80,6 @@ input {
     focus-follows-mouse max-scroll-amount="0%"
 }
 
-// You can configure outputs by their name, which you can find
-// by running `niri msg outputs` while inside a niri instance.
-// The built-in laptop monitor is usually called "eDP-1".
-// Find more information on the wiki:
-// https://yalter.github.io/niri/Configuration:-Outputs
-// Remember to uncomment the node by removing "/-"!
-output "eDP-1" {
-    // Uncomment this line to disable this output.
-    // off
-
-    // Resolution and, optionally, refresh rate of the output.
-    // The format is "<width>x<height>" or "<width>x<height>@<refresh rate>".
-    // If the refresh rate is omitted, niri will pick the highest refresh rate
-    // for the resolution.
-    // If the mode is omitted altogether or is invalid, niri will pick one automatically.
-    // Run `niri msg outputs` while inside a niri instance to list all outputs and their modes.
-    // mode "1920x1080@120.030"
-
-    // You can use integer or fractional scale, for example use 1.5 for 150% scale.
-    scale 1
-
-    // Transform allows to rotate the output counter-clockwise, valid values are:
-    // normal, 90, 180, 270, flipped, flipped-90, flipped-180 and flipped-270.
-    transform "normal"
-
-    // Position of the output in the global coordinate space.
-    // This affects directional monitor actions like "focus-monitor-left", and cursor movement.
-    // The cursor can only move between directly adjacent outputs.
-    // Output scale and rotation has to be taken into account for positioning:
-    // outputs are sized in logical, or scaled, pixels.
-    // For example, a 3840×2160 output with scale 2.0 will have a logical size of 1920×1080,
-    // so to put another output directly adjacent to it on the right, set its x to 1920.
-    // If the position is unset or results in an overlap, the output is instead placed
-    // automatically.
-    position x=0 y=0
-}
-
-output "DP-1" {
-    // Lenovo Group Limited LEN P27h-10
-    // off
-    mode "2560x1440@59.951"
-    scale 1
-    transform "normal"
-    position x=1920 y=0
-}
-
 // Named workspaces for window rules (open on external monitor)
 workspace "terminal" {
     open-on-output "DP-1"
@@ -142,6 +97,7 @@ workspace "music" {
 layout {
     // Set gaps around windows in logical pixels.
     gaps 16
+    background-color "transparent"
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -338,10 +294,45 @@ animations {
     // slowdown 3.0
 }
 
-// Set the regular wallpaper on the backdrop.
+// DMS layer rules
 layer-rule {
-  match namespace="^noctalia-overview*"
-  place-within-backdrop true
+    match namespace="^quickshell$"
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="dms:blurwallpaper"
+    place-within-backdrop true
+}
+
+// DMS quickshell windows should open floating
+window-rule {
+    match app-id=r#"org.quickshell$"#
+    open-floating true
+}
+
+// DMS recommended: no border background for GNOME apps
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+// DMS recommended: no border background for terminal apps
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    match app-id="Alacritty"
+    match app-id="zen"
+    match app-id="com.mitchellh.ghostty"
+    match app-id="kitty"
+    draw-border-with-background false
+}
+
+// DMS recommended: dim inactive windows
+window-rule {
+    match is-active=false
+    opacity 0.9
 }
 
 // Window rules let you adjust behavior for individual windows.
@@ -402,11 +393,6 @@ window-rule {
     open-on-workspace "music"
 }
 
-debug {
-  // Allows notification actions and window activation from Noctalia.
-  honor-xdg-activation-with-invalid-serial
-}
-
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
@@ -424,38 +410,14 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-    Mod+Space { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-    Mod+S { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
-    Mod+Semicolon { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"; }
     Mod+E hotkey-overlay-title="Open File Manager" { spawn "nautilus"; }
     Mod+Y hotkey-overlay-title="Voice Typing: voxtype" { spawn "voxtype" "record" "toggle"; }
-    Mod+M hotkey-overlay-title="Session Menu" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
     Mod+B hotkey-overlay-title="Open Browser: brave" { spawn "brave"; }
-    Mod+Alt+L { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
-
-    // Example volume keys mappings for PipeWire & WirePlumber.
-    // The allow-when-locked=true property makes them work even when the session is locked.
-    // Using spawn-sh allows to pass multiple arguments together with the command.
-    // "-l 1.0" limits the volume to 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "increase"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "decrease"; }
-    XF86AudioMute        allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-
-    // Media keys - work even when locked.
-    XF86AudioPlay allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "playPause"; }
-    XF86AudioStop allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "stop"; }
-    XF86AudioPrev allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "previous"; }
-    XF86AudioNext allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "next"; }
-
-    // Brightness keys - work even when locked.
-    XF86MonBrightnessUp   allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "increase"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -660,10 +622,6 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
-    // Wallpaper
-    Mod+Ctrl+W { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "wallpaper" "toggle"; }
-    Mod+Ctrl+S { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "wallpaper" "random"; }
-
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
     // so they may, for example, forward the key presses as-is to a remote machine.
@@ -683,4 +641,13 @@ binds {
     Mod+Shift+P { power-off-monitors; }
 }
 
-spawn-at-startup "qs" "-c" "noctalia-shell"
+spawn-at-startup "dms" "run"
+spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
+
+// DMS includes (at the end so they override defaults above)
+include "dms/outputs.kdl"
+include "dms/colors.kdl"
+include "dms/layout.kdl"
+include "dms/alttab.kdl"
+include "dms/binds.kdl"
+
