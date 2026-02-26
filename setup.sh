@@ -87,7 +87,7 @@ setupRequiredToolsFromLanguages() {
 
 initDMS() {
   info "Creating DMS config placeholders"
-  touch ~/.config/niri/dms/{colors,layout,alttab}.kdl
+  touch ~/.config/niri/dms/{outputs,colors,layout,alttab}.kdl
   ok "DMS config initialized"
 }
 
