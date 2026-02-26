@@ -21,7 +21,6 @@ grim
 gpu-screen-recorder
 inotify-tools
 luarocks
-matugen
 mise
 nautilus
 neovim
