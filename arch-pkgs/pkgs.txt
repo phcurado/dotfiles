@@ -28,7 +28,6 @@ networkmanager
 niri
 dms-shell-bin
 obsidian
-obs-studio
 paru
 polkit-kde-agent
 postgresql
