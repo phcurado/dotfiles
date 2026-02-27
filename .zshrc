@@ -31,6 +31,8 @@ antidote load
 eval "$(zoxide init zsh)"
 eval "$(mise activate zsh)"
 
+export XDG_CONFIG_HOME="$HOME/.config"
+
 export FLYCTL_INSTALL="$HOME/.fly"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export CHROME_EXECUTABLE="brave"
