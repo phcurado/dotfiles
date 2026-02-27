@@ -1,0 +1,34 @@
+# Core tools
+brew "bat"
+brew "btop"
+brew "eza"
+brew "fastfetch"
+brew "fd"
+brew "fzf"
+brew "git"
+brew "git-delta"
+brew "gh"
+brew "mise"
+brew "neovim"
+brew "starship"
+brew "stow"
+brew "syncthing"
+brew "tmux"
+brew "tree"
+brew "yazi"
+brew "zoxide"
+brew "zsh"
+
+# Tiling window manager
+tap "acsandmann/tap"
+brew "acsandmann/tap/rift"
+
+# Casks (GUI apps)
+cask "ghostty"
+cask "brave-browser"
+cask "discord"
+cask "obsidian"
+cask "docker"
+
+# Fonts
+cask "font-0xproto-nerd-font"

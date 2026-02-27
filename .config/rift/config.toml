@@ -1,0 +1,119 @@
+# Rift - tiling window manager for macOS
+# Niri-mapped keybindings using Alt as primary modifier.
+# To switch to Cmd: replace "Alt" with "Meta" in [modifier_combinations].
+
+[settings]
+animate = true
+animation_duration = 0.25
+focus_follows_mouse = true
+mouse_follows_focus = true
+hot_reload = true
+default_disable = true
+
+[settings.layout]
+mode = "scrolling"
+
+[settings.layout.scrolling]
+column_width_ratio = 0.7
+min_column_width_ratio = 0.3
+max_column_width_ratio = 0.9
+alignment = "center"
+focus_navigation_style = "niri"
+
+[settings.layout.gaps.outer]
+top = 16
+bottom = 16
+left = 16
+right = 16
+
+[settings.layout.gaps.inner]
+horizontal = 16
+vertical = 16
+
+# Swap "Alt" to "Meta" here to use Cmd everywhere
+[modifier_combinations]
+mod = "Alt"
+mod_ctrl = "Alt + Ctrl"
+mod_shift = "Alt + Shift"
+mod_shift_ctrl = "Alt + Shift + Ctrl"
+
+[keys]
+"mod + Z" = "toggle_space_activated"
+
+"mod + T" = { exec = "open -a Ghostty" }
+"mod + B" = { exec = "open -a 'Brave Browser'" }
+
+"mod + H" = { move_focus = "left" }
+"mod + J" = { move_focus = "down" }
+"mod + K" = { move_focus = "up" }
+"mod + L" = { move_focus = "right" }
+
+"mod_ctrl + H" = { move_node = "left" }
+"mod_ctrl + J" = { move_node = "down" }
+"mod_ctrl + K" = { move_node = "up" }
+"mod_ctrl + L" = { move_node = "right" }
+
+"mod_shift + H" = { focus_display = "left" }
+"mod_shift + J" = { focus_display = "down" }
+"mod_shift + K" = { focus_display = "up" }
+"mod_shift + L" = { focus_display = "right" }
+
+"mod_shift_ctrl + H" = { move_window_to_display = { selector = "left" } }
+"mod_shift_ctrl + J" = { move_window_to_display = { selector = "down" } }
+"mod_shift_ctrl + K" = { move_window_to_display = { selector = "up" } }
+"mod_shift_ctrl + L" = { move_window_to_display = { selector = "right" } }
+
+"mod + 1" = { switch_to_workspace = 0 }
+"mod + 2" = { switch_to_workspace = 1 }
+"mod + 3" = { switch_to_workspace = 2 }
+"mod + 4" = { switch_to_workspace = 3 }
+"mod + 5" = { switch_to_workspace = 4 }
+"mod + 6" = { switch_to_workspace = 5 }
+"mod + 7" = { switch_to_workspace = 6 }
+"mod + 8" = { switch_to_workspace = 7 }
+"mod + 9" = { switch_to_workspace = 8 }
+
+"mod_ctrl + 1" = { move_window_to_workspace = 0 }
+"mod_ctrl + 2" = { move_window_to_workspace = 1 }
+"mod_ctrl + 3" = { move_window_to_workspace = 2 }
+"mod_ctrl + 4" = { move_window_to_workspace = 3 }
+"mod_ctrl + 5" = { move_window_to_workspace = 4 }
+"mod_ctrl + 6" = { move_window_to_workspace = 5 }
+"mod_ctrl + 7" = { move_window_to_workspace = 6 }
+"mod_ctrl + 8" = { move_window_to_workspace = 7 }
+"mod_ctrl + 9" = { move_window_to_workspace = 8 }
+
+"mod + U" = "next_workspace"
+"mod + I" = "prev_workspace"
+"mod + Grave" = "switch_to_last_workspace"
+
+"mod + O" = "show_mission_control_all"
+"mod + Q" = { exec = ["osascript", "-e", "tell application \"System Events\" to perform action \"AXPress\" of (first button whose subrole is \"AXCloseButton\") of (first window of (first application process whose frontmost is true))"] }
+
+"mod + F" = "toggle_fullscreen_within_gaps"
+"mod_shift + F" = "toggle_fullscreen"
+
+"mod + Minus" = "resize_window_shrink"
+"mod + Equal" = "resize_window_grow"
+"mod_shift + Minus" = "resize_window_shrink"
+"mod_shift + Equal" = "resize_window_grow"
+
+"mod + V" = "toggle_window_floating"
+"mod_shift + V" = "toggle_focus_floating"
+
+"mod + BracketLeft" = { join_window = "left" }
+"mod + BracketRight" = { join_window = "right" }
+"mod + Comma" = { join_window = "down" }
+"mod + Period" = "unjoin_windows"
+
+"mod + W" = "toggle_stack"
+"mod + C" = "center_selection"
+"mod + Slash" = "toggle_orientation"
+
+"mod_ctrl + BracketLeft" = { scroll_strip = { delta = -0.5 } }
+"mod_ctrl + BracketRight" = { scroll_strip = { delta = 0.5 } }
+
+"mod_ctrl + Q" = "save_and_exit"
+
+[virtual_workspaces]
+count = 9
