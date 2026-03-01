@@ -28,6 +28,10 @@ antidote load
 
 # Configurations
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 eval "$(zoxide init zsh)"
 eval "$(mise activate zsh)"
 

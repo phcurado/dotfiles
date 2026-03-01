@@ -1,3 +1,5 @@
+1password
+1password-cli
 7zip
 bat
 bluetui
