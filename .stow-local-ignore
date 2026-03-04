@@ -28,6 +28,7 @@ _darcs
 .tool-versions
 /ansible-scripts
 /arch-pkgs
+/macos-pkgs
 /macropad
 Makefile
 mise.toml

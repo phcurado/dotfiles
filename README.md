@@ -1,6 +1,6 @@
 # ~/dotfiles
 
-Dotfile configuration for `archlinux`.
+Dotfile configuration for `Arch Linux` and `macOS`.
 
 ## Screenshots
 
@@ -8,20 +8,44 @@ Dotfile configuration for `archlinux`.
 
 <img src="images/dashboard.png" alt="Neovim with Snacks Dashboard">
 
-## Quick Start
+## Quick Start (Arch Linux)
 
 After a fresh Arch install, you'll be in a TTY. Clone the repo and run the setup script:
 
 ```bash
 git clone git@github.com:phcurado/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-# Install script
 ./setup.sh
-# Some changes requires system reboot
 reboot
 ```
 
 SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using the DMS control center.
+
+## Quick Start (macOS)
+
+```bash
+git clone git@github.com:phcurado/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./setup.sh
+```
+
+The setup script will install Xcode CLI tools, Homebrew, and all packages from `macos-pkgs/Brewfile`. Packages can be managed with `make install` and `make tofile` (OS is detected automatically).
+
+### Rift (tiling window manager)
+
+[Rift](https://github.com/acsandmann/rift) provides niri-style scrolling columns on macOS. After install, enable it on a space with `Alt + Z`. Config is at `.config/rift/config.toml`.
+
+To switch the modifier from Alt to Cmd, change `"Alt"` to `"Meta"` in the `[modifier_combinations]` section.
+
+Keybindings mirror niri (see [config.toml](.config/rift/config.toml)). Uses `Alt` as modifier with the same H/J/K/L navigation, workspace switching, and window management.
+
+### Cross-platform configs
+
+These configs work on both Linux and macOS: neovim, ghostty, tmux, zsh, starship, git, yazi, bat, btop, mise, zoxide.
+
+### Linux-only configs
+
+These are Linux-specific and create harmless dead symlinks on macOS: niri, DankMaterialShell, swayidle, voxtype.
 
 ## Main Packages
 
@@ -131,14 +155,14 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 
 ## Makefile Commands
 
-| Command               | Description                              |
-| --------------------- | ---------------------------------------- |
-| `make install`        | Install packages from arch-pkgs/pkgs.txt |
-| `make show`           | List installed packages                  |
-| `make tofile`         | Save installed packages to pkgs.txt      |
-| `make cleanCache`     | Clean paru cache                         |
-| `make secrets.setup`  | Restore AGE key from 1Password           |
-| `make secrets.backup` | Show AGE key for backup to 1Password     |
+| Command               | Description                          |
+| --------------------- | ------------------------------------ |
+| `make install`        | Install packages from package list   |
+| `make show`           | List installed packages              |
+| `make tofile`         | Save installed packages to list file |
+| `make cleanCache`     | Clean package cache                  |
+| `make secrets.setup`  | Restore AGE key from 1Password       |
+| `make secrets.backup` | Show AGE key for backup to 1Password |
 
 ## Additional Configuration
 

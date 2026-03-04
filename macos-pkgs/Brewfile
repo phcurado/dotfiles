@@ -1,0 +1,42 @@
+# Core tools
+brew "7zip"
+brew "bat"
+brew "btop"
+brew "chafa"
+brew "eza"
+brew "fastfetch"
+brew "fd"
+brew "ffmpegthumbnailer"
+brew "fzf"
+brew "git"
+brew "git-delta"
+brew "gh"
+brew "luarocks"
+brew "mise"
+brew "neovim"
+brew "postgresql@17"
+brew "ripgrep"
+brew "sqlite"
+brew "starship"
+brew "stow"
+brew "syncthing"
+brew "tmux"
+brew "tree"
+brew "yazi"
+brew "zoxide"
+brew "zsh"
+
+# Tiling window manager
+
+# Casks (GUI apps)
+cask "ghostty"
+cask "brave-browser"
+cask "discord"
+cask "obsidian"
+cask "docker"
+cask "tailscale"
+cask "1password"
+cask "1password-cli"
+
+# Fonts
+cask "font-0xproto-nerd-font"

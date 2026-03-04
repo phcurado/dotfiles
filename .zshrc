@@ -28,11 +28,19 @@ antidote load
 
 # Configurations
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 eval "$(zoxide init zsh)"
-eval "$(/usr/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
+
+export XDG_CONFIG_HOME="$HOME/.config"
 
 export FLYCTL_INSTALL="$HOME/.fly"
-export CHROME_EXECUTABLE="brave"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  export CHROME_EXECUTABLE="brave"
+fi
 
 # Colored man pages
 export LESS_TERMCAP_md="$(tput bold 2> /dev/null; tput setaf 2 2> /dev/null)"
@@ -53,19 +61,24 @@ alias n="nvim"
 # dir
 alias ..="cd .."
 alias ...="cd ../.."
-# build
-alias make="make -j$(nproc)"
-# paru/pacman
-alias rmpkg="paru -Rsn"
-alias cleancache="paru -Scc"
-alias fixpacman="sudo rm /var/lib/pacman/db.lck"
-alias cleanup="paru -Rsn $(paru -Qtdq)"
-alias open="xdg-open"
 alias c="clear"
-# system
-alias jctl="journalctl -p 3 -xb"
-alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-alias tb="nc termbin.com 9999"
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # build
+  alias make="make -j$(nproc)"
+  # paru/pacman
+  alias rmpkg="paru -Rsn"
+  alias cleancache="paru -Scc"
+  alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+  alias cleanup="paru -Rsn $(paru -Qtdq)"
+  alias open="xdg-open"
+  # system
+  alias jctl="journalctl -p 3 -xb"
+  alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+  alias tb="nc termbin.com 9999"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  alias make="make -j$(sysctl -n hw.ncpu)"
+fi
 
 # Keys
 bindkey "^[[1;5C" forward-word
@@ -73,7 +86,9 @@ bindkey "^[[1;5D" backward-word
 
 zvm_after_init_commands+=('source <(fzf --zsh)')
 
-# pkgfile "command not found" handler
-source /usr/share/doc/pkgfile/command-not-found.zsh
+# pkgfile "command not found" handler (Arch Linux only)
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  source /usr/share/doc/pkgfile/command-not-found.zsh
+fi
 
 eval "$(starship init zsh)"

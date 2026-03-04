@@ -15,6 +15,9 @@ checkOS() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ok "Linux detected"
     linuxInstall
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    ok "macOS detected"
+    darwinInstall
   else
     err "Your OS $OSTYPE is not supported"
   fi
@@ -40,6 +43,30 @@ linuxInstall() {
   ok "Packages installed"
 }
 
+darwinInstall() {
+  if ! xcode-select -p &> /dev/null; then
+    info "Installing Xcode Command Line Tools"
+    xcode-select --install
+    read -p "Press enter after Xcode CLI tools finish installing..."
+    ok "Xcode CLI tools installed"
+  else
+    ok "Xcode CLI tools already installed"
+  fi
+
+  if ! command -v brew &> /dev/null; then
+    info "Installing Homebrew"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    ok "Homebrew installed"
+  else
+    ok "Homebrew already installed"
+  fi
+
+  info "Installing packages from macos-pkgs/Brewfile"
+  brew bundle --file=macos-pkgs/Brewfile
+  ok "Packages installed"
+}
+
 initSubmodules() {
   info "Initializing git submodules"
   git submodule update --init --recursive
@@ -55,7 +82,11 @@ stowFiles() {
 setShell() {
   if [[ "$SHELL" != */zsh ]]; then
     info "Setting zsh as default shell"
-    chsh -s /usr/bin/zsh
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      chsh -s /bin/zsh
+    else
+      chsh -s /usr/bin/zsh
+    fi
     ok "Default shell set to zsh"
   else
     ok "zsh is already the default shell"
@@ -95,7 +126,9 @@ setup() {
   checkOS
   initSubmodules
   stowFiles
-  initDMS
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    initDMS
+  fi
   setShell
   setupTools
 
