@@ -41,7 +41,7 @@ mod_shift_ctrl = "Alt + Shift + Ctrl"
 "mod + Z" = "toggle_space_activated"
 
 "mod + T" = { exec = "open -a Ghostty" }
-"mod + B" = { exec = "open -a 'Brave Browser'" }
+"mod + B" = { exec = ["open", "-a", "Brave Browser"] }
 
 "mod + H" = { move_focus = "left" }
 "mod + J" = { move_focus = "down" }
@@ -116,4 +116,4 @@ mod_shift_ctrl = "Alt + Shift + Ctrl"
 "mod_ctrl + Q" = "save_and_exit"
 
 [virtual_workspaces]
-count = 9
+default_workspace_count = 9

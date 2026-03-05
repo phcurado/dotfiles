@@ -15,7 +15,6 @@ return {
           "prettierd",
           "shfmt",
           "stylua",
-          "black",
           "tflint",
           "templ",
           "pgformatter",

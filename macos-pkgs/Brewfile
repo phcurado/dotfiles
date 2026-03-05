@@ -14,7 +14,7 @@ brew "gh"
 brew "luarocks"
 brew "mise"
 brew "neovim"
-brew "postgresql@17"
+brew "postgresql@18"
 brew "ripgrep"
 brew "sqlite"
 brew "starship"
@@ -27,6 +27,7 @@ brew "zoxide"
 brew "zsh"
 
 # Tiling window manager
+brew "acsandmann/tap/rift"
 
 # Casks (GUI apps)
 cask "ghostty"
