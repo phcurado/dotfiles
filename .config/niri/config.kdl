@@ -636,7 +636,6 @@ binds {
 }
 
 spawn-at-startup "dms" "run"
-spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
 
 // DMS includes (at the end so they override defaults above)
 include "dms/outputs.kdl"
