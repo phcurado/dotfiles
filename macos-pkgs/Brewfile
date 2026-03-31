@@ -27,7 +27,8 @@ brew "zoxide"
 brew "zsh"
 
 # Tiling window manager
-brew "acsandmann/tap/rift"
+tap "BarutSRB/tap"
+brew "omniwm"
 
 # Casks (GUI apps)
 cask "ghostty"

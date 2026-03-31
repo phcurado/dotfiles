@@ -31,13 +31,37 @@ cd ~/dotfiles
 
 The setup script will install Xcode CLI tools, Homebrew, and all packages from `macos-pkgs/Brewfile`. Packages can be managed with `make install` and `make tofile` (OS is detected automatically).
 
-### Rift (tiling window manager)
+### OmniWM (tiling window manager)
 
-[Rift](https://github.com/acsandmann/rift) provides niri-style scrolling columns on macOS. After install, enable it on a space with `Alt + Z`. Config is at `.config/rift/config.toml`.
+[OmniWM](https://github.com/BarutSRB/OmniWM) provides niri-style scrolling columns on macOS. Requires macOS 15+ (Sequoia). Config is at `.config/omniwm/settings.json`.
 
-To switch the modifier from Alt to Cmd, change `"Alt"` to `"Meta"` in the `[modifier_combinations]` section.
+Before launching, turn off **Displays have separate Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out and back in.
 
-Keybindings mirror niri (see [config.toml](.config/rift/config.toml)). Uses `Alt` as modifier with the same H/J/K/L navigation, workspace switching, and window management.
+Grant Accessibility permissions when prompted, or manually in `System Settings > Privacy & Security > Accessibility`.
+
+> [!NOTE]
+> OmniWM stores its runtime settings in UserDefaults, not directly from the JSON file. After editing `settings.json`, import it via the menu bar icon → Import.
+
+#### Keybindings (Option = Alt)
+
+| Key                       | Action                   |
+| ------------------------- | ------------------------ |
+| `Option + H/J/K/L`        | Focus left/down/up/right |
+| `Option + 1-9`            | Switch workspace         |
+| `Option + Shift + 1-9`    | Move window to workspace |
+| `Ctrl + Option + 1-9`     | Move column to workspace |
+| `Option + U/I`            | Next/previous workspace  |
+| `Option + `` ` ``         | Last workspace           |
+| `Ctrl + Option + H/J/K/L` | Move column/window       |
+| `Option + F`              | Maximize column          |
+| `Option + Shift + F`      | Fullscreen               |
+| `Option + V`              | Toggle floating          |
+| `Option + W`              | Toggle column tabbed     |
+| `Option + R`              | Cycle column width       |
+| `Option + -/=`            | Resize width             |
+| `Option + O`              | Overview                 |
+| `Option + T`              | Quake terminal (Ghostty) |
+| `Ctrl + Option + Space`   | Command palette          |
 
 ### Cross-platform configs
 
