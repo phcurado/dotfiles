@@ -512,7 +512,7 @@
   "niriInfiniteLoop" : false,
   "niriMaxVisibleColumns" : 2,
   "niriMaxWindowsPerColumn" : 3,
-  "niriSingleWindowAspectRatio" : "4:3",
+  "niriSingleWindowAspectRatio" : "fill",
   "outerGapBottom" : 8,
   "outerGapLeft" : 8,
   "outerGapRight" : 8,
