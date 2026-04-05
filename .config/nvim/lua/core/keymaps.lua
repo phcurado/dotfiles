@@ -29,8 +29,8 @@ vim.keymap.set("n", "<Esc>", ":noh<CR>", opts) -- Clear search highlight
 
 -- Vim plugins keymaps
 
--- undotree
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+-- undotree (built-in 0.12)
+vim.keymap.set("n", "<leader>u", ":Undotree<CR>", opts)
 
 -- goto-preview
 vim.keymap.set("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
