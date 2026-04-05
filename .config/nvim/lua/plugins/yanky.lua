@@ -3,6 +3,7 @@ return {
     "gbprod/yanky.nvim",
     dependencies = {
       { "kkharji/sqlite.lua" },
+      { "folke/snacks.nvim" },
     },
     opts = {
       ring = { storage = "sqlite" },
@@ -11,7 +12,7 @@ return {
       {
         "<leader>p",
         function()
-          require("telescope").extensions.yank_history.yank_history({})
+          require("yanky.sources.snacks").pick({})
         end,
         desc = "Open Yank History",
       },

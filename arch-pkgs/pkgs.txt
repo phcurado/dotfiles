@@ -25,7 +25,7 @@ inotify-tools
 luarocks
 mise
 nautilus
-neovim
+neovim-git
 networkmanager
 niri
 dms-shell-bin
