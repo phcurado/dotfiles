@@ -28,15 +28,15 @@ brew "zsh"
 
 # Tiling window manager
 tap "BarutSRB/tap"
-brew "omniwm"
+cask "omniwm"
 
 # Casks (GUI apps)
 cask "ghostty"
 cask "brave-browser"
 cask "discord"
 cask "obsidian"
-cask "docker"
-cask "tailscale"
+cask "docker-desktop"
+cask "tailscale-app"
 cask "1password"
 cask "1password-cli"
 
