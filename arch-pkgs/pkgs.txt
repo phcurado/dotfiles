@@ -28,7 +28,8 @@ nautilus
 neovim-git
 networkmanager
 niri
-dms-shell-bin
+dms-shell
+dms-shell-niri
 obsidian
 paru
 polkit-kde-agent
