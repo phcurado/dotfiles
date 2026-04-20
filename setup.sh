@@ -116,6 +116,15 @@ setupRequiredToolsFromLanguages() {
   ok "tree-sitter-cli installed"
 }
 
+setupWeather() {
+  if command -v weather &> /dev/null; then
+    ok "weather CLI already installed"
+    return
+  fi
+
+  curl -sSL https://raw.githubusercontent.com/phcurado/weather/main/install.sh | sh
+}
+
 initDMS() {
   info "Creating DMS config placeholders"
   touch ~/.config/niri/dms/{outputs,colors,layout,alttab}.kdl
@@ -131,6 +140,7 @@ setup() {
   fi
   setShell
   setupTools
+  setupWeather
 
   printf "\n\033[1;32mSetup complete!\033[0m Reboot to start using your new configuration.\n"
 }
