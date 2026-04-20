@@ -117,11 +117,6 @@ setupRequiredToolsFromLanguages() {
 }
 
 setupWeather() {
-  if command -v weather &> /dev/null; then
-    ok "weather CLI already installed"
-    return
-  fi
-
   curl -sSL https://raw.githubusercontent.com/phcurado/weather/main/install.sh | sh
 }
 
