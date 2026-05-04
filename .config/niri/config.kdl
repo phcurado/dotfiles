@@ -567,6 +567,11 @@ binds {
     // Expel the bottom window from the focused column to the right.
     Mod+Period { expel-window-from-column; }
 
+    // Media controls (playerctl)
+    Mod+P                  { spawn "playerctl" "play-pause"; }
+    Mod+Shift+BracketLeft  { spawn "playerctl" "previous"; }
+    Mod+Shift+BracketRight { spawn "playerctl" "next"; }
+
     Mod+R { switch-preset-column-width; }
     // Cycling through the presets in reverse order is also possible.
     // Mod+R { switch-preset-column-width-back; }

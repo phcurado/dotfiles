@@ -12,8 +12,10 @@ ddcutil
 discord
 docker
 docker-compose
+dust
 eza
 fastfetch
+fd
 ffmpegthumbnailer
 ghostty
 git
@@ -35,8 +37,10 @@ paru
 polkit-kde-agent
 postgresql
 power-profiles-daemon
+procs
 qt5-wayland
 qt6-wayland
+ripgrep
 sddm
 slurp
 starship
@@ -52,6 +56,7 @@ voxtype-bin
 wl-clipboard
 wlsunset
 wtype
+xh
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
 xwayland-satellite

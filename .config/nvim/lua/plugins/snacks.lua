@@ -49,6 +49,13 @@ return {
     picker = {
       ui_select = true,
     },
+    terminal = {
+      win = {
+        keys = {
+          term_normal = false,
+        },
+      },
+    },
   },
   keys = {
     {

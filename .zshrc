@@ -57,6 +57,7 @@ alias tmux="tmux -2"
 alias t="tmux"
 alias ls="eza --icons=always"
 alias cat="bat"
+alias du="dust"
 alias n="nvim"
 # dir
 alias ..="cd .."
@@ -85,6 +86,7 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
 zvm_after_init_commands+=('source <(fzf --zsh)')
+zvm_after_init_commands+=('eval "$(atuin init zsh --disable-up-arrow)"')
 
 # pkgfile "command not found" handler (Arch Linux only)
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
