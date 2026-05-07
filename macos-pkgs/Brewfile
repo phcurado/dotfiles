@@ -1,5 +1,6 @@
 # Core tools
 brew "7zip"
+brew "atuin"
 brew "bat"
 brew "btop"
 brew "chafa"

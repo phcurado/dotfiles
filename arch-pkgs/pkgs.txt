@@ -1,6 +1,7 @@
 1password
 1password-cli
 7zip
+atuin
 bat
 bluetui
 brave-bin
