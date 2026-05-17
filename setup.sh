@@ -102,7 +102,19 @@ setupTools() {
 
   mise install
   ok "Languages installed"
+  setupAITools
   setupRequiredToolsFromLanguages
+}
+
+setupAITools() {
+  read -p "Install AI CLI tools? [Y/n] " answer
+
+  if [[ "$answer" = [nN] ]]; then
+    return
+  fi
+
+  npm install -g @earendil-works/pi-coding-agent
+  ok "AI CLI tools installed"
 }
 
 setupRequiredToolsFromLanguages() {

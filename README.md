@@ -31,6 +31,15 @@ cd ~/dotfiles
 
 The setup script will install Xcode CLI tools, Homebrew, and all packages from `macos-pkgs/Brewfile`. Packages can be managed with `make install` and `make tofile` (OS is detected automatically).
 
+### AI tools
+
+The setup script can install Pi:
+
+```bash
+pi
+/login
+```
+
 ### OmniWM (tiling window manager)
 
 [OmniWM](https://github.com/BarutSRB/OmniWM) provides niri-style scrolling columns on macOS. Requires macOS 15+ (Sequoia). Config is at `.config/omniwm/settings.json`.
