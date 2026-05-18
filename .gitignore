@@ -13,3 +13,13 @@ keys.txt
 # DMS settings (track settings.json, ignore markers)
 .config/DankMaterialShell/*
 !.config/DankMaterialShell/settings.json
+
+.claude/
+
+.pi/agent/*
+!.pi/agent/settings.json
+!.pi/agent/AGENTS.md
+!.pi/agent/extensions/
+!.pi/agent/prompts/
+!.pi/agent/skills/
+!.pi/agent/themes/
