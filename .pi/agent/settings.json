@@ -1,9 +1,9 @@
 {
+  "lastChangelogVersion": "0.75.3",
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-4-7",
   "defaultThinkingLevel": "medium",
   "packages": [
-    "npm:pi-caveman",
     "npm:pi-claude-bridge",
     "npm:@heyhuynhgiabuu/pi-pretty",
     "npm:pi-subagents"

@@ -5,16 +5,14 @@ export default function (pi: ExtensionAPI) {
     const u = ctx.getContextUsage();
     if (!u) return;
     const theme = ctx.ui.theme;
-    const known = u.maxTokens && u.maxTokens > 0;
 
-    if (!known) {
-      const label = `${(u.tokens / 1000).toFixed(1)}k/?`;
-      ctx.ui.setStatus("usage", theme.fg("dim", label));
+    if (u.tokens === null || u.percent === null) {
+      ctx.ui.setStatus("usage", theme.fg("dim", "context: ?"));
       return;
     }
 
-    const max = u.maxTokens;
-    const pct = Math.min(100, Math.round((u.tokens / max) * 100));
+    const max = u.contextWindow;
+    const pct = Math.min(100, Math.max(0, Math.round(u.percent)));
     const filled = Math.round(pct / 10);
     const bar = "█".repeat(filled) + "░".repeat(10 - filled);
     const color = pct < 50 ? "success" : pct < 80 ? "warning" : "error";

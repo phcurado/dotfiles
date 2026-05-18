@@ -8,7 +8,7 @@ font-variation=wght=600
 
 gtk-titlebar = false
 window-decoration = true
-window-padding-x = 0
+window-padding-x = 2
 window-padding-y = 2
 background-opacity = 0.90
 background-blur = true
