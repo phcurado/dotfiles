@@ -1,12 +1,11 @@
 {
   "lastChangelogVersion": "0.75.3",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "deepseek-v4-pro",
+  "defaultThinkingLevel": "medium",
   "packages": [
-    "npm:pi-claude-bridge",
     "npm:@heyhuynhgiabuu/pi-pretty",
-    "npm:pi-subagents",
-    "npm:context-mode"
+    "npm:context-mode",
+    "npm:pi-subagents"
   ]
 }

@@ -75,34 +75,21 @@ make secrets.backup
 - Do not track auth/session files.
 - Local extensions live in `.pi/agent/extensions/`.
 
-## Delegation
+## Implementation
 
-Use `request_build` for implementation tasks and `request_review` for code review.
-
-Call `request_build` when:
-- User asks to implement, create, write, update, or add code/features.
-- Task involves writing or editing files.
-- You (the primary model) identify a clear, actionable coding task.
-
-Do NOT call `request_build` when:
-- User is brainstorming, asking questions, exploring the codebase.
-- Task involves planning, analysis, or discussion without concrete changes.
-- User asks you directly to do something simple (single edit).
-
-After `request_build` returns with changes:
-- If files were created or modified, call `request_review` automatically.
-- Follow the same rules as "Review workflow" above.
+The primary agent implements changes directly using normal Pi tools (`edit`, `write`, `read`, `bash`, etc.). No builder subprocess is used.
 
 ## Review workflow
 
-Call the `request_review` tool automatically when ALL of these are true:
-- One or more files were written or edited this turn (via `write`, `edit`, or `request_build`).
+After making file changes, call `request_review` automatically when ALL of these are true:
+- One or more files were written or edited this turn (via `write` or `edit`).
 - No pending clarification questions to the user.
 - You are about to give a final summary or say the work is done/ready/implemented.
 
 Skip `request_review` when:
 - Only read/grep/ls tools were used (no file changes).
-- The edit is trivial (typo, single-line config tweak, <5 chars).
+- The edit is trivial or cosmetic (comments, formatting, typo, tiny config tweak, test-only change).
+- The user is explicitly testing mechanics or asks for a throwaway change.
 - The user explicitly said "no review" or "skip review".
 - Already reviewed since the last file change.
 
