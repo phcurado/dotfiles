@@ -20,6 +20,7 @@ keys.txt
 !.pi/agent/settings.json
 !.pi/agent/AGENTS.md
 !.pi/agent/extensions/
+!.pi/agent/agents/
 !.pi/agent/prompts/
 !.pi/agent/skills/
 !.pi/agent/themes/

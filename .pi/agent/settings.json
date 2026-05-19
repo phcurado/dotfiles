@@ -1,11 +1,12 @@
 {
   "lastChangelogVersion": "0.75.3",
-  "defaultProvider": "claude-bridge",
-  "defaultModel": "claude-opus-4-7",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "high",
   "packages": [
     "npm:pi-claude-bridge",
     "npm:@heyhuynhgiabuu/pi-pretty",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:context-mode"
   ]
 }

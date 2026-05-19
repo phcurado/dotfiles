@@ -74,3 +74,48 @@ make secrets.backup
 - Runtime user path: `~/.pi/agent/`
 - Do not track auth/session files.
 - Local extensions live in `.pi/agent/extensions/`.
+
+## Delegation
+
+Use `request_build` for implementation tasks and `request_review` for code review.
+
+Call `request_build` when:
+- User asks to implement, create, write, update, or add code/features.
+- Task involves writing or editing files.
+- You (the primary model) identify a clear, actionable coding task.
+
+Do NOT call `request_build` when:
+- User is brainstorming, asking questions, exploring the codebase.
+- Task involves planning, analysis, or discussion without concrete changes.
+- User asks you directly to do something simple (single edit).
+
+After `request_build` returns with changes:
+- If files were created or modified, call `request_review` automatically.
+- Follow the same rules as "Review workflow" above.
+
+## Review workflow
+
+Call the `request_review` tool automatically when ALL of these are true:
+- One or more files were written or edited this turn (via `write`, `edit`, or `request_build`).
+- No pending clarification questions to the user.
+- You are about to give a final summary or say the work is done/ready/implemented.
+
+Skip `request_review` when:
+- Only read/grep/ls tools were used (no file changes).
+- The edit is trivial (typo, single-line config tweak, <5 chars).
+- The user explicitly said "no review" or "skip review".
+- Already reviewed since the last file change.
+
+Always call `request_review` before phrases like "done", "ready", "implemented", "all set", or before asking the user to test.
+
+Args:
+- `goal`: user's original request in 1 sentence.
+- `summary`: 3-6 bullets describing what was changed.
+- `files`: every path written or edited this turn.
+- `notes`: relevant decisions, skipped items, or open questions.
+
+After the review returns:
+- Must-fix items: ask the user one at a time before applying.
+- Nice-to-have items: list only, no action unless user asks.
+- No issues: confirm briefly and stop.
+

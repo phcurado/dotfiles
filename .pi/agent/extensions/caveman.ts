@@ -66,15 +66,7 @@ export default function caveman(pi: ExtensionAPI) {
 
   const render = () => {
     if (!lastCtx) return;
-    if (level === "off") {
-      lastCtx.ui.setStatus("caveman", undefined);
-      return;
-    }
-    const theme = lastCtx.ui.theme;
-    const color = level === "ultra" ? "error" : level === "full" ? "warning" : "success";
-    const label = theme.fg(color, `caveman:${level}`);
-    const flame = active ? FRAMES[frame % FRAMES.length] : FRAMES[0];
-    lastCtx.ui.setStatus("caveman", `${flame} ${label}`);
+    lastCtx.ui.setStatus("caveman", undefined);
   };
 
   const startAnim = () => {
