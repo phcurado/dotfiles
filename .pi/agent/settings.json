@@ -6,6 +6,8 @@
   "packages": [
     "npm:@heyhuynhgiabuu/pi-pretty",
     "npm:context-mode",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:pi-show-diffs",
+    "npm:pi-tool-display"
   ]
 }
