@@ -75,34 +75,27 @@ make secrets.backup
 - Do not track auth/session files.
 - Local extensions live in `.pi/agent/extensions/`.
 
-## Implementation
+## Workflow (hybrid: subagents for plan/review, main session for build)
 
-The primary agent implements changes directly using normal Pi tools (`edit`, `write`, `read`, `bash`, etc.). No builder subprocess is used.
+Planning and review run as `pi-subagents` (fresh context, own model). Building
+runs in the main session so `pi-show-diffs` stays live. Each phase is a separate
+command that stops when done — the user reviews (and may switch the model) before
+running the next one. Do not chain phases automatically.
 
-## Review workflow
+1. **`/plan [task]`** — call the `subagent` tool with `planner`. It forks the
+   conversation context and returns a concrete plan inline (no file). Present it
+   and stop; do not implement.
+2. (User reviews the plan, optionally switches the model, then runs `/build`.)
+3. **`/build`** — implement the approved plan **in the main session** (not a
+   subagent), one logical step at a time so each diff is reviewable. Summarize
+   and stop.
+4. **`/review [focus]`** — call the `subagent` tool with `reviewer`. It forks the
+   context (request + plan + changes) and inspects the uncommitted changes
+   (`git diff`), then reports inline.
 
-After making file changes, call `request_review` automatically when ALL of these are true:
-- One or more files were written or edited this turn (via `write` or `edit`).
-- No pending clarification questions to the user.
-- You are about to give a final summary or say the work is done/ready/implemented.
+The custom `planner`/`reviewer` agents (`.pi/agent/agents/`) keep their output in
+context (memory) rather than writing `plan.md`/`progress.md`.
 
-Skip `request_review` when:
-- Only read/grep/ls tools were used (no file changes).
-- The edit is trivial or cosmetic (comments, formatting, typo, tiny config tweak, test-only change).
-- The user is explicitly testing mechanics or asks for a throwaway change.
-- The user explicitly said "no review" or "skip review".
-- Already reviewed since the last file change.
-
-Always call `request_review` before phrases like "done", "ready", "implemented", "all set", or before asking the user to test.
-
-Args:
-- `goal`: user's original request in 1 sentence.
-- `summary`: 3-6 bullets describing what was changed.
-- `files`: every path written or edited this turn.
-- `notes`: relevant decisions, skipped items, or open questions.
-
-After the review returns:
-- Must-fix items: ask the user one at a time before applying.
-- Nice-to-have items: list only, no action unless user asks.
-- No issues: confirm briefly and stop.
+Skip the flow for questions, reads, and trivial edits — answer directly. Use
+`scout`/`researcher` subagents to investigate before planning.
 
