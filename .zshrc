@@ -28,6 +28,9 @@ antidote load
 
 # Configurations
 
+## JJ
+source <(jj util completion zsh)
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
