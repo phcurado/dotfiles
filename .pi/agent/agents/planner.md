@@ -7,6 +7,7 @@ systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false
 defaultContext: fork
+output: false
 tools: read, grep, find, ls
 ---
 

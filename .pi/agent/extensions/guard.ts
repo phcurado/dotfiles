@@ -9,16 +9,19 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 /* ── Dangerous command patterns ── */
 const dangerousPatterns: RegExp[] = [
-  /\brm\s+(-rf?|--recursive)/i,
+  /\brm\b[^\n;&|]*(?:-[a-z]*r[a-z]*|--recursive)\b/i,
   /\bsudo\b/i,
   /\b(chmod|chown)\b.*777/i,
-  /\bgit\s+push\s+--force/i,
-  /\bgit\s+push\s+-f\b/i,
+  /\bgit\s+push\b[^\n;&|]*(?:--force|-f\b)/i,
+  /\bgit\s+push\b[^\n;&|]*--force-with-lease\b/i,
   /\bgit\s+reset\s+--hard\b/i,
-  /\bdocker\s+(rm|prune|system\s+prune)\b.*(-f|--force)/i,
-  /\b>:.*\/dev\/(sd[a-z]|nvme|disk)/i,
-  /\bdd\s+if=/i,
+  /\bgit\s+clean\b[^\n;&|]*-[a-z]*[fdx][a-z]*/i,
+  /\bdocker\s+(rm|prune|system\s+prune)\b.*(?:-[a-z]*f[a-z]*|--force)/i,
+  /(^|[\s;&|])>{1,2}\s*\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
+  /\bdd\b[^\n;&|]*\bof=\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
   /\bmkfs\./i,
+  /\b(?:fdisk|parted|wipefs)\b[^\n;&|]*\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
+  /\bcryptsetup\b[^\n;&|]*\bluksFormat\b/i,
 ];
 
 /* ── Protected path fragments ── */
@@ -35,11 +38,53 @@ const protectedPathFragments: string[] = [
   "id_ecdsa",
 ];
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+const protectedPathPattern = new RegExp(
+  protectedPathFragments.map(escapeRegExp).join("|"),
+  "i",
+);
+
+const protectedPathRedirectionPattern = new RegExp(
+  String.raw`(^|[\s;&|])\d*>{1,2}\s*["']?[^\s"';&|]*(?:${protectedPathFragments
+    .map(escapeRegExp)
+    .join("|")})`,
+  "i",
+);
+
+const protectedPathWritePatterns: RegExp[] = [
+  /\b(?:rm|mv|cp|touch|mkdir|rmdir|chmod|chown|install|ln|rsync|truncate)\b/i,
+  /\b(?:sed|perl)\b[^\n;&|]*\s-i(?:\s|$)/i,
+  /\btee\b/i,
+  /\bdd\b[^\n;&|]*\bof=/i,
+];
+
+function touchesProtectedPath(value: string): boolean {
+  return protectedPathPattern.test(value);
+}
+
+function mutatesProtectedPath(command: string): boolean {
+  if (protectedPathRedirectionPattern.test(command)) return true;
+  if (!touchesProtectedPath(command)) return false;
+  return protectedPathWritePatterns.some((pattern) => pattern.test(command));
+}
+
 export default function (pi: ExtensionAPI) {
   pi.on("tool_call", async (event, ctx) => {
     /* ── Bash gate ── */
     if (event.toolName === "bash") {
-      const command = event.input.command as string;
+      const command = event.input.command;
+      if (typeof command !== "string") return undefined;
+
+      if (mutatesProtectedPath(command)) {
+        if (ctx.hasUI) {
+          ctx.ui.notify(`Blocked bash write to protected path: ${command}`, "warning");
+        }
+        return { block: true, reason: "Bash command mutates a protected path" };
+      }
+
       const isDangerous = dangerousPatterns.some((p) => p.test(command));
 
       if (isDangerous) {
@@ -61,8 +106,9 @@ export default function (pi: ExtensionAPI) {
 
     /* ── Protected paths gate ── */
     if (event.toolName === "write" || event.toolName === "edit") {
-      const path = event.input.path as string;
-      const isProtected = protectedPathFragments.some((f) => path.includes(f));
+      const path = event.input.path;
+      if (typeof path !== "string") return undefined;
+      const isProtected = touchesProtectedPath(path);
 
       if (isProtected) {
         if (ctx.hasUI) {

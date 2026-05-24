@@ -60,8 +60,8 @@ export default function (pi: ExtensionAPI) {
         return;
       }
       level = arg;
-      ctx.appendEntry(STATE_ENTRY, { level });
-      ctx.ui.notify(`caveman: ${level}`, "success");
+      pi.appendEntry(STATE_ENTRY, { level });
+      ctx.ui.notify(`caveman: ${level}`, "info");
     },
   });
 }

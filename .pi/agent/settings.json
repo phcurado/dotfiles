@@ -9,5 +9,11 @@
     "npm:pi-subagents",
     "npm:pi-show-diffs",
     "npm:pi-tool-display"
-  ]
+  ],
+  "subagents": {
+    "agentOverrides": {
+      "planner": { "disabled": true },
+      "reviewer": { "disabled": true }
+    }
+  }
 }
