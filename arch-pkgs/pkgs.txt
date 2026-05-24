@@ -25,6 +25,7 @@ github-cli
 grim
 gpu-screen-recorder
 inotify-tools
+jujutsu
 luarocks
 mise
 nautilus

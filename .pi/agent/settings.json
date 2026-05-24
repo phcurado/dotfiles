@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.75.4",
+  "lastChangelogVersion": "0.75.5",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "packages": [
     "npm:@heyhuynhgiabuu/pi-pretty",
