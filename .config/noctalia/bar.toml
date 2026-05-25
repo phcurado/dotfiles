@@ -1,0 +1,35 @@
+[bar]
+order = ["main"]        
+
+[bar.main]
+position           = "top"
+enabled            = true
+auto_hide          = false
+reserve_space      = true
+
+thickness          = 35
+background_opacity = 1.0
+border             = "outline"
+border_width       = 0.0
+shadow             = true
+contact_shadow     = false       
+radius             = 12         
+radius_top_left    = 12
+radius_top_right   = 12
+radius_bottom_left = 12
+radius_bottom_right = 12
+margin_ends        = 15
+margin_edge        = 10
+padding            = 14
+widget_spacing     = 6
+scale              = 1.0
+font_weight        = "regular" 
+
+capsule            = false
+capsule_fill       = "surface_variant"
+capsule_radius     = 8.0 
+capsule_opacity    = 1.0
+
+start  = ["workspaces"]
+center = ["media"]
+end    = ["clock", "tray", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "control-center",  "notifications","session"]

@@ -19,7 +19,7 @@ cd ~/dotfiles
 reboot
 ```
 
-SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using the DMS control center.
+SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using the Noctalia control center.
 
 ## Quick Start (macOS)
 
@@ -78,7 +78,7 @@ These configs work on both Linux and macOS: neovim, ghostty, tmux, zsh, starship
 
 ### Linux-only configs
 
-These are Linux-specific and create harmless dead symlinks on macOS: niri, DankMaterialShell, swayidle, voxtype.
+These are Linux-specific and create harmless dead symlinks on macOS: niri, noctalia, swayidle, voxtype.
 
 ## Main Packages
 
@@ -203,7 +203,7 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 
 [Niri](https://github.com/YaLTeR/niri) is my window manager (Wayland scrolling compositor).
 
-[DankMaterialShell](https://danklinux.com/docs/dankmaterialshell/compositors) provides the desktop shell (bar, notifications, launcher, lock screen, etc). WiFi is managed via NetworkManager through the DMS control center.
+[Noctalia](https://noctalia.dev) provides the desktop shell (bar, notifications, launcher, lock screen, wallpaper, etc). WiFi is managed via NetworkManager through the Noctalia control center.
 
 #### Keybindings
 

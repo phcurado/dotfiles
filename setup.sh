@@ -132,19 +132,10 @@ setupWeather() {
   curl -sSL https://raw.githubusercontent.com/phcurado/weather/main/install.sh | sh
 }
 
-initDMS() {
-  info "Creating DMS config placeholders"
-  touch ~/.config/niri/dms/{outputs,colors,layout,alttab}.kdl
-  ok "DMS config initialized"
-}
-
 setup() {
   checkOS
   initSubmodules
   stowFiles
-  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    initDMS
-  fi
   setShell
   setupTools
   setupWeather

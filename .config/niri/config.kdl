@@ -253,8 +253,7 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
-spawn-at-startup "swayidle" "-w"
-spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+spawn-at-startup "noctalia"
 spawn-at-startup "voxtype"
 spawn-at-startup "ghostty"
 spawn-at-startup "brave"
@@ -292,45 +291,6 @@ animations {
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
     // slowdown 3.0
-}
-
-// DMS layer rules
-layer-rule {
-    match namespace="^quickshell$"
-    place-within-backdrop true
-}
-
-layer-rule {
-    match namespace="dms:blurwallpaper"
-    place-within-backdrop true
-}
-
-// DMS quickshell windows should open floating
-window-rule {
-    match app-id=r#"org.quickshell$"#
-    open-floating true
-}
-
-// DMS recommended: no border background for GNOME apps
-window-rule {
-    match app-id=r#"^org\.gnome\."#
-    draw-border-with-background false
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-
-// DMS recommended: no border background for terminal apps
-window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    match app-id="Alacritty"
-    match app-id="zen"
-    match app-id="com.mitchellh.ghostty"
-    match app-id="kitty"
-    draw-border-with-background false
-
-    background-effect {
-        blur true
-    }
 }
 
 // Window rules let you adjust behavior for individual windows.
@@ -371,8 +331,29 @@ window-rule {
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
-    geometry-corner-radius 20
+    geometry-corner-radius 5
     clip-to-geometry true
+}
+
+// Noctalia
+window-rule {
+  match app-id="dev.noctalia.Noctalia.Settings"
+  open-floating true
+  default-column-width { fixed 1080; }
+  default-window-height { fixed 920; }
+}
+
+layer-rule {
+  match namespace="^noctalia-backdrop"
+  place-within-backdrop true
+}
+
+layer-rule {
+  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel)$"
+  background-effect {
+    xray false
+    //blur false
+  }
 }
 
 // Assign apps to workspaces
@@ -642,14 +623,27 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+
+    // Noctalia
+    Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
+    Mod+Semicolon { spawn-sh "noctalia msg settings-toggle"; }
+    Mod+M { spawn-sh "noctalia msg panel-toggle session"; }
+    Mod+Ctrl+W { spawn-sh "noctalia msg panel-toggle wallpaper"; }
+    Mod+Alt+L { spawn "noctalia" "msg" "screen-lock"; }
+
+    // Audio & Brightness
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioMute allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+
+    // Media
+    XF86AudioPlay allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioPause allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioPrev allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
+    XF86AudioNext allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
 }
-
-spawn-at-startup "dms" "run"
-
-// DMS includes (at the end so they override defaults above)
-include "dms/outputs.kdl"
-include "dms/colors.kdl"
-include "dms/layout.kdl"
-include "dms/alttab.kdl"
-include "dms/binds.kdl"
 

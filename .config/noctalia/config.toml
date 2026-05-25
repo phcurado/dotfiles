@@ -1,0 +1,57 @@
+[shell]
+ui_scale          = 1.0
+font_family       = "Inter Variable"
+time_format       = "{:%H:%M}"
+date_format       = "%A, %x"
+clipboard_enabled = true
+telemetry_enabled = false
+avatar_path           = "dotfiles/.face"
+polkit_agent          = true
+
+[theme]
+mode              = "dark"
+source            = "builtin"
+builtin           = "Catppuccin"
+
+[wallpaper]
+enabled             = true
+fill_mode           = "crop"
+fill_color          = "#111111"
+transition          = ["fade", "wipe", "disc", "stripes", "zoom", "honeycomb"]
+transition_duration = 1500
+edge_smoothness     = 0.3
+
+directory = "dotfiles/.config/wallpapers"
+
+[wallpaper.default]
+path = "dotfiles/.config/wallpapers/akira-wallpaper.png"
+
+[wallpaper.automation]
+enabled           = true
+interval_minutes  = 15
+order             = "random"
+recursive         = true
+
+[backdrop]
+enabled        = true
+blur_intensity = 0.2
+tint_intensity = 0.3
+
+[dock]
+enabled             = true 
+position            = "bottom"
+auto_hide           = true
+
+[idle]
+pre_action_fade_seconds = 2.0
+
+[idle.behavior.lock]
+timeout = 600
+command = "noctalia:screen-lock"
+enabled = true
+
+[idle.behavior.screen-off]
+timeout = 660
+command = "noctalia:dpms-off"
+resume_command = "noctalia:dpms-on"
+enabled = true

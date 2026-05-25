@@ -10,7 +10,7 @@ This repository contains cross-platform dotfiles for Arch Linux and macOS.
   - `arch-pkgs/pkgs.txt` for Arch Linux / paru
   - `macos-pkgs/Brewfile` for macOS / Homebrew
 - Cross-platform configs include Neovim, Ghostty, tmux, zsh, starship, git, yazi, bat, btop, mise, and zoxide.
-- Linux-only configs include niri, DankMaterialShell, swayidle, and voxtype.
+- Linux-only configs include niri, noctalia, swayidle, and voxtype.
 - Pi config is tracked under `.pi/agent/` and stowed to `~/.pi/agent/`.
 
 ## Common commands
@@ -38,7 +38,6 @@ make secrets.backup
 - On Arch Linux it installs prerequisites, installs paru if missing, then installs `arch-pkgs/pkgs.txt`.
 - On macOS it installs Xcode CLI tools, Homebrew if missing, then runs `brew bundle`.
 - Setup initializes submodules, stows dotfiles with `stow --no-folding --adopt .`, sets zsh as default shell, optionally runs `mise install`, optionally installs Pi, optionally installs `tree-sitter-cli`, and installs the weather script.
-- On Linux setup also creates DMS placeholder files under `~/.config/niri/dms/`.
 
 ## Editing guidelines
 
