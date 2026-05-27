@@ -52,7 +52,6 @@ tmux
 tree
 ttf-0xproto-nerd
 unzip
-voxtype-bin
 wl-clipboard
 wlsunset
 wtype

@@ -10,7 +10,7 @@ This repository contains cross-platform dotfiles for Arch Linux and macOS.
   - `arch-pkgs/pkgs.txt` for Arch Linux / paru
   - `macos-pkgs/Brewfile` for macOS / Homebrew
 - Cross-platform configs include Neovim, Ghostty, tmux, zsh, starship, git, yazi, bat, btop, mise, and zoxide.
-- Linux-only configs include niri, noctalia, swayidle, and voxtype.
+- Linux-only configs include niri and noctalia
 - Pi config is tracked under `.pi/agent/` and stowed to `~/.pi/agent/`.
 
 ## Common commands

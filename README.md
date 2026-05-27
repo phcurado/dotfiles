@@ -78,7 +78,7 @@ These configs work on both Linux and macOS: neovim, ghostty, tmux, zsh, starship
 
 ### Linux-only configs
 
-These are Linux-specific and create harmless dead symlinks on macOS: niri, noctalia, swayidle, voxtype.
+These are Linux-specific and create harmless dead symlinks on macOS: niri, noctalia.
 
 ## Main Packages
 
@@ -221,24 +221,6 @@ Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-spec
 | `Ctrl + Print`     | Screenshot (screen) |
 | `Alt + Print`      | Screenshot (window) |
 | `Super + Y`        | Voice typing (hold) |
-
-#### Voice Typing (Voxtype)
-
-[Voxtype](https://github.com/peteonrails/voxtype) provides voice-to-text. Before first use, download the Whisper model:
-
-```bash
-voxtype setup --download
-```
-
-Press `Super + Y` to start recording, press again to stop and transcribe.
-
-```bash
-voxtype setup gpu    # Enable GPU acceleration (Vulkan)
-voxtype setup model  # Select transcription model
-```
-
-> [!NOTE]
-> Voxtype is still experimental on this config
 
 ## Optional Services
 

@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.75.5",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultModel": "deepseek-v4-pro",
   "defaultThinkingLevel": "high",
   "packages": [
     "npm:@heyhuynhgiabuu/pi-pretty",
@@ -12,8 +12,12 @@
   ],
   "subagents": {
     "agentOverrides": {
-      "planner": { "disabled": true },
-      "reviewer": { "disabled": true }
+      "planner": {
+        "disabled": true
+      },
+      "reviewer": {
+        "disabled": true
+      }
     }
   }
 }
