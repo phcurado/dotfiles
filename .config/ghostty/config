@@ -1,3 +1,4 @@
+theme = Catppuccin Frappe
 # Font Configuration
 font-family = 0xProto Nerd Font
 font-size = 14
@@ -8,11 +9,11 @@ font-variation=wght=600
 
 gtk-titlebar = false
 window-decoration = true
-window-padding-x = 2
-window-padding-y = 2
-background-opacity = 0.90
-background-blur = true
-background-blur-radius = 32
+macos-titlebar-style = hidden
+window-padding-x = 18
+window-padding-y = 18
+background-opacity = 0.95
+background-blur = 20
 
 # Cursor Configuration
 cursor-style = block

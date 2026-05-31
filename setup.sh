@@ -65,6 +65,21 @@ darwinInstall() {
   info "Installing packages from macos-pkgs/Brewfile"
   brew bundle --file=macos-pkgs/Brewfile
   ok "Packages installed"
+
+  if [ ! -f "$HOME/.local/share/sketchybar_lua/sketchybar.so" ]; then
+    info "Building SbarLua (lua bindings for sketchybar)"
+    git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua
+    (cd /tmp/SbarLua && make install)
+    rm -rf /tmp/SbarLua
+    ok "SbarLua installed"
+  else
+    ok "SbarLua already installed"
+  fi
+
+  info "Starting sketchybar + borders services"
+  brew services start sketchybar
+  brew services start borders
+  ok "Services started (grant Accessibility to aerospace + sketchybar on first launch)"
 }
 
 initSubmodules() {

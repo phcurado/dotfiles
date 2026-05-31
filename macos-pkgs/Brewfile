@@ -31,9 +31,13 @@ brew "yazi"
 brew "zoxide"
 brew "zsh"
 
-# Tiling window manager
-tap "BarutSRB/tap"
-cask "omniwm"
+# Tiling window manager + status bar
+cask "nikitabobko/tap/aerospace"
+tap "FelixKratz/formulae"
+brew "sketchybar"
+brew "borders"
+brew "lua"   
+brew "blueutil"
 
 # Casks (GUI apps)
 cask "ghostty"
@@ -47,3 +51,7 @@ cask "1password-cli"
 
 # Fonts
 cask "font-0xproto-nerd-font"
+cask "font-sf-pro"             # sketchybar text (Felix bar)
+cask "font-sf-mono"            # sketchybar numbers
+cask "sf-symbols"             # sketchybar glyphs (battery/volume/wifi/cpu)
+cask "font-sketchybar-app-font" # sketchybar app icons in workspaces

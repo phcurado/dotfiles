@@ -1,0 +1,5 @@
+#!/opt/homebrew/bin/lua
+
+-- Load the sketchybar lua module path, then the config
+require("helpers")
+require("init")
