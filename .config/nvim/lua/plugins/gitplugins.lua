@@ -11,7 +11,9 @@ return {
     "NeogitOrg/neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
+      "esmuellert/codediff.nvim",
+      "m00qek/baleia.nvim",
+      "folke/snacks.nvim",
     },
     keys = {
       { "<leader>gg", ":lua require('neogit').open()<CR>", desc = "Open Neogit" },
@@ -23,10 +25,20 @@ return {
     end,
   },
   {
-    "sindrets/diffview.nvim",
-    config = function()
-      vim.keymap.set("n", "<leader>dc", ":DiffviewClose<CR>", { noremap = true, desc = "Close Diffview" })
-      require("diffview").setup({})
-    end,
+    "esmuellert/codediff.nvim",
+    cmd = "CodeDiff",
+  },
+  {
+    "NicholasZolton/neojj",
+    lazy = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "esmuellert/codediff.nvim",
+      "folke/snacks.nvim",
+    },
+    cmd = "Neojj",
+    keys = {
+      { "<leader>jj", "<cmd>Neojj<cr>", desc = "Show Neojj UI" },
+    },
   },
 }
