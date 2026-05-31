@@ -90,6 +90,7 @@ return {
           hidden = true,
           ignored = false,
           follow = false,
+          live = true,
           supports_live = true,
           layout = {
             preset = "ivy",
