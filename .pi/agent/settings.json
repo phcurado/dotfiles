@@ -1,23 +1,14 @@
 {
   "lastChangelogVersion": "0.78.0",
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
-  "defaultThinkingLevel": "high",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "medium",
   "packages": [
     "npm:@heyhuynhgiabuu/pi-pretty",
     "npm:context-mode",
     "npm:pi-subagents",
     "npm:pi-show-diffs",
-    "npm:pi-tool-display"
-  ],
-  "subagents": {
-    "agentOverrides": {
-      "planner": {
-        "disabled": true
-      },
-      "reviewer": {
-        "disabled": true
-      }
-    }
-  }
+    "npm:pi-tool-display",
+    "npm:pi-intercom"
+  ]
 }
