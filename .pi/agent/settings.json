@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.78.0",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-pro",
+  "defaultThinkingLevel": "high",
   "packages": [
     "npm:@heyhuynhgiabuu/pi-pretty",
     "npm:context-mode",
