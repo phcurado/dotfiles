@@ -29,7 +29,7 @@ jujutsu
 luarocks
 mise
 nautilus
-neovim-git
+neovim-nightly-bin
 networkmanager
 niri
 noctalia-git

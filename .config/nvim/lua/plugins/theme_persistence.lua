@@ -4,7 +4,10 @@ return {
   lazy = false,
   priority = 2000,
   config = function()
-    require("core.theme_persistence").setup({})
+    require("core.theme_persistence").setup({
+      default_colorscheme = "catppuccin-mocha",
+      default_transparent = true,
+    })
   end,
   keys = {
     {

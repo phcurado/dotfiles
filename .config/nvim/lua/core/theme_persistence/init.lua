@@ -190,10 +190,15 @@ function M.setup(opts)
   ensure_state_dir()
 
   local state = load_state()
-  vim.g.transparent_background = state.transparent_background or false
+  -- fall back to opts.default_* when state.json absent (fresh install / wiped cache)
+  vim.g.transparent_background = state.transparent_background
+  if vim.g.transparent_background == nil then
+    vim.g.transparent_background = opts.default_transparent or false
+  end
 
-  if state.colorscheme then
-    M.apply_theme(state.colorscheme, { transparent = vim.g.transparent_background })
+  local colorscheme = state.colorscheme or opts.default_colorscheme
+  if colorscheme then
+    M.apply_theme(colorscheme, { transparent = vim.g.transparent_background })
   end
 
   vim.api.nvim_create_autocmd("ColorScheme", {

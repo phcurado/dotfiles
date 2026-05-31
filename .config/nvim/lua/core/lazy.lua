@@ -19,7 +19,7 @@ require("lazy").setup({
 	spec = {
 		{ import = "plugins" },
 	},
-	install = { colorscheme = { "vscode" } },
+	install = { colorscheme = { "catppuccin-mocha" } },
 	checker = { enabled = true, notify = false },
 	change_detection = {
 		notify = false,
