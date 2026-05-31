@@ -40,37 +40,15 @@ pi
 /login
 ```
 
-### OmniWM (tiling window manager)
+### Window management (AeroSpace + SketchyBar)
 
-[OmniWM](https://github.com/BarutSRB/OmniWM) provides niri-style scrolling columns on macOS. Requires macOS 15+ (Sequoia). Config is at `.config/omniwm/settings.json`.
+The macOS desktop uses three Homebrew packages (in `macos-pkgs/Brewfile`), all autostarting at login:
 
-Before launching, turn off **Displays have separate Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out and back in.
+- [AeroSpace](https://github.com/nikitabobko/AeroSpace) — tiling WM → `.config/aerospace/aerospace.toml`
+- [SketchyBar](https://github.com/FelixKratz/SketchyBar) — top bar → `.config/sketchybar/`
+- [JankyBorders](https://github.com/FelixKratz/JankyBorders) — focused-window border → `.config/borders/bordersrc`
 
-Grant Accessibility permissions when prompted, or manually in `System Settings > Privacy & Security > Accessibility`.
-
-> [!NOTE]
-> OmniWM stores its runtime settings in UserDefaults, not directly from the JSON file. After editing `settings.json`, import it via the menu bar icon → Import.
-
-#### Keybindings (Option = Alt)
-
-| Key                       | Action                   |
-| ------------------------- | ------------------------ |
-| `Option + H/J/K/L`        | Focus left/down/up/right |
-| `Option + 1-9`            | Switch workspace         |
-| `Option + Shift + 1-9`    | Move window to workspace |
-| `Ctrl + Option + 1-9`     | Move column to workspace |
-| `Option + U/I`            | Next/previous workspace  |
-| `Option + `` ` ``         | Last workspace           |
-| `Ctrl + Option + H/J/K/L` | Move column/window       |
-| `Option + F`              | Maximize column          |
-| `Option + Shift + F`      | Fullscreen               |
-| `Option + V`              | Toggle floating          |
-| `Option + W`              | Toggle column tabbed     |
-| `Option + R`              | Cycle column width       |
-| `Option + -/=`            | Resize width             |
-| `Option + O`              | Overview                 |
-| `Option + T`              | Quake terminal (Ghostty) |
-| `Ctrl + Option + Space`   | Command palette          |
+Before first launch, turn off **Displays have separate Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out and back in. Grant AeroSpace Accessibility permissions when prompted.
 
 ### Cross-platform configs
 
