@@ -63,6 +63,12 @@ on-mode-changed = []
 [key-mapping]
     preset = 'qwerty'
 
+[workspace-to-monitor-force-assignment]
+    1 = ['secondary', 'main']
+    2 = ['secondary', 'main']
+    3 = ['secondary', 'main']
+    4 = ['secondary', 'main']
+
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
 # - Constant:     gaps.outer.top = 8
@@ -76,7 +82,11 @@ on-mode-changed = []
     inner.vertical =   8
     outer.left =       8
     outer.bottom =     8
-    outer.top =        30
+    outer.top = [
+        { monitor."Built-in Retina Display" = 30 },
+        { monitor."DELL U2725QE" = 60 },
+        32
+    ]
     outer.right =      8
 
 # 'main' binding mode declaration
