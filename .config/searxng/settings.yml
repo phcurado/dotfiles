@@ -1,0 +1,13 @@
+use_default_settings: true
+
+server:
+  secret_key: "pi-web-search-local"
+
+search:
+  formats:
+    - html
+    - json
+
+engines:
+  - name: wikidata
+    disabled: true

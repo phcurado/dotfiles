@@ -1,10 +1,9 @@
 {
-  "lastChangelogVersion": "0.78.0",
+  "lastChangelogVersion": "0.78.1",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "packages": [
-    "npm:@heyhuynhgiabuu/pi-pretty",
     "npm:context-mode",
     "npm:pi-subagents",
     "npm:pi-show-diffs",
