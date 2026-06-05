@@ -10,6 +10,7 @@ font-variation=wght=600
 gtk-titlebar = false
 window-decoration = true
 macos-titlebar-style = hidden
+macos-option-as-alt = true
 window-padding-x = 18
 window-padding-y = 18
 background-opacity = 0.95
