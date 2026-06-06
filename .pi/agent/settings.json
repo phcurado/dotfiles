@@ -7,7 +7,7 @@
     "npm:context-mode",
     "npm:pi-subagents",
     "npm:pi-show-diffs",
-    "npm:pi-tool-display",
-    "npm:pi-intercom"
+    "npm:pi-intercom",
+    "npm:pi-tool-display"
   ]
 }
