@@ -21,7 +21,7 @@ let repoCwd = "";
 
 async function out(cmd: string, args: string[]): Promise<string> {
   try {
-    const { stdout } = await exec(cmd, args, { cwd: repoCwd });
+    const { stdout } = await exec(cmd, args, { cwd: repoCwd, env: { ...process.env, LC_ALL: "C" } });
     return stdout.trim();
   } catch {
     return "";
@@ -88,6 +88,7 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", async (_event, ctx) => {
     repoCwd = ctx.cwd;
+    sessionCost = 0;
     isJj = existsSync(join(ctx.cwd, ".jj"));
     await refresh();
 
