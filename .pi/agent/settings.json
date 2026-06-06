@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.78.1",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultModel": "deepseek-v4-pro",
   "defaultThinkingLevel": "high",
   "packages": [
     "npm:context-mode",
@@ -11,3 +11,4 @@
     "npm:pi-tool-display"
   ]
 }
+

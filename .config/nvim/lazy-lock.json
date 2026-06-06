@@ -6,7 +6,7 @@
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
   "catppuccin": { "branch": "main", "commit": "0303a7208dba448c459767486a38a6ec05c4216b" },
   "claudecode.nvim": { "branch": "main", "commit": "8ec321279d3d9eddb0ce5f52d4b0d051dafb5743" },
-  "codediff.nvim": { "branch": "main", "commit": "de91a62733db59d0755bdfefa50dcfd669002453" },
+  "codediff.nvim": { "branch": "main", "commit": "5d6aa753797a0ebda14dd769ed03d12a320d689b" },
   "conform.nvim": { "branch": "master", "commit": "619363c30309d29ffa631e67c8183f2a72caa373" },
   "dracula.nvim": { "branch": "main", "commit": "ae752c13e95fb7c5f58da4b5123cb804ea7568ee" },
   "flash.nvim": { "branch": "main", "commit": "fcea7ff883235d9024dc41e638f164a450c14ca2" },
@@ -72,6 +72,6 @@
   "vim-visual-multi": { "branch": "master", "commit": "a6975e7c1ee157615bbc80fc25e4392f71c344d4" },
   "vscode.nvim": { "branch": "main", "commit": "aa1102a7e15195c9cca22730b09224a7f7745ba8" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
-  "yanky.nvim": { "branch": "main", "commit": "b13d318dc7c816e2eee626dde61fa0a7237bc77e" },
+  "yanky.nvim": { "branch": "main", "commit": "257716a5649e35eaebf2015a488b0f22b3907a47" },
   "zoxide.vim": { "branch": "master", "commit": "520d1abeb71ba42989a842251f8ba5c46be89aab" }
 }

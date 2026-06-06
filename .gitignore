@@ -10,6 +10,7 @@ keys.txt
 
 .pi/agent/*
 !.pi/agent/settings.json
+!.pi/agent/keybindings.json
 !.pi/agent/AGENTS.md
 !.pi/agent/extensions/
 !.pi/agent/agents/
