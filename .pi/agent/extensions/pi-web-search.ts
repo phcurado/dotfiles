@@ -26,9 +26,16 @@ export default function (pi: ExtensionAPI) {
     parameters: Type.Object({
       query: Type.String({ description: "Search query" }),
       maxResults: Type.Optional(Type.Number({ description: "Max results (default 8)", minimum: 1, maximum: 20 })),
+      categories: Type.Optional(
+        Type.Union(
+          [Type.Literal("general"), Type.Literal("it"), Type.Literal("news"), Type.Literal("science")],
+          { description: "SearxNG category. Use 'it' for code/dev topics, 'news' for current events." },
+        ),
+      ),
     }),
     async execute(_id, params, signal) {
-      const url = `${BASE_URL}/search?q=${encodeURIComponent(params.query)}&format=json`;
+      const cat = params.categories ? `&categories=${params.categories}` : "";
+      const url = `${BASE_URL}/search?q=${encodeURIComponent(params.query)}${cat}&format=json`;
       let res: Response;
       try {
         res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(15000)]) });

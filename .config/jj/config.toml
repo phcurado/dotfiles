@@ -7,3 +7,11 @@ email = "phcurado@gmail.com"
 [ui]
 pager = "delta"
 diff-formatter = ":git"
+
+[signing]
+behavior = "own"
+backend = "ssh"
+key = "~/.ssh/id_ed25519.pub"
+
+[signing.backends.ssh]
+allowed-signers = "~/.ssh/allowed_signers"

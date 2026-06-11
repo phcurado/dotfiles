@@ -18,7 +18,7 @@ vim.opt.cursorline = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.termguicolors = true
-vim.opt.diffopt = "internal,filler,closeoff,vertical,linematch:40"
+vim.opt.diffopt = "internal,filler,closeoff,vertical,linematch:40,algorithm:histogram"
 vim.opt.signcolumn = "yes"
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
@@ -43,7 +43,3 @@ vim.opt.undofile = true
 
 -- Setting conceallevel for Obsidian
 vim.opt.conceallevel = 2
-
--- blink cursor: https://neovim.io/doc/user/options.html#'guicursor'
--- vim.opt.guicursor =
--- 	"n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"

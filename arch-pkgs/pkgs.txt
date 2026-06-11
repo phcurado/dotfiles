@@ -24,6 +24,7 @@ git-delta
 github-cli
 grim
 gpu-screen-recorder
+imagemagick
 inotify-tools
 jujutsu
 luarocks

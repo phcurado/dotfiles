@@ -3,6 +3,7 @@
   "defaultProvider": "deepseek",
   "defaultModel": "deepseek-v4-pro",
   "defaultThinkingLevel": "high",
+  "theme": "catppuccin-frappe",
   "packages": [
     "npm:context-mode",
     "npm:pi-subagents",

@@ -6,7 +6,6 @@ return {
     bigfile = { enabled = true },
     dashboard = {
       sections = {
-        -- { section = "terminal", cmd = "fortune -s | cowsay", hl = "header", padding = 1, indent = 8 },
         { section = "header" },
         { section = "keys", gap = 1, padding = 1 },
         {
@@ -35,6 +34,7 @@ return {
         { section = "startup" },
       },
     },
+    image = { enabled = true },
     indent = { enabled = false },
     input = { enabled = true },
     notifier = {

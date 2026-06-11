@@ -43,6 +43,13 @@
 [user]
 	email = phcurado@gmail.com
 	name = Paulo Curado
+  signingkey = ~/.ssh/id_ed25519.pub
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  allowedSignersFile = ~/.ssh/allowed_signers
+[commit]
+  gpgsign = true
 [delta]
     navigate = true
     dark = true
