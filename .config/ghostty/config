@@ -20,9 +20,6 @@ background-blur = 20
 cursor-style = block
 cursor-style-blink = true
 
-# Scrollback
-scrollback-limit = 3023
-
 # Terminal features
 mouse-hide-while-typing = true
 copy-on-select = false

@@ -4,9 +4,9 @@ HISTSIZE=10000
 SAVEHIST=10000
 export HISTORY_IGNORE="(\&|[bf]g|c|clear|history|exit|q|pwd|* --help)"
 
-LC_CTYPE=en_US.UTF-8
-LC_ALL=en_US.UTF-8
-LC_TIME=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LC_TIME=en_US.UTF-8
 
 setopt correct
 setopt HIST_IGNORE_DUPS
@@ -14,17 +14,14 @@ setopt HIST_IGNORE_SPACE
 
 bindkey -e
 # End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename "$HOME/.zshrc"
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
-zstyle ':completion:*' menu select
 
 source ~/.config/zsh/.antidote/antidote.zsh
 antidote load
+
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' menu select
 
 # Configurations
 
@@ -74,7 +71,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias rmpkg="paru -Rsn"
   alias cleancache="paru -Scc"
   alias fixpacman="sudo rm /var/lib/pacman/db.lck"
-  alias cleanup="paru -Rsn $(paru -Qtdq)"
+  alias cleanup='paru -Rsn $(paru -Qtdq)'
   alias open="xdg-open"
   # system
   alias jctl="journalctl -p 3 -xb"

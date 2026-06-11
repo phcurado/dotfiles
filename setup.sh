@@ -41,6 +41,11 @@ linuxInstall() {
   info "Installing packages from arch-pkgs/pkgs.txt"
   paru -S --needed --noconfirm - < arch-pkgs/pkgs.txt
   ok "Packages installed"
+
+  info "Enabling docker (SearxNG for pi web search)"
+  sudo systemctl enable --now docker.service
+  sudo usermod -aG docker "$USER"
+  ok "Docker enabled (re-login for docker group to apply)"
 }
 
 darwinInstall() {

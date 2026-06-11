@@ -109,7 +109,7 @@ To install plugins, open a tmux session and press `prefix + I` (prefix is `Ctrl 
 
 ```bash
 paru -S mise
-mise install   # Install versions from mise.toml
+mise install   # Install versions from .config/mise/config.toml
 ```
 
 ### Zsh

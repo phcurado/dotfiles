@@ -86,6 +86,12 @@ export default function (pi: ExtensionAPI) {
     await refresh();
   });
 
+  pi.on("tool_execution_end", async (event) => {
+    if (event.toolName === "bash" || event.toolName === "write" || event.toolName === "edit") {
+      await refresh();
+    }
+  });
+
   pi.on("session_start", async (_event, ctx) => {
     repoCwd = ctx.cwd;
     sessionCost = 0;

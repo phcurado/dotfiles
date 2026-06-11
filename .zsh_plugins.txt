@@ -1,5 +1,4 @@
-zsh-users/zsh-syntax-highlighting
-zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
 jeffreytse/zsh-vi-mode
-zsh-users/zsh-history-substring-search
+zsh-users/zsh-syntax-highlighting

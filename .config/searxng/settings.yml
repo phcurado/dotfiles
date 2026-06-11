@@ -2,6 +2,7 @@ use_default_settings: true
 
 server:
   secret_key: "pi-web-search-local"
+  limiter: false
 
 search:
   formats:
@@ -11,3 +12,9 @@ search:
 engines:
   - name: wikidata
     disabled: true
+  - name: ahmia
+    inactive: true
+  - name: torch
+    inactive: true
+  - name: radio browser
+    inactive: true

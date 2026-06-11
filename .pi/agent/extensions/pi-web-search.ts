@@ -10,7 +10,7 @@ const COMPOSE_FILE = join(homedir(), ".config", "searxng", "docker-compose.yml")
 export default function (pi: ExtensionAPI) {
   pi.on("session_start", async () => {
     try {
-      if ((await fetch(`${BASE_URL}/healthz`)).ok) return;
+      if ((await fetch(`${BASE_URL}/healthz`, { signal: AbortSignal.timeout(1500) })).ok) return;
     } catch {
       // not up → start it
     }
@@ -31,7 +31,7 @@ export default function (pi: ExtensionAPI) {
       const url = `${BASE_URL}/search?q=${encodeURIComponent(params.query)}&format=json`;
       let res: Response;
       try {
-        res = await fetch(url, { signal });
+        res = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(15000)]) });
       } catch (e) {
         return { content: [{ type: "text", text: `SearxNG unreachable at ${BASE_URL} (${String(e)})` }] };
       }
