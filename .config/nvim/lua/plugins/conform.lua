@@ -10,8 +10,9 @@ return {
           css = { "prettierd" },
           html = { "prettierd" },
           json = { "prettierd" },
-          yaml = { "prettierd" },
-          markdown = { "prettierd" },
+          yaml = { "dprint" },
+          toml = { "dprint" },
+          markdown = { "dprint" },
           mdx = { "prettierd" },
           javascript = { "prettierd" },
           typescript = { "prettierd" },
@@ -28,6 +29,16 @@ return {
         formatters = {
           shfmt = {
             prepend_args = { "-sr" },
+          },
+          dprint = {
+            require_cwd = false,
+            args = function(_, ctx)
+              local root = vim.fs.root(ctx.dirname, { "dprint.json", ".dprint.json", "dprint.jsonc", ".dprint.jsonc" })
+              if root then
+                return { "fmt", "--stdin", ctx.filename }
+              end
+              return { "fmt", "--config", vim.fn.expand("~/.config/dprint/dprint.json"), "--stdin", ctx.filename }
+            end,
           },
         },
 

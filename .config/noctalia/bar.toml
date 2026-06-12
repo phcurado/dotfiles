@@ -1,38 +1,49 @@
 [bar]
-order = ["main"]        
+order = ["main"]
 
 [bar.main]
-position           = "top"
-enabled            = true
-auto_hide          = false
-reserve_space      = true
+position = "top"
+enabled = true
+auto_hide = false
+reserve_space = true
 
-thickness          = 42
+thickness = 42
 background_opacity = 1.0
-border             = "outline"
-border_width       = 0.0
-shadow             = true
-contact_shadow     = false       
-radius             = 12         
-radius_top_left    = 12
-radius_top_right   = 12
+border = "outline"
+border_width = 0.0
+shadow = true
+contact_shadow = false
+radius = 12
+radius_top_left = 12
+radius_top_right = 12
 radius_bottom_left = 12
 radius_bottom_right = 12
-margin_ends        = 15
-margin_edge        = 10
-padding            = 14
-widget_spacing     = 6
-scale              = 1.0
-font_weight        = "regular" 
+margin_ends = 15
+margin_edge = 10
+padding = 14
+widget_spacing = 6
+scale = 1.0
+font_weight = "regular"
 
-capsule            = true
-capsule_fill       = "surface_variant"
-capsule_radius     = 8.0 
-capsule_opacity    = 1.0
+capsule = true
+capsule_fill = "surface_variant"
+capsule_radius = 8.0
+capsule_opacity = 1.0
 
-start  = ["launcher", "clock", "sysmon", "media"]
+start = ["launcher", "clock", "sysmon", "media"]
 center = ["workspaces"]
-end    = ["tray", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "control-center", "notifications", "session"]
+end = [
+  "tray",
+  "clipboard",
+  "network",
+  "bluetooth",
+  "volume",
+  "brightness",
+  "battery",
+  "control-center",
+  "notifications",
+  "session",
+]
 
 [widget.clock]
 format = "{:%a %d %b  %H:%M}"
