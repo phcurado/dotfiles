@@ -7,7 +7,6 @@
   "packages": [
     "npm:pi-subagents",
     "npm:pi-show-diffs",
-    "npm:pi-intercom",
     "npm:pi-tool-display"
   ],
   "subagents": {
