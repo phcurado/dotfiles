@@ -1,14 +1,44 @@
 {
-  "lastChangelogVersion": "0.79.1",
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "lastChangelogVersion": "0.79.3",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "high",
   "theme": "catppuccin-frappe",
   "packages": [
-    "npm:context-mode",
     "npm:pi-subagents",
     "npm:pi-show-diffs",
     "npm:pi-intercom",
     "npm:pi-tool-display"
-  ]
+  ],
+  "subagents": {
+    "agentOverrides": {
+      "scout": {
+        "model": "openai-codex/gpt-5.4-mini",
+        "thinking": "medium"
+      },
+      "context-builder": {
+        "model": "deepseek/deepseek-v4-pro",
+        "thinking": "high"
+      },
+      "planner": {
+        "model": "deepseek/deepseek-v4-pro",
+        "thinking": "high"
+      },
+      "oracle": {
+        "model": "deepseek/deepseek-v4-pro",
+        "thinking": "high"
+      },
+      "worker": {
+        "model": "openai-codex/gpt-5.5",
+        "thinking": "high"
+      },
+      "reviewer": {
+        "model": "deepseek/deepseek-v4-pro",
+        "thinking": "high",
+        "fallbackModels": [
+          "openai-codex/gpt-5.4"
+        ]
+      }
+    }
+  }
 }

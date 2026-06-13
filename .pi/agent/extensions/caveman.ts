@@ -31,7 +31,9 @@ function buildPrompt(level: Level): string {
 }
 
 export default function (pi: ExtensionAPI) {
-  let level: Level = "full";
+  if (process.env.PI_SUBAGENT_CHILD === "1") return;
+
+  let level: Level = "lite";
 
   pi.on("session_start", async (_event, ctx) => {
     for (const entry of ctx.sessionManager.getEntries()) {

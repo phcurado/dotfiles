@@ -20,6 +20,8 @@ function isoDate(d: Date): string {
 }
 
 export default function (pi: ExtensionAPI) {
+  if (process.env.PI_SUBAGENT_CHILD === "1") return;
+
   pi.on("before_agent_start", async (event) => {
     const { vault, dailyDir } = config();
     if (!vault) return;

@@ -1,0 +1,9 @@
+{
+  "asyncByDefault": true,
+  "maxSubagentDepth": 1,
+  "defaultSessionDir": "~/.pi/agent/sessions/subagents",
+  "parallel": {
+    "maxTasks": 6,
+    "concurrency": 4
+  }
+}

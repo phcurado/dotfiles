@@ -76,6 +76,8 @@ function compose(width: number, left: string, right: string): string {
 }
 
 export default function (pi: ExtensionAPI) {
+  if (process.env.PI_SUBAGENT_CHILD === "1") return;
+
   pi.on("message_end", async (event) => {
     if (event.message?.role !== "assistant") return;
     const c = event.message.usage?.cost;

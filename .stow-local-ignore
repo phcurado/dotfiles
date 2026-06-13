@@ -26,6 +26,7 @@ _darcs
 ^/images
 
 # Root files
+^/AGENTS\.md$
 .tool-versions
 /ansible-scripts
 /arch-pkgs

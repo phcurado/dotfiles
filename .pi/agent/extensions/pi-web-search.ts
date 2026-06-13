@@ -9,6 +9,8 @@ const COMPOSE_FILE = join(homedir(), ".config", "searxng", "docker-compose.yml")
 
 export default function (pi: ExtensionAPI) {
   pi.on("session_start", async () => {
+    if (process.env.PI_SUBAGENT_CHILD === "1") return;
+
     try {
       if ((await fetch(`${BASE_URL}/healthz`, { signal: AbortSignal.timeout(1500) })).ok) return;
     } catch {
