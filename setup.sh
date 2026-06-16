@@ -99,6 +99,20 @@ stowFiles() {
   ok "Dotfiles linked"
 }
 
+setupFonts() {
+  local src="$DOTFILES_DIR/.local/share/fonts"
+  [ -d "$src" ] || return
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    mkdir -p "$HOME/Library/Fonts"
+    cp "$src"/*.ttf "$HOME/Library/Fonts/" 2>/dev/null || true
+    ok "User fonts installed"
+  elif command -v fc-cache &> /dev/null; then
+    fc-cache -f "$HOME/.local/share/fonts"
+    ok "Font cache refreshed"
+  fi
+}
+
 setShell() {
   if [[ "$SHELL" != */zsh ]]; then
     info "Setting zsh as default shell"
@@ -156,6 +170,7 @@ setup() {
   checkOS
   initSubmodules
   stowFiles
+  setupFonts
   setShell
   setupTools
   setupWeather
