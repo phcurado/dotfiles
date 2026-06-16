@@ -5,7 +5,16 @@
  * 2. Protected paths — blocks writes/edits to sensitive paths.
  */
 
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+} from "@earendil-works/pi-coding-agent";
+import {
+  Key,
+  matchesKey,
+  visibleWidth,
+  wrapTextWithAnsi,
+} from "@earendil-works/pi-tui";
 
 /* ── Dangerous command patterns ── */
 const dangerousPatterns: RegExp[] = [
@@ -83,6 +92,76 @@ function mutatesProtectedPath(command: string): boolean {
   return protectedPathWritePatterns.some((pattern) => pattern.test(command));
 }
 
+function commandBox(command: string, width: number, theme: any): string[] {
+  const maxInner = Math.max(1, width - 6);
+  const wrapped = wrapTextWithAnsi(command, maxInner);
+  const inner = Math.min(maxInner, Math.max(...wrapped.map(visibleWidth), 1));
+  const border = theme.fg("dim", `  ┌${"─".repeat(inner + 2)}┐`);
+  const lines = wrapped.map((line) => {
+    const pad = " ".repeat(Math.max(0, inner - visibleWidth(line)));
+    return `  ${theme.fg("dim", "│")} ${line}${pad} ${theme.fg("dim", "│")}`;
+  });
+  return [border, ...lines, theme.fg("dim", `  └${"─".repeat(inner + 2)}┘`)];
+}
+
+async function confirmDangerousCommand(
+  ctx: ExtensionContext,
+  command: string,
+): Promise<boolean> {
+  if (!ctx.hasUI) return false;
+
+  if (ctx.mode !== "tui") {
+    const choice = await ctx.ui.select("Run this dangerous command?", [
+      "Yes",
+      "No",
+    ]);
+    return choice === "Yes";
+  }
+
+  const result = await ctx.ui.custom<"yes" | "no" | null>(
+    (tui, theme, _kb, done) => {
+      let selected: "yes" | "no" = "yes";
+      const choose = (value: "yes" | "no") => done(value);
+      const option = (value: "yes" | "no", label: string) => {
+        const prefix = selected === value ? theme.fg("accent", "→") : " ";
+        const text = selected === value ? theme.fg("accent", label) : label;
+        return `${prefix} ${text}`;
+      };
+
+      return {
+        render(width: number) {
+          return [
+            theme.fg("warning", theme.bold("Run this dangerous command?")),
+            "",
+            ...commandBox(command, width, theme),
+            "",
+            option("yes", "1. Yes"),
+            option("no", "2. No"),
+            "",
+          ];
+        },
+        invalidate() {},
+        handleInput(data: string) {
+          if (data === "1" || data.toLowerCase() === "y") return choose("yes");
+          if (
+            data === "2" ||
+            data.toLowerCase() === "n" ||
+            matchesKey(data, Key.escape)
+          )
+            return choose("no");
+          if (matchesKey(data, Key.enter) || data === " ")
+            return choose(selected);
+          if (matchesKey(data, Key.up) || matchesKey(data, Key.down))
+            selected = selected === "yes" ? "no" : "yes";
+          tui.requestRender();
+        },
+      };
+    },
+  );
+
+  return result === "yes";
+}
+
 export default function (pi: ExtensionAPI) {
   pi.on("tool_call", async (event, ctx) => {
     /* ── Bash gate ── */
@@ -92,7 +171,10 @@ export default function (pi: ExtensionAPI) {
 
       if (mutatesProtectedPath(command)) {
         if (ctx.hasUI) {
-          ctx.ui.notify(`Blocked bash write to protected path: ${command}`, "warning");
+          ctx.ui.notify(
+            `Blocked bash write to protected path: ${command}`,
+            "warning",
+          );
         }
         return { block: true, reason: "Bash command mutates a protected path" };
       }
@@ -101,16 +183,15 @@ export default function (pi: ExtensionAPI) {
 
       if (isDangerous) {
         if (!ctx.hasUI) {
-          return { block: true, reason: "Dangerous command blocked (no UI for confirmation)" };
+          return {
+            block: true,
+            reason: "Dangerous command blocked (no UI for confirmation)",
+          };
         }
 
-        const choice = await ctx.ui.select(
-          `⚠️  Dangerous command:\n\n  ${command}\n\nAllow?`,
-          ["No", "Yes"],
-        );
-
-        if (choice !== "Yes") {
-          return { block: true, reason: "Blocked by user" };
+        if (!(await confirmDangerousCommand(ctx, command))) {
+          ctx.abort();
+          return { block: true, reason: "Denied by user" };
         }
       }
       return undefined;
@@ -124,7 +205,10 @@ export default function (pi: ExtensionAPI) {
 
       if (isProtected) {
         if (ctx.hasUI) {
-          ctx.ui.notify(`Blocked ${event.toolName} to protected path: ${path}`, "warning");
+          ctx.ui.notify(
+            `Blocked ${event.toolName} to protected path: ${path}`,
+            "warning",
+          );
         }
         return { block: true, reason: `Path "${path}" is protected` };
       }
