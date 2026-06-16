@@ -202,7 +202,9 @@ export default function (pi: ExtensionAPI): void {
 
   pi.on("agent_end", (_event, ctx) => {
     stopTimer();
-    if (ctx.hasUI) ctx.ui.setWorkingMessage();
+    if (!ctx.hasUI) return;
+    ctx.ui.setWorkingMessage();
+    renderIdle(ctx);
   });
 
   pi.on("session_shutdown", (_event, ctx) => {
