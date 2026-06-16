@@ -14,7 +14,7 @@
 ## Editing
 
 - Keep config files minimal: no banner comments, don't restate defaults.
-- Inspect the referenced implementation before editing; follow the proven pattern, don't approximate.
+- Inspect the relevant implementation before advising or editing; follow the proven pattern, don't approximate.
 - Remove defensive code for impossible states (not work-in-progress) rather than keeping it.
 
 ## Debugging
