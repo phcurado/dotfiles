@@ -1,5 +1,11 @@
 # Global rules
 
+## Research first
+
+- Do not guess project behavior, APIs, services, contracts, or skill behavior. Verify with files, commands, docs, web search, or ask.
+- Before using a skill, read its SKILL.md.
+- If upstream behavior or business rules are unknown, stop and ask.
+
 ## Version control & safety
 
 - If `.jj/` exists, prefer jj over git.

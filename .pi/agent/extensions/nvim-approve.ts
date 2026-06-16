@@ -2,6 +2,8 @@ import type {
   ExtensionAPI,
   ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
+import { getSettingsListTheme } from "@earendil-works/pi-coding-agent";
+import { Container, type SettingItem, SettingsList, Spacer, Text } from "@earendil-works/pi-tui";
 import { existsSync, readFileSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
@@ -235,22 +237,86 @@ async function review(
   );
 }
 
+async function showSettings(ctx: ExtensionContext, getConfig: () => Config, setConfig: (config: Config) => void) {
+  await ctx.ui.custom((tui, theme, _kb, done) => {
+    const config = getConfig();
+    let settings: SettingsList;
+    const items: SettingItem[] = [
+      {
+        id: "enabled",
+        label: "Auto-approve",
+        currentValue: config.enabled ? "on" : "off",
+        values: ["on", "off"],
+        description: "When on, file changes open in nvim for approval before applying.",
+      },
+      {
+        id: "editor",
+        label: "Editor",
+        currentValue: config.editor,
+        values: ["change"],
+        description: "Editor command used for review.",
+      },
+    ];
+
+    const container = new Container();
+    container.addChild(new Text(theme.fg("accent", theme.bold("nvim-approve settings")), 0, 0));
+    container.addChild(new Text(`${theme.fg("dim", "Config:")} ${CONFIG_PATH}`, 0, 0));
+    container.addChild(new Spacer(1));
+
+    settings = new SettingsList(
+      items,
+      Math.min(items.length + 2, 12),
+      getSettingsListTheme(),
+      (id, value) => {
+        void (async () => {
+          const current = getConfig();
+          if (id === "enabled") {
+            const next = { ...current, enabled: value === "on" };
+            setConfig(next);
+            await saveConfig(next);
+            return;
+          }
+
+          const editor = await ctx.ui.input(`Editor command (${current.editor}):`);
+          if (!editor?.trim()) {
+            settings.updateValue("editor", current.editor);
+            tui.requestRender();
+            return;
+          }
+          const next = { ...current, editor: editor.trim() };
+          setConfig(next);
+          settings.updateValue("editor", next.editor);
+          await saveConfig(next);
+          tui.requestRender();
+        })();
+      },
+      () => done(undefined),
+    );
+    container.addChild(settings);
+    container.addChild(new Spacer(1));
+
+    return {
+      render: (w) => container.render(w),
+      invalidate: () => container.invalidate(),
+      handleInput: (data) => {
+        settings.handleInput?.(data);
+        tui.requestRender();
+      },
+    };
+  });
+}
+
 export default function (pi: ExtensionAPI) {
   if (process.env.PI_SUBAGENT_CHILD === "1") return;
 
   let config = loadConfig();
 
   pi.registerCommand("nvim-approve", {
-    description: "Toggle nvim approval for edit/write tools",
+    description: "Configure nvim approval for edit/write tools",
     handler: async (_args, ctx) => {
-      const choice = await ctx.ui.select("nvim-approve", ["On", "Off"]);
-      if (!choice) return;
-      config = { ...config, enabled: choice === "On" };
-      await saveConfig(config);
-      ctx.ui.notify(
-        `nvim-approve ${config.enabled ? "enabled" : "disabled"}`,
-        "info",
-      );
+      await showSettings(ctx, () => config, (next) => {
+        config = next;
+      });
     },
   });
 

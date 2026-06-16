@@ -18,6 +18,8 @@ let ins = 0;
 let del = 0;
 let isJj = false;
 let repoCwd = "";
+let lastRefresh = 0;
+const REFRESH_DEBOUNCE = 300;
 
 async function out(cmd: string, args: string[]): Promise<string> {
   try {
@@ -90,6 +92,9 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("tool_execution_end", async (event) => {
     if (event.toolName === "bash" || event.toolName === "write" || event.toolName === "edit") {
+      const now = Date.now();
+      if (now - lastRefresh < REFRESH_DEBOUNCE) return;
+      lastRefresh = now;
       await refresh();
     }
   });
