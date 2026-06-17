@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.79.5",
+  "lastChangelogVersion": "0.79.6",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "xhigh",
   "theme": "catppuccin-frappe",
   "packages": [
     "npm:pi-subagents",
