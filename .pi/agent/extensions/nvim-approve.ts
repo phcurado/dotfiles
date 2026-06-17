@@ -138,6 +138,14 @@ function tempName(prefix: string, displayPath: string): string {
   return `${prefix}-${stem}${ext || ".txt"}`;
 }
 
+function isTmuxWindowZoomed(pane: string): boolean {
+  return spawnSync(
+    "tmux",
+    ["display-message", "-p", "-t", pane, "#{window_zoomed_flag}"],
+    { encoding: "utf8" },
+  ).stdout.trim() === "1";
+}
+
 function runReviewEditor(
   config: Config,
   originalFile: string,
@@ -152,11 +160,7 @@ function runReviewEditor(
     return spawnSync(cmd, editorArgs, { stdio: "inherit" });
   }
 
-  const zoomed = spawnSync(
-    "tmux",
-    ["display-message", "-p", "-t", tmuxPane, "#{window_zoomed_flag}"],
-    { encoding: "utf8" },
-  ).stdout.trim() === "1";
+  const zoomed = isTmuxWindowZoomed(tmuxPane);
 
   spawnSync("tmux", ["set-option", "-p", "-t", tmuxPane, "@pi_approval", "1"], {
     stdio: "ignore",
@@ -169,7 +173,7 @@ function runReviewEditor(
   try {
     return spawnSync(cmd, editorArgs, { stdio: "inherit" });
   } finally {
-    if (!zoomed) {
+    if (!zoomed && isTmuxWindowZoomed(tmuxPane)) {
       spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
     }
 
@@ -205,8 +209,13 @@ async function reviewInNvim(
       "highlight DiffChange guibg=#27364a guifg=NONE",
       "highlight DiffText guibg=#31533a guifg=NONE gui=bold",
       "highlight Folded guibg=#1f2335 guifg=#8c94b8",
+      `let g:pi_display_path = ${vimString(displayPath)}`,
       `let g:pi_approve_file = ${vimString(approvedFile)}`,
       `let g:pi_proposed_file = ${vimString(proposedFile)}`,
+      "set title",
+      "let &titlestring = 'Pi approve: ' . g:pi_display_path",
+      "set laststatus=2",
+      "let mapleader = ' '",
       "function! PiApprove()",
       "  let l:buf = bufnr(g:pi_proposed_file)",
       "  if l:buf <= 0",
@@ -228,17 +237,27 @@ async function reviewInNvim(
       "command! Cancel qa!",
       "cnoreabbrev x call PiApprove()",
       "cnoreabbrev q qa!",
-      "nnoremap <silent> <leader>a :call PiApprove()<CR>",
-      "nnoremap <silent> <leader>q :qa!<CR>",
       "windo let b:disable_autoformat = v:true",
+      "windo nnoremap <buffer> <silent> <nowait> <Space>a :call PiApprove()<CR>",
+      "windo nnoremap <buffer> <silent> <nowait> <Space>q :qa!<CR>",
+      "windo nnoremap <buffer> <silent> <nowait> ga :call PiApprove()<CR>",
+      "windo nnoremap <buffer> <silent> <nowait> gq :qa!<CR>",
       "windo setlocal foldmethod=diff foldlevel=0",
       "wincmd h",
       "setlocal readonly nomodifiable",
+      "let &l:statusline = ' ORIGINAL  %{g:pi_display_path} %=Space+a/ga approve  Space+q/gq cancel'",
+      "if exists('&winbar')",
+      "  let &l:winbar = 'ORIGINAL  %{g:pi_display_path}'",
+      "endif",
       "wincmd l",
       "setlocal noreadonly modifiable modified",
+      "let &l:statusline = ' PROPOSED (editable)  %{g:pi_display_path} %=Space+a/ga approve  Space+q/gq cancel'",
+      "if exists('&winbar')",
+      "  let &l:winbar = 'PROPOSED (editable)  %{g:pi_display_path}'",
+      "endif",
       "diffupdate",
       "normal! ]czz",
-      `echo ${vimString(`Review ${displayPath}: <leader>a approve, <leader>q cancel. :w/:x in right pane also approves.`)}`,
+      `echo ${vimString(`Review ${displayPath}: Space+a/ga approve, Space+q/gq cancel. :w/:x in right pane also approves.`)}`,
     ].join("\n") + "\n",
     "utf8",
   );
