@@ -138,6 +138,47 @@ function tempName(prefix: string, displayPath: string): string {
   return `${prefix}-${stem}${ext || ".txt"}`;
 }
 
+function runReviewEditor(
+  config: Config,
+  originalFile: string,
+  proposedFile: string,
+  scriptFile: string,
+) {
+  const [cmd, ...args] = parseEditor(config.editor);
+  const editorArgs = [...args, "-d", originalFile, proposedFile, "-S", scriptFile];
+
+  const tmuxPane = process.env.TMUX_PANE;
+  if (!process.env.TMUX || !tmuxPane || cmd === "tmux") {
+    return spawnSync(cmd, editorArgs, { stdio: "inherit" });
+  }
+
+  const zoomed = spawnSync(
+    "tmux",
+    ["display-message", "-p", "-t", tmuxPane, "#{window_zoomed_flag}"],
+    { encoding: "utf8" },
+  ).stdout.trim() === "1";
+
+  spawnSync("tmux", ["set-option", "-p", "-t", tmuxPane, "@pi_approval", "1"], {
+    stdio: "ignore",
+  });
+
+  if (!zoomed) {
+    spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
+  }
+
+  try {
+    return spawnSync(cmd, editorArgs, { stdio: "inherit" });
+  } finally {
+    if (!zoomed) {
+      spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
+    }
+
+    spawnSync("tmux", ["set-option", "-u", "-p", "-t", tmuxPane, "@pi_approval"], {
+      stdio: "ignore",
+    });
+  }
+}
+
 async function reviewInNvim(
   config: Config,
   displayPath: string,
@@ -202,11 +243,11 @@ async function reviewInNvim(
     "utf8",
   );
 
-  const [cmd, ...args] = parseEditor(config.editor);
-  const result = spawnSync(
-    cmd,
-    [...args, "-d", originalFile, proposedFile, "-S", scriptFile],
-    { stdio: "inherit" },
+  const result = runReviewEditor(
+    config,
+    originalFile,
+    proposedFile,
+    scriptFile,
   );
 
   if (result.error || result.status !== 0 || !existsSync(approvedFile)) {
