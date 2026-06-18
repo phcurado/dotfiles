@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+set -eu
+
+window_id="${1:?}"
+path="${2:-$HOME}"
+
+visible_pane="$(tmux list-panes -t "$window_id" -F '#{pane_id}|#{@bottom_terminal}|#{@bottom_terminal_home}' | awk -F '|' -v home="$window_id" '$2 == "1" && $3 == home { print $1; exit }')"
+
+if [ -z "$visible_pane" ]; then
+  ~/.local/bin/tmux-bottom-terminal "$window_id" "$path"
+  visible_pane="$(tmux list-panes -t "$window_id" -F '#{pane_id}|#{@bottom_terminal}|#{@bottom_terminal_home}' | awk -F '|' -v home="$window_id" '$2 == "1" && $3 == home { print $1; exit }')"
+fi
+
+[ -n "$visible_pane" ] || exit 0
+
+active_pane="$(tmux display-message -p -t "$window_id" '#{pane_id}')"
+zoomed="$(tmux display-message -p -t "$window_id" '#{window_zoomed_flag}')"
+
+if [ "$zoomed" = "1" ] && [ "$active_pane" = "$visible_pane" ]; then
+  tmux resize-pane -Z -t "$visible_pane"
+  exit 0
+fi
+
+if [ "$zoomed" = "1" ]; then
+  tmux resize-pane -Z -t "$active_pane"
+fi
+
+tmux select-pane -t "$visible_pane"
+tmux resize-pane -Z -t "$visible_pane"

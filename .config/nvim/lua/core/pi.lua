@@ -67,23 +67,10 @@ local function bridge_socket()
   return nil, "no Pi pane found for this tmux window. Use tmux prefix+a to open the sidebar."
 end
 
-local function context_from_lines(selection)
+local function context_from_range(start_line, end_line)
   local buf = 0
   local file = vim.api.nvim_buf_get_name(buf)
   local cursor = vim.api.nvim_win_get_cursor(0)
-  local start_line
-  local end_line
-
-  if selection then
-    local start_pos = vim.fn.getpos("v")
-    local end_pos = vim.fn.getpos(".")
-    start_line = math.min(start_pos[2], end_pos[2])
-    end_line = math.max(start_pos[2], end_pos[2])
-  else
-    start_line = cursor[1]
-    end_line = cursor[1]
-  end
-
   local lines = vim.api.nvim_buf_get_lines(buf, start_line - 1, end_line, false)
 
   return {
@@ -95,6 +82,17 @@ local function context_from_lines(selection)
     range = { startLine = start_line, endLine = end_line },
     text = table.concat(lines, "\n"),
   }
+end
+
+local function context_from_lines(selection)
+  if selection then
+    local start_pos = vim.fn.getpos("v")
+    local end_pos = vim.fn.getpos(".")
+    return context_from_range(math.min(start_pos[2], end_pos[2]), math.max(start_pos[2], end_pos[2]))
+  end
+
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  return context_from_range(cursor[1], cursor[1])
 end
 
 local function send_payload(payload)
@@ -173,22 +171,42 @@ function M.ask(selection)
   end)
 end
 
+function M.command(opts)
+  local payload
+  if opts.range > 0 then
+    payload = context_from_range(opts.line1, opts.line2)
+  else
+    payload = context_from_lines(false)
+  end
+
+  vim.ui.input({ prompt = "Ask Pi: " }, function(input)
+    if not input or input == "" then
+      return
+    end
+    payload.prompt = input
+    send_payload(payload)
+  end)
+end
+
+function M.command_abbrev()
+  if vim.fn.getcmdtype() ~= ":" then
+    return "pi"
+  end
+
+  local cmdline = vim.fn.getcmdline()
+  local before_cursor = cmdline:sub(1, vim.fn.getcmdpos() - 1)
+
+  if before_cursor == "pi" or before_cursor == "'<,'>pi" or before_cursor == "'<,'>" then
+    return "Pi"
+  end
+
+  return "pi"
+end
+
 function M.setup()
-  vim.keymap.set("n", "<leader>pi", function()
-    M.ask(false)
-  end, { desc = "Ask Pi about current line" })
+  vim.api.nvim_create_user_command("Pi", M.command, { range = true, desc = "Ask Pi about current line or range" })
+  vim.cmd([[cnoreabbrev <expr> pi v:lua.require('core.pi').command_abbrev()]])
 
-  vim.keymap.set("v", "<leader>pi", function()
-    M.ask(true)
-  end, { desc = "Ask Pi about selection" })
-
-  vim.keymap.set("n", "<leader>ps", function()
-    M.ask(false)
-  end, { desc = "Ask Pi about current line" })
-
-  vim.keymap.set("v", "<leader>ps", function()
-    M.ask(true)
-  end, { desc = "Ask Pi about selection" })
 end
 
 return M

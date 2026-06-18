@@ -138,12 +138,23 @@ function tempName(prefix: string, displayPath: string): string {
   return `${prefix}-${stem}${ext || ".txt"}`;
 }
 
+function tmuxValue(target: string, format: string): string {
+  return spawnSync("tmux", ["display-message", "-p", "-t", target, format], {
+    encoding: "utf8",
+  }).stdout.trim();
+}
+
 function isTmuxWindowZoomed(pane: string): boolean {
-  return spawnSync(
-    "tmux",
-    ["display-message", "-p", "-t", pane, "#{window_zoomed_flag}"],
-    { encoding: "utf8" },
-  ).stdout.trim() === "1";
+  return tmuxValue(pane, "#{window_zoomed_flag}") === "1";
+}
+
+function activeTmuxPane(window: string): string {
+  return spawnSync("tmux", ["list-panes", "-t", window, "-F", "#{pane_id}|#{pane_active}"], {
+    encoding: "utf8",
+  }).stdout
+    .split("\n")
+    .map((line) => line.split("|"))
+    .find(([, active]) => active === "1")?.[0] ?? "";
 }
 
 function runReviewEditor(
@@ -160,26 +171,54 @@ function runReviewEditor(
     return spawnSync(cmd, editorArgs, { stdio: "inherit" });
   }
 
-  const zoomed = isTmuxWindowZoomed(tmuxPane);
+  const homeWindow = tmuxValue(tmuxPane, "#{@agent_sidebar_home}");
+  const currentWindow = tmuxValue(tmuxPane, "#{window_id}");
+  const hidden = Boolean(homeWindow && homeWindow !== currentWindow);
 
   spawnSync("tmux", ["set-option", "-p", "-t", tmuxPane, "@pi_approval", "1"], {
     stdio: "ignore",
   });
 
-  if (!zoomed) {
+  if (hidden) {
+    try {
+      return spawnSync(cmd, editorArgs, { stdio: "inherit" });
+    } finally {
+      spawnSync("tmux", ["set-option", "-u", "-p", "-t", tmuxPane, "@pi_approval"], {
+        stdio: "ignore",
+      });
+    }
+  }
+
+  const activeBefore = activeTmuxPane(currentWindow);
+  const zoomedBefore = isTmuxWindowZoomed(currentWindow);
+  const alreadyZoomedHere = zoomedBefore && activeBefore === tmuxPane;
+
+  if (zoomedBefore && activeBefore && activeBefore !== tmuxPane) {
+    spawnSync("tmux", ["resize-pane", "-Z", "-t", activeBefore], { stdio: "ignore" });
+  }
+
+  spawnSync("tmux", ["select-pane", "-t", tmuxPane], { stdio: "ignore" });
+  if (!alreadyZoomedHere) {
     spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
   }
 
   try {
     return spawnSync(cmd, editorArgs, { stdio: "inherit" });
   } finally {
-    if (!zoomed && isTmuxWindowZoomed(tmuxPane)) {
+    if (!alreadyZoomedHere && isTmuxWindowZoomed(tmuxPane)) {
       spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
     }
 
     spawnSync("tmux", ["set-option", "-u", "-p", "-t", tmuxPane, "@pi_approval"], {
       stdio: "ignore",
     });
+
+    if (activeBefore && activeBefore !== tmuxPane) {
+      spawnSync("tmux", ["select-pane", "-t", activeBefore], { stdio: "ignore" });
+      if (zoomedBefore) {
+        spawnSync("tmux", ["resize-pane", "-Z", "-t", activeBefore], { stdio: "ignore" });
+      }
+    }
   }
 }
 
@@ -232,6 +271,7 @@ async function reviewInNvim(
       "augroup PiApprove",
       "  autocmd!",
       `  execute 'autocmd BufWritePost ' . fnameescape(g:pi_proposed_file) . ' call writefile([\"ok\"], g:pi_approve_file) | qa!'`,
+      "  autocmd VimResized * wincmd =",
       "augroup END",
       "command! Approve call PiApprove()",
       "command! Cancel qa!",
@@ -256,6 +296,7 @@ async function reviewInNvim(
       "  let &l:winbar = 'PROPOSED (editable)  %{g:pi_display_path}'",
       "endif",
       "diffupdate",
+      "wincmd =",
       "normal! ]czz",
       `echo ${vimString(`Review ${displayPath}: Space+a/ga approve, Space+q/gq cancel. :w/:x in right pane also approves.`)}`,
     ].join("\n") + "\n",

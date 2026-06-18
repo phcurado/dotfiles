@@ -31,7 +31,7 @@ fi
 
 hidden_pane="$(tmux list-panes -a -F '#{pane_id}|#{window_id}|#{@agent_sidebar}|#{@agent_sidebar_home}' | awk -F '|' -v home="$window_id" '$3 == "1" && $4 == home { print $1; exit }')"
 
-target_pane="$(tmux list-panes -t "$window_id" -F '#{pane_id}|#{@agent_sidebar}' | awk -F '|' '$2 != "1" { print $1; exit }')"
+target_pane="$(tmux list-panes -t "$window_id" -F '#{pane_id}|#{@agent_sidebar}|#{@bottom_terminal}' | awk -F '|' '$2 != "1" && $3 != "1" { print $1; exit }')"
 
 if [ -n "$hidden_pane" ] && [ -n "$target_pane" ]; then
   tmux join-pane -h -l 35% -s "$hidden_pane" -t "$target_pane"
@@ -39,7 +39,7 @@ if [ -n "$hidden_pane" ] && [ -n "$target_pane" ]; then
   exit 0
 fi
 
-pane_id="$(tmux split-window -h -l 35% -d -P -F '#{pane_id}' -t "$window_id" -c "$path")"
+pane_id="$(tmux split-window -h -l 35% -d -P -F '#{pane_id}' -t "${target_pane:-$window_id}" -c "$path" 'pi')"
 tmux set-option -pt "$pane_id" @agent_sidebar 1
 tmux set-option -pt "$pane_id" @agent_sidebar_home "$window_id"
 tmux select-pane -t "$pane_id" -T agent
