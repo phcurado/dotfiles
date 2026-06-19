@@ -147,7 +147,7 @@ setupAITools() {
     return
   fi
 
-  npm install -g @earendil-works/pi-coding-agent
+  npm install -g --ignore-scripts @earendil-works/pi-coding-agent
   ok "AI CLI tools installed"
 }
 

@@ -2,12 +2,13 @@
   "lastChangelogVersion": "0.79.8",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "high",
   "theme": "catppuccin-frappe",
   "packages": [
     "npm:pi-subagents",
     "npm:pi-show-diffs",
-    "npm:pi-tool-display"
+    "npm:pi-tool-display",
+    "npm:pi-image-tools"
   ],
   "subagents": {
     "agentOverrides": {

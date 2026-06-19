@@ -45,4 +45,3 @@ unfocused-split-fill = #44464f
 # Shell integration
 shell-integration = detect
 shell-integration-features = cursor,sudo,title,no-cursor
-keybind = shift+enter=text:\n
