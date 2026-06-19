@@ -1,0 +1,180 @@
+#!/usr/bin/env sh
+set -eu
+
+action="${1:?}"
+window_id="${2:?}"
+path="${3:-$HOME}"
+hidden_session="__pi-hidden-$window_id"
+
+active_pane() {
+  tmux display-message -p -t "$window_id" '#{pane_id}'
+}
+
+window_zoomed() {
+  [ "$(tmux display-message -p -t "$window_id" '#{window_zoomed_flag}')" = "1" ]
+}
+
+unzoom_window() {
+  if window_zoomed; then
+    tmux resize-pane -Z -t "$(active_pane)"
+  fi
+}
+
+main_pane() {
+  tmux list-panes -t "$window_id" -F '#{pane_id}|#{@agent_sidebar}|#{@bottom_terminal}' |
+    awk -F '|' '$2 != "1" && $3 != "1" { print $1; exit }'
+}
+
+visible_ai() {
+  tmux list-panes -t "$window_id" -F '#{pane_id}|#{@agent_sidebar}|#{@agent_sidebar_home}' |
+    awk -F '|' -v home="$window_id" '$2 == "1" && $3 == home { print $1; exit }'
+}
+
+hidden_ai() {
+  tmux has-session -t "$hidden_session" 2> /dev/null || return 0
+  tmux list-panes -s -t "$hidden_session" -F '#{pane_id}|#{@agent_sidebar}|#{@agent_sidebar_home}' |
+    awk -F '|' -v home="$window_id" '$2 == "1" && $3 == home { print $1; exit }'
+}
+
+visible_term() {
+  tmux list-panes -t "$window_id" -F '#{pane_id}|#{@bottom_terminal}|#{@bottom_terminal_home}' |
+    awk -F '|' -v home="$window_id" '$2 == "1" && $3 == home { print $1; exit }'
+}
+
+hidden_term() {
+  tmux has-session -t "$hidden_session" 2> /dev/null || return 0
+  tmux list-panes -s -t "$hidden_session" -F '#{pane_id}|#{@bottom_terminal}|#{@bottom_terminal_home}' |
+    awk -F '|' -v home="$window_id" '$2 == "1" && $3 == home { print $1; exit }'
+}
+
+ensure_hidden_session() {
+  if ! tmux has-session -t "$hidden_session" 2> /dev/null; then
+    tmux new-session -d -s "$hidden_session" -n scratch -c "$path"
+    created_session=1
+  else
+    created_session=0
+  fi
+}
+
+cleanup_scratch() {
+  if [ "${created_session:-0}" = "1" ]; then
+    tmux kill-window -t "$hidden_session:scratch" 2> /dev/null || true
+  fi
+}
+
+show_ai() {
+  pane="$(visible_ai)"
+  if [ -n "$pane" ]; then
+    printf '%s\n' "$pane"
+    return
+  fi
+
+  target="$(main_pane)"
+  pane="$(hidden_ai)"
+  if [ -n "$pane" ] && [ -n "$target" ]; then
+    tmux join-pane -h -l 35% -s "$pane" -t "$target"
+    tmux select-pane -t "$pane"
+    printf '%s\n' "$pane"
+    return
+  fi
+
+  pane="$(tmux split-window -h -l 35% -d -P -F '#{pane_id}' -t "${target:-$window_id}" -c "$path" 'pi')"
+  tmux set-option -pt "$pane" @agent_sidebar 1
+  tmux set-option -pt "$pane" @agent_sidebar_home "$window_id"
+  tmux select-pane -t "$pane" -T agent
+  tmux select-pane -t "$pane"
+  printf '%s\n' "$pane"
+}
+
+hide_ai() {
+  pane="$(visible_ai)"
+  [ -n "$pane" ] || return 0
+
+  if [ "$(tmux display-message -p -t "$pane" '#{@pi_approval}')" = "1" ]; then
+    tmux display-message -t "$pane" 'approval active'
+    return 0
+  fi
+
+  unzoom_window
+  ensure_hidden_session
+  tmux break-pane -d -s "$pane" -t "$hidden_session:" -n agent-sidebar > /dev/null
+  cleanup_scratch
+}
+
+show_term() {
+  pane="$(visible_term)"
+  if [ -n "$pane" ]; then
+    printf '%s\n' "$pane"
+    return
+  fi
+
+  unzoom_window
+  target="$(main_pane)"
+  pane="$(hidden_term)"
+  if [ -n "$pane" ] && [ -n "$target" ]; then
+    tmux join-pane -v -l 30% -s "$pane" -t "$target"
+    tmux select-pane -t "$pane"
+    printf '%s\n' "$pane"
+    return
+  fi
+
+  pane="$(tmux split-window -v -l 30% -d -P -F '#{pane_id}' -t "${target:-$window_id}" -c "$path")"
+  tmux set-option -pt "$pane" @bottom_terminal 1
+  tmux set-option -pt "$pane" @bottom_terminal_home "$window_id"
+  tmux select-pane -t "$pane" -T tests
+  tmux select-pane -t "$pane"
+  printf '%s\n' "$pane"
+}
+
+hide_term() {
+  pane="$(visible_term)"
+  [ -n "$pane" ] || return 0
+
+  unzoom_window
+  ensure_hidden_session
+  tmux break-pane -d -s "$pane" -t "$hidden_session:" -n bottom-terminal > /dev/null
+  cleanup_scratch
+}
+
+zoom_pane() {
+  pane="$1"
+  [ -n "$pane" ] || return 0
+
+  active="$(active_pane)"
+  if window_zoomed; then
+    if [ "$active" = "$pane" ]; then
+      tmux resize-pane -Z -t "$pane"
+      return 0
+    fi
+    tmux resize-pane -Z -t "$active"
+  fi
+
+  tmux select-pane -t "$pane"
+  tmux resize-pane -Z -t "$pane"
+}
+
+cleanup_window() {
+  tmux kill-session -t "$hidden_session" 2> /dev/null || true
+}
+
+case "$action" in
+  ai-toggle)
+    if [ -n "$(visible_ai)" ]; then hide_ai; else show_ai > /dev/null; fi
+    ;;
+  ai-zoom)
+    zoom_pane "$(show_ai)"
+    ;;
+  term-toggle)
+    if [ -n "$(visible_term)" ]; then hide_term; else show_term > /dev/null; fi
+    ;;
+  term-zoom)
+    zoom_pane "$(show_term)"
+    ;;
+  cleanup)
+    cleanup_window
+    ;;
+  *)
+    printf 'unknown tmux-workspace action: %s\n' "$action" >&2
+    exit 2
+    ;;
+esac
