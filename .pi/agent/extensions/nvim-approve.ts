@@ -148,6 +148,10 @@ function isTmuxWindowZoomed(pane: string): boolean {
   return tmuxValue(pane, "#{window_zoomed_flag}") === "1";
 }
 
+function setTPaneState(pane: string, state: string) {
+  spawnSync("tpane", ["set-state", pane, state], { stdio: "ignore" });
+}
+
 function activeTmuxPane(window: string): string {
   return spawnSync("tmux", ["list-panes", "-t", window, "-F", "#{pane_id}|#{pane_active}"], {
     encoding: "utf8",
@@ -175,17 +179,13 @@ function runReviewEditor(
   const currentWindow = tmuxValue(tmuxPane, "#{window_id}");
   const hidden = Boolean(homeWindow && homeWindow !== currentWindow);
 
-  spawnSync("tmux", ["set-option", "-p", "-t", tmuxPane, "@pi_approval", "1"], {
-    stdio: "ignore",
-  });
+  setTPaneState(tmuxPane, "blocked");
 
   if (hidden) {
     try {
       return spawnSync(cmd, editorArgs, { stdio: "inherit" });
     } finally {
-      spawnSync("tmux", ["set-option", "-u", "-p", "-t", tmuxPane, "@pi_approval"], {
-        stdio: "ignore",
-      });
+      setTPaneState(tmuxPane, "idle");
     }
   }
 
@@ -209,9 +209,7 @@ function runReviewEditor(
       spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
     }
 
-    spawnSync("tmux", ["set-option", "-u", "-p", "-t", tmuxPane, "@pi_approval"], {
-      stdio: "ignore",
-    });
+    setTPaneState(tmuxPane, "idle");
 
     if (activeBefore && activeBefore !== tmuxPane) {
       spawnSync("tmux", ["select-pane", "-t", activeBefore], { stdio: "ignore" });

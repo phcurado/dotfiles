@@ -166,6 +166,10 @@ setupWeather() {
   curl -sSL https://raw.githubusercontent.com/phcurado/weather/main/install.sh | sh
 }
 
+setupTPane() {
+  curl -sSL https://raw.githubusercontent.com/phcurado/tpane/main/install.sh | sh
+}
+
 setup() {
   checkOS
   initSubmodules
@@ -174,6 +178,7 @@ setup() {
   setShell
   setupTools
   setupWeather
+  setupTPane
 
   printf "\n\033[1;32mSetup complete!\033[0m Reboot to start using your new configuration.\n"
 }
