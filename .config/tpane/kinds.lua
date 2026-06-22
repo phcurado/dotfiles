@@ -1,16 +1,19 @@
 local function agent_state(p)
 	local pushed = p:var("@tpane_push_state")
-	if pushed == "blocked" then
-		return "blocked"
+	if pushed then
+		return pushed
 	end
 	local out = p:capture()
+	if out:match("Do you want to") or out:match("Esc to cancel") or out:match("Yes, allow") then
+		return "approval"
+	end
 	if out:match("esc to interrupt") or out:match("[Ww]orking through it") then
 		return "working"
 	end
 	return "idle"
 end
 
-tpane.state("approval", { color = "magenta", glyph = "?" })
+tpane.state("approval", { color = "yellow", glyph = "" })
 
 tpane.kind({
 	name = "pi",

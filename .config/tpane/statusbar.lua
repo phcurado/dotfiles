@@ -36,30 +36,6 @@ tpane.widget("clock_long", function()
 	return os.date("%I:%M %p %b %d")
 end)
 
-local agent_kinds = { pi = true, claude = true, codex = true }
-
-tpane.widget("agents", function(ctx)
-	local parts = {}
-	for _, pane in ipairs(ctx.panes or {}) do
-		local hidden = pane.session and pane.session:match("^__tpane%-hidden%-") ~= nil
-		if pane.tag == "agent" or agent_kinds[pane.kind] then
-			local presentation = tpane.state(pane.state) or {}
-			if hidden then
-				parts[#parts + 1] = { text = "○", fg = presentation.color or "default" }
-			elseif presentation.color then
-				parts[#parts + 1] = { text = presentation.glyph or "●", fg = presentation.color }
-			end
-			parts[#parts + 1] = { text = " " .. pane.label }
-			parts[#parts + 1] = "  "
-		end
-	end
-	if #parts == 0 then
-		return nil
-	end
-	parts[#parts] = nil
-	return parts
-end)
-
 tpane.widget("prefix", function()
 	return tpane.fmt.prefix("  ", "  ")
 end)

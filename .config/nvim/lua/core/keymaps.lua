@@ -4,10 +4,6 @@ local opts = {
   silent = true, -- do not show message
 }
 
--- Move up and down with JK
-vim.keymap.set("n", "<C-j>", "<C-e>", opts)
-vim.keymap.set("n", "<C-k>", "<C-y>", opts)
-
 -- Go to middle and center
 vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
 vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
@@ -20,8 +16,8 @@ vim.keymap.set("n", "<leader>sh", ":split<CR>")
 vim.keymap.set("n", "<leader>ex", ":below 18 sp<CR>:term<CR>iiex", { silent = true })
 
 -- Buffer changes
-vim.keymap.set("n", "<C-l>", ":bnext<cr>", opts)
-vim.keymap.set("n", "<C-h>", ":bprevious<cr>", opts)
+vim.keymap.set("n", "]b", ":bnext<cr>", opts)
+vim.keymap.set("n", "[b", ":bprevious<cr>", opts)
 
 -- Nice to have
 vim.keymap.set("n", "<leader>w", ":w<CR>", opts) -- Quick save
