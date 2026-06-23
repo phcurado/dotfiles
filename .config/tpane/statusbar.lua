@@ -1,15 +1,10 @@
+tpane.tabline({
+	label = "cwd",
+	inactive = { fg = "#777777" },
+	current = { fg = "#8caaee", bold = true },
+})
+
 tpane.options({
-	window = {
-		status = {
-			style = { fg = "#858585" },
-			format = '#[fg=#777777]#I:#(pwd="#{pane_current_path}"; echo ${pwd####*/})',
-			current_format = {
-				text = '#I:#(pwd="#{pane_current_path}"; echo ${pwd####*/})',
-				fg = "#8caaee",
-				bold = true,
-			},
-		},
-	},
 	pane = {
 		border = {
 			lines = "heavy",
