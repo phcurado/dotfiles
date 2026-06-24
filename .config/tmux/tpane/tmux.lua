@@ -1,4 +1,9 @@
 tpane.opt.allow_passthrough = true
+tpane.append("update_environment", "TERM")
+tpane.append("update_environment", "TERM_PROGRAM")
+tpane.opt.escape_time = 0
+tpane.opt.extended_keys = true
+tpane.opt.extended_keys_format = "csi-u"
 tpane.opt.focus_events = true
 tpane.opt.history_limit = 5000
 tpane.opt.mode_keys = "vi"
