@@ -29,5 +29,3 @@ end)
 tpane.bind("C-g", function(pane)
 	tpane.expand(pane)
 end, { prefix = false })
-
-tpane.bind("g", tpane.run("agent_next"))

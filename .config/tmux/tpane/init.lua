@@ -1,4 +1,3 @@
-tpane.use("agents")
 tpane.use("vim-navigator")
 tpane.use("yank")
 

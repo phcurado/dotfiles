@@ -42,7 +42,7 @@ make secrets.backup
 ## Editing guidelines
 
 - Keep README concise. Do not add long explanatory sections unless asked.
-- Prefer small, practical dotfile changes.
+- Prefer small, practical changes.
 - Preserve cross-platform behavior between macOS and Arch Linux.
 - Do not commit secrets or generated local files.
 - Avoid tracking `~/.pi/agent/auth.json`, sessions, package caches, or generated plugin dependencies.

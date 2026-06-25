@@ -39,5 +39,5 @@ tpane.statusline({
 	position = "top",
 	interval = 1,
 	left = { "session" },
-	right = { "agents", "weather", "clock_long", "prefix" },
+	right = { "weather", "clock_long", "prefix" },
 })
