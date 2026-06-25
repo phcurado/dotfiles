@@ -23,7 +23,7 @@ tpane.options({
 	},
 })
 
-local weather = tpane.job("weather", {
+local weather = tpane.job({
 	every = "10m",
 	timeout = "5s",
 	cmd = 'command -v weather >/dev/null 2>&1 && weather widget || echo ""',
