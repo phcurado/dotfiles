@@ -23,21 +23,17 @@ tpane.options({
 	},
 })
 
-tpane.widget("weather", function()
-	return '#(command -v weather >/dev/null 2>&1 && weather widget || echo "")'
-end)
+local weather = tpane.job("weather", {
+	every = "10m",
+	timeout = "5s",
+	cmd = 'command -v weather >/dev/null 2>&1 && weather widget || echo ""',
+})
 
-tpane.widget("clock_long", function()
-	return os.date("%I:%M %p %b %d")
-end)
-
-tpane.widget("prefix", function()
-	return tpane.fmt.prefix("  ", "  ")
-end)
+local battery = tpane.widgets.battery({ every = "30s" })
 
 tpane.statusline({
 	position = "top",
 	interval = 1,
-	left = { "session" },
-	right = { "weather", "clock_long", "prefix" },
+	left = { tpane.widgets.session },
+	right = { weather, battery, tpane.widgets.clock, tpane.widgets.date, tpane.widgets.prefix },
 })
