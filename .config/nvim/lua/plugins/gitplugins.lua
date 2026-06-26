@@ -38,7 +38,20 @@ return {
     },
     cmd = "Neojj",
     keys = {
-      { "<leader>jj", "<cmd>Neojj<cr>", desc = "Show Neojj UI" },
+      { "<leader>J", "<cmd>Neojj<cr>", desc = "Show Neojj UI" },
     },
+  },
+  {
+    "nicolasgb/jj.nvim",
+    version = "*",
+    config = function()
+      vim.keymap.set("n", "<leader>jj", ":J<CR>", { noremap = true, desc = "Open JJ" })
+
+      require("jj").setup({
+        diff = {
+          backend = "codediff",
+        },
+      })
+    end,
   },
 }

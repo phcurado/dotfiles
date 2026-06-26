@@ -12,9 +12,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
 vim.keymap.set("n", "<leader>sv", ":vs<CR>")
 vim.keymap.set("n", "<leader>sh", ":split<CR>")
 
--- start a terminal with iex
-vim.keymap.set("n", "<leader>ex", ":below 18 sp<CR>:term<CR>iiex", { silent = true })
-
 -- Buffer changes
 vim.keymap.set("n", "]b", ":bnext<cr>", opts)
 vim.keymap.set("n", "[b", ":bprevious<cr>", opts)
