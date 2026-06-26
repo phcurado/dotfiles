@@ -8,7 +8,8 @@
     "npm:pi-subagents",
     "npm:pi-show-diffs",
     "npm:pi-tool-display",
-    "npm:pi-image-tools"
+    "npm:pi-image-tools",
+    "npm:@mohndoe/pi-atlas"
   ],
   "subagents": {
     "agentOverrides": {
