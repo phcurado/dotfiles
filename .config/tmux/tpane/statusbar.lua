@@ -33,7 +33,10 @@ local battery = tpane.widgets.battery({ every = "30s" })
 
 tpane.statusline({
 	position = "top",
-	interval = 1,
-	left = { tpane.widgets.session },
-	right = { weather, battery, tpane.widgets.clock, tpane.widgets.date, tpane.widgets.prefix },
+	rows = {
+		{
+			left = { tpane.widgets.session, tpane.widgets.tabs },
+			right = { weather, battery, tpane.widgets.clock, tpane.widgets.date, tpane.widgets.prefix },
+		},
+	},
 })
