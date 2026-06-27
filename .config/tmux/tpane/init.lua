@@ -1,5 +1,6 @@
 tpane.use("sensible")
 tpane.use("themes")
+tpane.use("pane-detection")
 tpane.use("vim-navigator")
 tpane.use("yank")
 

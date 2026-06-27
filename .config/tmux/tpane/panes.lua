@@ -1,6 +1,6 @@
 tpane.register_pane("pi", {
 	tag = "agent",
-	command = "pi",
+	command = "/home/phcurado/.local/bin/mise exec node@25 -- pi",
 	side = "right",
 	size = "35%",
 	full = true,
