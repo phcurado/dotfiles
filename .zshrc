@@ -94,3 +94,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
 
 eval "$(starship init zsh)"
+
+# >>> Codex installer >>>
+export PATH="/home/phcurado/.local/bin:$PATH"
+# <<< Codex installer <<<
