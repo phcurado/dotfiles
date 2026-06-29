@@ -12,19 +12,30 @@ import { basename, dirname, extname, join, resolve } from "node:path";
 
 const CONFIG_PATH = resolve(homedir(), ".pi/agent/nvim-approve.json");
 
-type Config = { enabled: boolean; editor: string };
+type Config = { autoApprove: boolean; editor: string };
 type Edit = { oldText: string; newText: string };
 
 const DEFAULT_CONFIG: Config = {
-  enabled: false,
+  autoApprove: true,
   editor: process.env.VISUAL || process.env.EDITOR || "nvim",
 };
 
 function loadConfig(): Config {
   try {
+    const raw = JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
     return {
-      ...DEFAULT_CONFIG,
-      ...JSON.parse(readFileSync(CONFIG_PATH, "utf8")),
+      autoApprove:
+        typeof raw.autoApprove === "boolean"
+          ? raw.autoApprove
+          : typeof raw.requireApproval === "boolean"
+            ? !raw.requireApproval
+            : typeof raw.enabled === "boolean"
+              ? !raw.enabled
+              : DEFAULT_CONFIG.autoApprove,
+      editor:
+        typeof raw.editor === "string" && raw.editor.trim()
+          ? raw.editor
+          : DEFAULT_CONFIG.editor,
     };
   } catch {
     return DEFAULT_CONFIG;
@@ -342,11 +353,11 @@ async function showSettings(ctx: ExtensionContext, getConfig: () => Config, setC
     let settings: SettingsList;
     const items: SettingItem[] = [
       {
-        id: "enabled",
+        id: "autoApprove",
         label: "Auto-approve",
-        currentValue: config.enabled ? "on" : "off",
+        currentValue: config.autoApprove ? "on" : "off",
         values: ["on", "off"],
-        description: "When on, file changes open in nvim for approval before applying.",
+        description: "When on, edit/write changes apply directly. When off, they open in nvim first.",
       },
       {
         id: "editor",
@@ -369,8 +380,8 @@ async function showSettings(ctx: ExtensionContext, getConfig: () => Config, setC
       (id, value) => {
         void (async () => {
           const current = getConfig();
-          if (id === "enabled") {
-            const next = { ...current, enabled: value === "on" };
+          if (id === "autoApprove") {
+            const next = { ...current, autoApprove: value === "on" };
             setConfig(next);
             await saveConfig(next);
             return;
@@ -411,7 +422,7 @@ export default function (pi: ExtensionAPI) {
   let config = loadConfig();
 
   pi.registerCommand("nvim-approve", {
-    description: "Configure nvim approval for edit/write tools",
+    description: "Configure the nvim approval gate for edit/write tools",
     handler: async (_args, ctx) => {
       await showSettings(ctx, () => config, (next) => {
         config = next;
@@ -420,7 +431,7 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.on("tool_call", async (event, ctx) => {
-    if (!config.enabled) return undefined;
+    if (config.autoApprove) return undefined;
     if (event.toolName !== "edit" && event.toolName !== "write")
       return undefined;
 

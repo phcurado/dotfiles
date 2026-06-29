@@ -20,12 +20,12 @@ tpane.register_pane("bottom", {
 
 tpane.bind("a", function(pane)
 	tpane.toggle(pane, "pi")
-end)
+end, { desc = "Toggle Pi sidebar" })
 
 tpane.bind("t", function(pane)
 	tpane.toggle(pane, "bottom")
-end)
+end, { desc = "Toggle bottom terminal" })
 
 tpane.bind("C-g", function(pane)
 	tpane.expand(pane)
-end, { prefix = false })
+end, { prefix = false, desc = "Expand current pane" })
