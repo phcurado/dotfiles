@@ -8,9 +8,15 @@ dots.symlink("~/.config", ".config", {
 		"noctalia/**",
 		"sketchybar/**",
 		"wallpapers/**",
+		"superfile/**",
 	},
 })
 
+dots.symlink("~/.config/superfile", ".config/superfile", {
+	ignore = {
+		"theme/**",
+	},
+})
 dots.symlink("~/.zshrc", ".zshrc")
 dots.symlink("~/.zsh_plugins.txt", ".zsh_plugins.txt")
 dots.symlink("~/.gitconfig", ".gitconfig")

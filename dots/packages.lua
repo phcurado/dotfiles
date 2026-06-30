@@ -18,6 +18,7 @@ return {
 	"ripgrep",
 	"starship",
 	"stow",
+	"superfile",
 	"syncthing",
 	"tmux",
 	"tree",
