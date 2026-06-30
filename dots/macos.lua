@@ -1,12 +1,10 @@
 local common_packages = require("dots.packages")
 
 local packages = {
-	"fzf",
 	"git",
 	"gh",
 	"jj",
 	"neovim",
-	"sqlite",
 	"sketchybar",
 	"borders",
 	"lua",
