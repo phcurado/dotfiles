@@ -45,6 +45,19 @@ Apply changes:
 dots apply
 ```
 
+Switch profile-specific services:
+
+```sh
+dots --profile personal apply
+# no VPN service
+
+dots --profile work apply
+# Twingate
+
+dots --profile company apply
+# Tailscale
+```
+
 List managed resources:
 
 ```sh
@@ -96,7 +109,8 @@ Arch resources include:
 - `paru` installed through pacman
 - desktop packages for niri/noctalia
 - user groups: `docker`, `wheel`
-- system services: Bluetooth, Docker, NetworkManager, Tailscale
+- system services: Bluetooth, Docker, NetworkManager
+- profile services: Twingate for `work`, Tailscale for `company`
 
 macOS resources include:
 
@@ -124,18 +138,18 @@ prompted.
 
 ### Niri keybindings
 
-| Key                | Action              |
-| ------------------ | ------------------- |
-| `Super + T`        | Terminal            |
-| `Super + B`        | Browser             |
-| `Super + Space`    | App launcher        |
-| `Super + Q`        | Close window        |
-| `Super + Tab`      | Previous workspace  |
-| `Super + M`        | Power menu          |
-| `Super + Alt + L`  | Lock screen         |
-| `Super + Ctrl + W` | Random wallpaper    |
-| `Print`            | Screenshot          |
-| `Super + Y`        | Voice typing        |
+| Key                | Action             |
+| ------------------ | ------------------ |
+| `Super + T`        | Terminal           |
+| `Super + B`        | Browser            |
+| `Super + Space`    | App launcher       |
+| `Super + Q`        | Close window       |
+| `Super + Tab`      | Previous workspace |
+| `Super + M`        | Power menu         |
+| `Super + Alt + L`  | Lock screen        |
+| `Super + Ctrl + W` | Random wallpaper   |
+| `Print`            | Screenshot         |
+| `Super + Y`        | Voice typing       |
 
 ### Secrets
 

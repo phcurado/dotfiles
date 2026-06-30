@@ -31,6 +31,7 @@ local packages = {
 	"sddm",
 	"slurp",
 	"tailscale",
+	"twingate",
 	"ttf-0xproto-nerd",
 	"unzip",
 	"wl-clipboard",
@@ -50,7 +51,6 @@ local systemd_services = {
 	"bluetooth.service",
 	"docker.service",
 	"NetworkManager.service",
-	"tailscaled.service",
 }
 
 dots.symlink("~/.config/niri", ".config/niri")
@@ -73,7 +73,8 @@ dots.command("sops age key", {
 	needs = { "package:paru:1password-cli" },
 })
 
-dots.user.groups(groups)
+dots.group.create(groups)
+dots.user.add_to_groups(groups)
 
 dots.systemd.enable(systemd_services)
 dots.systemd.start(systemd_services)

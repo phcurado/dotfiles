@@ -2,6 +2,15 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
 
 export default function (pi: ExtensionAPI) {
+  async function withBlocked<T>(label: string, fn: () => Promise<T>): Promise<T> {
+    pi.events.emit("herdr:blocked", { active: true, label });
+    try {
+      return await fn();
+    } finally {
+      pi.events.emit("herdr:blocked", { active: false, label });
+    }
+  }
+
   pi.registerTool({
     name: "ask_user",
     label: "Ask user",
@@ -32,7 +41,7 @@ export default function (pi: ExtensionAPI) {
       const kind = params.kind ?? "input";
 
       if (kind === "confirm") {
-        const ok = await ctx.ui.confirm("Question", params.question);
+        const ok = await withBlocked("approval", () => ctx.ui.confirm("Question", params.question));
         return {
           content: [{ type: "text", text: ok ? "yes" : "no" }],
           details: { kind, answer: ok ? "yes" : "no" },
@@ -47,14 +56,14 @@ export default function (pi: ExtensionAPI) {
             details: { error: "missing-options" },
           };
         }
-        const choice = await ctx.ui.select(params.question, opts);
+        const choice = await withBlocked("approval", () => ctx.ui.select(params.question, opts));
         return {
           content: [{ type: "text", text: choice ?? "(cancelled)" }],
           details: { kind, answer: choice ?? null },
         };
       }
 
-      const answer = await ctx.ui.input(params.question);
+      const answer = await withBlocked("approval", () => ctx.ui.input(params.question));
       return {
         content: [{ type: "text", text: answer ?? "(cancelled)" }],
         details: { kind, answer: answer ?? null },
