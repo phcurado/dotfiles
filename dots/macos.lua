@@ -37,6 +37,8 @@ dots.symlink("~/.config/aerospace", ".config/aerospace")
 dots.symlink("~/.config/borders", ".config/borders")
 dots.symlink("~/.config/sketchybar", ".config/sketchybar")
 
+dots.brew.enable()
+
 dots.brew.tap({
 	"FelixKratz/formulae",
 })
@@ -45,5 +47,15 @@ dots.brew.install(common_packages)
 dots.brew.install(packages)
 
 dots.brew.cask(casks)
+
+dots.command("sbarlua", {
+	check = 'test -f "$HOME/.local/share/sketchybar_lua/sketchybar.so"',
+	apply = [[
+		tmp="$(mktemp -d)"
+		git clone https://github.com/FelixKratz/SbarLua.git "$tmp"
+		make -C "$tmp" install
+		rm -rf "$tmp"
+	]],
+})
 
 dots.brew.service.start(services)

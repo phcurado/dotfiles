@@ -60,8 +60,9 @@ dots.symlink("~/.config/wallpapers", ".config/wallpapers")
 dots.pacman.install({
 	"base-devel",
 	"git",
-	"paru",
 })
+
+dots.paru.enable({ method = "pacman" })
 
 dots.paru.install(common_packages)
 dots.paru.install(packages)

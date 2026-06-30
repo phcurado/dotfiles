@@ -7,3 +7,5 @@ end
 if dots.platform.family == "darwin" then
 	require("dots.macos")
 end
+
+require("dots.tools")
