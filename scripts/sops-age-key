@@ -9,6 +9,7 @@ case "${1:-}" in
     ;;
   apply)
     mkdir -p "$(dirname "$key")"
+    [ ! -L "$key" ] || rm "$key"
     op read "op://Personal/SOPS AGE Key/notes" > "$key"
     chmod 600 "$key"
     ;;
