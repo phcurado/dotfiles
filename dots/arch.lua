@@ -50,7 +50,6 @@ local systemd_services = {
 	"bluetooth.service",
 	"docker.service",
 	"NetworkManager.service",
-	"postgresql.service",
 	"tailscaled.service",
 }
 
