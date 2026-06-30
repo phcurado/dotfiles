@@ -635,7 +635,7 @@ binds {
     Mod+Semicolon { spawn-sh "noctalia msg settings-toggle"; }
     Mod+M { spawn-sh "noctalia msg panel-toggle session"; }
     Mod+Ctrl+W { spawn-sh "noctalia msg panel-toggle wallpaper"; }
-    Mod+Alt+L { spawn "noctalia" "msg" "screen-lock"; }
+    Mod+Alt+L { spawn "noctalia" "msg" "session" "lock"; }
 
     // Audio & Brightness
     XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
