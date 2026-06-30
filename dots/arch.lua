@@ -67,6 +67,12 @@ dots.paru.enable({ method = "pacman" })
 dots.paru.install(common_packages)
 dots.paru.install(packages)
 
+dots.command("sops age key", {
+	check = "scripts/sops-age-key check",
+	apply = "scripts/sops-age-key apply",
+	needs = { "package:paru:1password-cli" },
+})
+
 dots.user.groups(groups)
 
 dots.systemd.enable(systemd_services)

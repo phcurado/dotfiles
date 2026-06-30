@@ -1,6 +1,6 @@
 # ~/dotfiles
 
-Dotfile configuration for `Arch Linux` and `macOS`.
+Dotfiles for Arch Linux and macOS, managed with [`dots`](https://github.com/phcurado/dots).
 
 ## Screenshots
 
@@ -8,240 +8,149 @@ Dotfile configuration for `Arch Linux` and `macOS`.
 
 <img src="images/dashboard.png" alt="Neovim with Snacks Dashboard">
 
-## Quick Start (Arch Linux)
+## Fresh machine
 
-After a fresh Arch install, you'll be in a TTY. Clone the repo and run the setup script:
+Clone the repo and run the bootstrap script:
 
-```bash
-git clone git@github.com:phcurado/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-./setup.sh
-reboot
-```
-
-SDDM will start on boot. Select niri and login. Open a terminal with `Super + T` and connect to WiFi using the Noctalia control center.
-
-## Quick Start (macOS)
-
-```bash
+```sh
 git clone git@github.com:phcurado/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./setup.sh
 ```
 
-The setup script will install Xcode CLI tools, Homebrew, and all packages from `macos-pkgs/Brewfile`. Packages can be managed with `make install` and `make tofile` (OS is detected automatically).
+`setup.sh` installs `dots` into `~/.local/bin` if needed, then runs:
 
-### AI tools
-
-The setup script can install Pi:
-
-```bash
-pi
-/login
+```sh
+dots apply
 ```
 
-### Window management (AeroSpace + SketchyBar)
+`dots apply` checks the current machine, prints the changes, and asks for
+confirmation before installing packages, linking files, copying fonts, starting
+services, or changing user settings.
 
-The macOS desktop uses three Homebrew packages (in `macos-pkgs/Brewfile`), all autostarting at login:
+On Arch, reboot after the first apply so the shell, groups, display manager, and
+system services all start from a clean login.
 
-- [AeroSpace](https://github.com/nikitabobko/AeroSpace) — tiling WM → `.config/aerospace/aerospace.toml`
-- [SketchyBar](https://github.com/FelixKratz/SketchyBar) — top bar → `.config/sketchybar/`
-- [JankyBorders](https://github.com/FelixKratz/JankyBorders) — focused-window border → `.config/borders/bordersrc`
+## Daily use
 
-Before first launch, turn off **Displays have separate Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out and back in. Grant AeroSpace Accessibility permissions when prompted.
+Preview changes:
 
-### Cross-platform configs
-
-These configs work on both Linux and macOS: neovim, ghostty, tmux, zsh, starship, git, yazi, bat, btop, mise, zoxide.
-
-### Linux-only configs
-
-These are Linux-specific and create harmless dead symlinks on macOS: niri, noctalia.
-
-## Main Packages
-
-### Paru
-
-[Paru](https://github.com/Morganamilo/paru) is an AUR helper for installing packages from the Arch User Repository.
-
-```bash
-sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git /tmp/paru
-cd /tmp/paru
-makepkg -si
+```sh
+dots check
 ```
 
-> [!NOTE]
-> All packages below are included in `arch-pkgs/pkgs.txt` and can be installed at once with `make install`. The individual install commands are shown for reference only.
+Apply changes:
 
-### Neovim
-
-[Neovim](https://neovim.io) is my preferred text editor.
-
-```bash
-paru -S neovim
+```sh
+dots apply
 ```
 
-### Ghostty
+List managed resources:
 
-[Ghostty](https://ghostty.org/) is a modern terminal emulator.
-
-> [!IMPORTANT]
-> Ghostty is configured to use the font [0xProto Nerd Font](https://github.com/0xType/0xProto). Install it or change the font in [.config/ghostty/config](.config/ghostty/config). List available fonts with `ghostty +list-fonts`.
-
-```bash
-paru -S ghostty
+```sh
+dots state list
 ```
 
-### Tmux
+The local state lives in `.dots/state.json` and is not committed.
 
-[tmux](https://github.com/tmux/tmux) is a terminal multiplexer.
+## Layout
 
-```bash
-paru -S tmux
+```txt
+dots.lua              entrypoint
+dots/common.lua       shared files, fonts, shell, and tools
+dots/arch.lua         Arch packages, services, and Linux-only links
+dots/macos.lua        Homebrew packages, services, and macOS-only links
+dots/packages.lua     shared package list
+fonts/                managed fonts
 ```
 
-To install plugins, open a tmux session and press `prefix + I` (prefix is `Ctrl + a`).
+`dots.lua` uses normal Lua modules:
 
-### Mise
+```lua
+require("dots.common")
 
-[Mise](https://github.com/jdx/mise) manages versions of programming languages and tools.
+if dots.platform.family == "arch" then
+  require("dots.arch")
+end
 
-```bash
-paru -S mise
-mise install   # Install versions from .config/mise/config.toml
+if dots.platform.family == "darwin" then
+  require("dots.macos")
+end
+
+require("dots.tools")
 ```
 
-### Zsh
+## What is managed
 
-[Zsh](https://wiki.archlinux.org/title/Zsh) is my preferred shell.
+Common resources include:
 
-```bash
-paru -S zsh
-chsh -s /usr/bin/zsh
-```
+- shell: `zsh`
+- config links: Neovim, Ghostty, tmux, zsh, Starship, git, yazi, bat, btop, mise, zoxide
+- fonts from `fonts/`
+- mise tools
+- local commands such as `pi`, `tree-sitter`, `weather`, and `tpane`
 
-Reboot or log out/in to apply.
+Arch resources include:
 
-### Starship
+- pacman bootstrap packages: `base-devel`, `git`
+- `paru` installed through pacman
+- desktop packages for niri/noctalia
+- user groups: `docker`, `wheel`
+- system services: Bluetooth, Docker, NetworkManager, Tailscale
 
-[Starship](https://starship.rs) is a cross-shell prompt.
+macOS resources include:
 
-```bash
-paru -S starship
-```
+- Homebrew and Homebrew taps
+- AeroSpace, SketchyBar, Borders, Ghostty, Brave, Discord, Obsidian, Docker Desktop, Tailscale, 1Password
+- SketchyBar Lua bindings
+- Homebrew services for SketchyBar and Borders
 
-### GNU Stow
+## Makefile
 
-[GNU Stow](https://www.gnu.org/software/stow/manual/stow.html) manages symlinks for dotfiles.
+The Makefile is only a shortcut layer:
 
-```bash
-paru -S stow
-stow --no-folding .
-```
+| Command               | Description              |
+| --------------------- | ------------------------ |
+| `make secrets.backup` | Print AGE key for backup |
 
-If files conflict, use `--adopt` to override:
+## Notes
 
-```bash
-stow --no-folding --adopt .
-```
+### macOS window management
 
-## Additional Packages
+Before using AeroSpace for the first time, turn off **Displays have separate
+Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out
+and back in. Grant Accessibility permissions to AeroSpace and SketchyBar when
+prompted.
 
-Install packages from the saved list:
-
-```bash
-make install
-# or: paru -S --needed - < arch-pkgs/pkgs.txt
-```
-
-Save current packages to file:
-
-```bash
-make tofile
-# or: paru -Qqen > arch-pkgs/pkgs.txt
-```
-
-Review `arch-pkgs/pkgs.txt` before installing - some packages may be system-specific.
-
-## Makefile Commands
-
-| Command               | Description                          |
-| --------------------- | ------------------------------------ |
-| `make install`        | Install packages from package list   |
-| `make show`           | List installed packages              |
-| `make tofile`         | Save installed packages to list file |
-| `make cleanCache`     | Clean package cache                  |
-| `make secrets.setup`  | Restore AGE key from 1Password       |
-| `make secrets.backup` | Show AGE key for backup to 1Password |
-
-## Additional Configuration
-
-### Niri
-
-[Niri](https://github.com/YaLTeR/niri) is my window manager (Wayland scrolling compositor).
-
-[Noctalia](https://noctalia.dev) provides the desktop shell (bar, notifications, launcher, lock screen, wallpaper, etc). WiFi is managed via NetworkManager through the Noctalia control center.
-
-#### Keybindings
+### Niri keybindings
 
 | Key                | Action              |
 | ------------------ | ------------------- |
 | `Super + T`        | Terminal            |
-| `Super + B`        | Open browser        |
+| `Super + B`        | Browser             |
 | `Super + Space`    | App launcher        |
 | `Super + Q`        | Close window        |
 | `Super + Tab`      | Previous workspace  |
 | `Super + M`        | Power menu          |
 | `Super + Alt + L`  | Lock screen         |
 | `Super + Ctrl + W` | Random wallpaper    |
-| `Print`            | Screenshot (full)   |
-| `Ctrl + Print`     | Screenshot (screen) |
-| `Alt + Print`      | Screenshot (window) |
-| `Super + Y`        | Voice typing (hold) |
+| `Print`            | Screenshot          |
+| `Super + Y`        | Voice typing        |
 
-## Optional Services
+### Secrets
 
-### Bluetooth
+The SOPS AGE key is restored from 1Password by `dots apply`.
 
-```bash
-sudo systemctl enable --now bluetooth.service
+To print the current key for backup:
+
+```sh
+make secrets.backup
 ```
-
-### Syncthing
-
-[Syncthing](https://syncthing.net/) is a continuous file synchronization program.
-
-```bash
-systemctl --user enable --now syncthing
-```
-
-Access the web UI at [localhost:8384](http://localhost:8384/) or search "Syncthing" in the app launcher.
-
-### Secrets Management (SOPS + AGE)
-
-Personally I use [SOPS](https://github.com/getsops/sops) with [AGE](https://github.com/FiloSottile/age) for encrypting secrets in projects. My AGE private key is stored in 1Password and it's restored locally using the OP cli.
-
-**On a new machine:**
-
-```bash
-make secrets.setup    # Restores key from 1Password to ~/.config/sops/age/keys.txt
-```
-
-**Backup your key** (if generating a new one):
-
-```bash
-mkdir -p .config/sops/age
-age-keygen -o .config/sops/age/keys.txt
-make secrets.backup   # Shows key to copy to 1Password
-```
-
-The `keys.txt` file is gitignored and never committed.
 
 ### Macropad
 
-Macropad configuration is in `macropad/macropad.ron`. Upload using:
+Macropad configuration is in `macropad/macropad.ron`. Upload it with:
 
-```bash
+```sh
 ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
 ```

@@ -4,40 +4,37 @@ This repository contains cross-platform dotfiles for Arch Linux and macOS.
 
 ## Project overview
 
-- Dotfiles are managed with GNU Stow from the repository root.
-- Main setup entrypoint is `./setup.sh`.
-- Package lists live in:
-  - `arch-pkgs/pkgs.txt` for Arch Linux / paru
-  - `macos-pkgs/Brewfile` for macOS / Homebrew
+- Dotfiles are managed by `dots` from `dots.lua`.
+- Main bootstrap entrypoint is `./setup.sh`.
+- `setup.sh` installs `dots` if needed, then runs `dots apply`.
+- `dots.lua` loads normal Lua modules under `dots/`.
 - Cross-platform configs include Neovim, Ghostty, tmux, zsh, starship, git, yazi, bat, btop, mise, and zoxide.
-- Linux-only configs include niri and noctalia
-- Pi config is tracked under `.pi/agent/` and stowed to `~/.pi/agent/`.
+- Arch-specific configs include niri and noctalia.
+- macOS-specific configs include AeroSpace, SketchyBar, and Borders.
+- Pi config is tracked under `.pi/agent/` and linked to `~/.pi/agent/` by `dots`.
 
 ## Common commands
 
-```bash
+```sh
 ./setup.sh
-make install
-make show
-make tofile
-make cleanCache
-stow --no-folding .
-stow --no-folding --adopt .
+dots check
+dots apply
+dots state list
 ```
 
-Secrets commands:
+Secrets command:
 
-```bash
-make secrets.setup
+```sh
 make secrets.backup
 ```
 
 ## Setup behavior
 
-- `setup.sh` detects `OSTYPE`.
-- On Arch Linux it installs prerequisites, installs paru if missing, then installs `arch-pkgs/pkgs.txt`.
-- On macOS it installs Xcode CLI tools, Homebrew if missing, then runs `brew bundle`.
-- Setup initializes submodules, stows dotfiles with `stow --no-folding --adopt .`, sets zsh as default shell, optionally runs `mise install`, optionally installs Pi, optionally installs `tree-sitter-cli`, and installs the weather script.
+- `dots.common` declares shared symlinks, fonts, and shell.
+- `dots.arch` declares Arch packages, user groups, Linux-only links, and systemd services.
+- `dots.macos` declares Homebrew packages, casks, taps, macOS-only links, commands, and services.
+- `dots.tools` declares shared command resources, including local tools and the SOPS AGE key restore.
+- Local machine state is stored in `.dots/state.json` and is not committed.
 
 ## Editing guidelines
 
@@ -46,7 +43,7 @@ make secrets.backup
 - Preserve cross-platform behavior between macOS and Arch Linux.
 - Do not commit secrets or generated local files.
 - Avoid tracking `~/.pi/agent/auth.json`, sessions, package caches, or generated plugin dependencies.
-- When adding stowed files, place them in the repo at the same relative path they should have under `$HOME`.
+- Add managed files through `dots.symlink(...)` in the appropriate Lua module.
 
 ## Neovim
 
@@ -69,7 +66,7 @@ make secrets.backup
 
 ## Pi
 
-- Stowed config path: `.pi/agent/`
+- Managed config path: `.pi/agent/`
 - Runtime user path: `~/.pi/agent/`
 - Do not track auth/session files.
 - Local extensions live in `.pi/agent/extensions/`.

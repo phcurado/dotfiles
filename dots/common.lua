@@ -7,6 +7,7 @@ dots.symlink("~/.config", ".config", {
 		"niri/**",
 		"noctalia/**",
 		"sketchybar/**",
+		"sops/**",
 		"wallpapers/**",
 		"superfile/**",
 	},

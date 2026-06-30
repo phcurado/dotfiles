@@ -48,6 +48,12 @@ dots.brew.install(packages)
 
 dots.brew.cask(casks)
 
+dots.command("sops age key", {
+	check = "scripts/sops-age-key check",
+	apply = "scripts/sops-age-key apply",
+	needs = { "package:brew-cask:1password-cli" },
+})
+
 dots.command("sbarlua", {
 	check = 'test -f "$HOME/.local/share/sketchybar_lua/sketchybar.so"',
 	apply = [[

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+set -eu
+
+key="$HOME/.config/sops/age/keys.txt"
+
+case "${1:-}" in
+  check)
+    test -s "$key" && test ! -L "$key"
+    ;;
+  apply)
+    mkdir -p "$(dirname "$key")"
+    op read "op://Personal/SOPS AGE Key/notes" > "$key"
+    chmod 600 "$key"
+    ;;
+  *)
+    echo "usage: $0 check|apply" >&2
+    exit 2
+    ;;
+esac
