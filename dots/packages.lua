@@ -19,7 +19,6 @@ return {
 	"ripgrep",
 	"sqlite",
 	"starship",
-	"stow",
 	"superfile",
 	"syncthing",
 	"tmux",

@@ -161,10 +161,3 @@ To print the current key for backup:
 make secrets.backup
 ```
 
-### Macropad
-
-Macropad configuration is in `macropad/macropad.ron`. Upload it with:
-
-```sh
-ansible-playbook --ask-become-pass ansible-scripts/macropad.yml
-```
