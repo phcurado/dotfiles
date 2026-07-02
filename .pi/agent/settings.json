@@ -18,27 +18,33 @@
         "thinking": "medium"
       },
       "context-builder": {
-        "model": "deepseek/deepseek-v4-pro",
-        "thinking": "high"
+        "model": "openai-codex/gpt-5.4-mini",
+        "thinking": "medium"
       },
       "planner": {
-        "model": "deepseek/deepseek-v4-pro",
+        "model": "openai-codex/gpt-5.4-mini",
         "thinking": "high"
       },
       "oracle": {
-        "model": "deepseek/deepseek-v4-pro",
+        "model": "openai-codex/gpt-5.4",
         "thinking": "high"
       },
       "worker": {
-        "model": "openai-codex/gpt-5.5",
+        "model": "openai-codex/gpt-5.4",
         "thinking": "high"
       },
       "reviewer": {
-        "model": "deepseek/deepseek-v4-pro",
-        "thinking": "high",
-        "fallbackModels": [
-          "openai-codex/gpt-5.4"
-        ]
+        "model": "openai-codex/gpt-5.4-mini",
+        "thinking": "medium",
+        "fallbackModels": ["openai-codex/gpt-5.4"]
+      },
+      "researcher": {
+        "model": "openai-codex/gpt-5.4-mini",
+        "thinking": "medium"
+      },
+      "delegate": {
+        "model": "openai-codex/gpt-5.4-mini",
+        "thinking": "medium"
       }
     }
   }
