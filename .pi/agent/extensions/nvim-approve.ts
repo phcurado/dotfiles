@@ -12,11 +12,12 @@ import { basename, dirname, extname, join, resolve } from "node:path";
 
 const CONFIG_PATH = resolve(homedir(), ".pi/agent/nvim-approve.json");
 
-type Config = { autoApprove: boolean; editor: string };
+type Config = { autoApprove: boolean; fullScreenApproval: boolean; editor: string };
 type Edit = { oldText: string; newText: string };
 
 const DEFAULT_CONFIG: Config = {
   autoApprove: true,
+  fullScreenApproval: true,
   editor: process.env.VISUAL || process.env.EDITOR || "nvim",
 };
 
@@ -32,6 +33,10 @@ function loadConfig(): Config {
             : typeof raw.enabled === "boolean"
               ? !raw.enabled
               : DEFAULT_CONFIG.autoApprove,
+      fullScreenApproval:
+        typeof raw.fullScreenApproval === "boolean"
+          ? raw.fullScreenApproval
+          : DEFAULT_CONFIG.fullScreenApproval,
       editor:
         typeof raw.editor === "string" && raw.editor.trim()
           ? raw.editor
@@ -203,20 +208,21 @@ function runReviewEditor(
   const activeBefore = activeTmuxPane(currentWindow);
   const zoomedBefore = isTmuxWindowZoomed(currentWindow);
   const alreadyZoomedHere = zoomedBefore && activeBefore === tmuxPane;
+  const shouldZoom = config.fullScreenApproval && !alreadyZoomedHere;
 
   if (zoomedBefore && activeBefore && activeBefore !== tmuxPane) {
     spawnSync("tmux", ["resize-pane", "-Z", "-t", activeBefore], { stdio: "ignore" });
   }
 
   spawnSync("tmux", ["select-pane", "-t", tmuxPane], { stdio: "ignore" });
-  if (!alreadyZoomedHere) {
+  if (shouldZoom) {
     spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
   }
 
   try {
     return spawnSync(cmd, editorArgs, { stdio: "inherit" });
   } finally {
-    if (!alreadyZoomedHere && isTmuxWindowZoomed(tmuxPane)) {
+    if (shouldZoom && isTmuxWindowZoomed(tmuxPane)) {
       spawnSync("tmux", ["resize-pane", "-Z", "-t", tmuxPane], { stdio: "ignore" });
     }
 
@@ -307,7 +313,6 @@ async function reviewInNvim(
       "diffupdate",
       "wincmd =",
       "normal! ]czz",
-      `echo ${vimString(`Review ${displayPath}: Space+a/ga approve, Space+q/gq cancel. :w/:x in right pane also approves.`)}`,
     ].join("\n") + "\n",
     "utf8",
   );
@@ -360,6 +365,13 @@ async function showSettings(ctx: ExtensionContext, getConfig: () => Config, setC
         description: "When on, edit/write changes apply directly. When off, they open in nvim first.",
       },
       {
+        id: "fullScreenApproval",
+        label: "Full-screen approval",
+        currentValue: config.fullScreenApproval ? "on" : "off",
+        values: ["on", "off"],
+        description: "When on, the approval editor zooms the Pi tmux pane.",
+      },
+      {
         id: "editor",
         label: "Editor",
         currentValue: config.editor,
@@ -382,6 +394,13 @@ async function showSettings(ctx: ExtensionContext, getConfig: () => Config, setC
           const current = getConfig();
           if (id === "autoApprove") {
             const next = { ...current, autoApprove: value === "on" };
+            setConfig(next);
+            await saveConfig(next);
+            return;
+          }
+
+          if (id === "fullScreenApproval") {
+            const next = { ...current, fullScreenApproval: value === "on" };
             setConfig(next);
             await saveConfig(next);
             return;
