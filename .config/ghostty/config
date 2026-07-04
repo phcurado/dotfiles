@@ -1,7 +1,7 @@
 theme = Catppuccin Frappe
 # Font Configuration
 font-family = 0xProto Nerd Font
-font-size = 14
+font-size = 13
 font-synthetic-style = false
 font-variation=wght=600
 

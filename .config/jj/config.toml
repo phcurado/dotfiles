@@ -8,6 +8,7 @@ email = "phcurado@gmail.com"
 pager = "delta"
 diff-formatter = ":git"
 diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
+diff-instructions = false
 
 [signing]
 behavior = "own"
