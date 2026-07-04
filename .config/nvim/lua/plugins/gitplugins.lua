@@ -53,17 +53,17 @@ return {
       vim.keymap.set("n", "<leader>jj", ":J<CR>", { noremap = true, desc = "Open JJ" })
 
       require("jj").setup({
-        cmd = {
-          keymaps = {
-            log = {
-              split = { "<leader>js", "<C-s>" },
-            },
-          },
-        },
         diff = {
           backend = "codediff",
         },
       })
+    end,
+  },
+  {
+    "julienvincent/hunk.nvim",
+    cmd = { "DiffEditor" },
+    config = function()
+      require("hunk").setup()
     end,
   },
 }
