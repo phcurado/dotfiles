@@ -4,8 +4,8 @@ local mise_tools = dots.command("mise tools", {
 })
 
 dots.command("pi", {
-	check = "command -v pi >/dev/null",
-	apply = "mise exec -- npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
+	check = "mise exec node@25 -- command -v pi >/dev/null",
+	apply = "mise exec node@25 -- npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
 	needs = { mise_tools },
 })
 

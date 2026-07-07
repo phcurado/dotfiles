@@ -1,6 +1,8 @@
 local common_packages = require("dots.packages")
 
 local packages = {
+	"docker",
+	"docker-compose",
 	"git",
 	"gh",
 	"jj",
