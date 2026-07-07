@@ -4,6 +4,10 @@
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "high",
   "theme": "catppuccin-frappe",
+  "outputPad": 0,
+  "markdown": {
+    "codeBlockIndent": ""
+  },
   "packages": [
     "npm:pi-subagents",
     "npm:pi-show-diffs",
