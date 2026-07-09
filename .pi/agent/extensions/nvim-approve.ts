@@ -290,6 +290,7 @@ async function reviewInNvim(
       "augroup END",
       "command! Approve call PiApprove()",
       "command! Cancel qa!",
+      "cnoreabbrev w call PiApprove()",
       "cnoreabbrev x call PiApprove()",
       "cnoreabbrev q qa!",
       "windo let b:disable_autoformat = v:true",

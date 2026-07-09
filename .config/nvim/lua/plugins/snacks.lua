@@ -118,7 +118,7 @@ return {
       desc = "Live Grep",
     },
     {
-      "<leader>fb",
+      "gb",
       function()
         Snacks.picker.buffers({
           layout = {

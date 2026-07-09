@@ -25,18 +25,16 @@ dots.command("tree-sitter-cli", {
 
 dots.command("weather", {
 	check = [[
-		latest="$(curl -fsSL https://api.github.com/repos/phcurado/weather/releases/latest | sed -n 's/.*"tag_name": *"v\{0,1\}\([^"]*\)".*/\1/p' | head -n1)"
 		bin="$HOME/.local/bin/weather"
-		[ -x "$bin" ] && [ -n "$latest" ] && "$bin" --version | grep -q "$latest"
+		[ -x "$bin" ] && "$bin" --version >/dev/null 2>&1
 	]],
 	apply = "curl -sSL https://raw.githubusercontent.com/phcurado/weather/main/install.sh | sh",
 })
 
 dots.command("tpane", {
 	check = [[
-		latest="$(curl -fsSL https://api.github.com/repos/phcurado/tpane/releases/latest | sed -n 's/.*"tag_name": *"v\{0,1\}\([^"]*\)".*/\1/p' | head -n1)"
 		bin="$HOME/.local/bin/tpane"
-		[ -x "$bin" ] && [ -n "$latest" ] && "$bin" --version | grep -q "$latest"
+		[ -x "$bin" ] && "$bin" --version >/dev/null 2>&1
 	]],
 	apply = "curl -sSL https://raw.githubusercontent.com/phcurado/tpane/main/install.sh | sh",
 })
