@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.80.3",
+  "lastChangelogVersion": "0.80.6",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "gpt-5.6-sol",
+  "defaultThinkingLevel": "medium",
   "theme": "catppuccin-frappe",
   "outputPad": 0,
   "markdown": {
@@ -40,7 +40,9 @@
       "reviewer": {
         "model": "openai-codex/gpt-5.4-mini",
         "thinking": "medium",
-        "fallbackModels": ["openai-codex/gpt-5.4"]
+        "fallbackModels": [
+          "openai-codex/gpt-5.4"
+        ]
       },
       "researcher": {
         "model": "openai-codex/gpt-5.4-mini",

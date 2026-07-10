@@ -1,6 +1,7 @@
 {
   "asyncByDefault": true,
-  "maxSubagentDepth": 1,
+  "toolDescriptionMode": "compact",
+  "maxSubagentDepth": 2,
   "defaultSessionDir": "~/.pi/agent/sessions/subagents",
   "parallel": {
     "maxTasks": 6,

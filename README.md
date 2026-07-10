@@ -64,35 +64,6 @@ List managed resources:
 dots state list
 ```
 
-The local state lives in `.dots/state.json` and is not committed.
-
-## Layout
-
-```txt
-dots.lua              entrypoint
-dots/common.lua       shared files, fonts, shell, and tools
-dots/arch.lua         Arch packages, services, and Linux-only links
-dots/macos.lua        Homebrew packages, services, and macOS-only links
-dots/packages.lua     shared package list
-fonts/                managed fonts
-```
-
-`dots.lua` uses normal Lua modules:
-
-```lua
-require("dots.common")
-
-if dots.platform.family == "arch" then
-  require("dots.arch")
-end
-
-if dots.platform.family == "darwin" then
-  require("dots.macos")
-end
-
-require("dots.tools")
-```
-
 ## What is managed
 
 Common resources include:
@@ -160,4 +131,3 @@ To print the current key for backup:
 ```sh
 make secrets.backup
 ```
-

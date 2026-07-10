@@ -186,11 +186,6 @@ async function formatFetchResult(result: FetchResult): Promise<string> {
 }
 
 export default function (pi: ExtensionAPI) {
-  pi.on("session_start", async () => {
-    if (process.env.PI_SUBAGENT_CHILD === "1") return;
-    void ensureSearxng().catch(() => {});
-  });
-
   pi.registerTool({
     name: "web_search",
     label: "Web search",
