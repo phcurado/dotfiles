@@ -57,6 +57,11 @@ dots.symlink("~/.config/niri", ".config/niri")
 dots.symlink("~/.config/noctalia", ".config/noctalia")
 dots.symlink("~/.config/wallpapers", ".config/wallpapers")
 
+dots.systemd.install({
+	"systemd/automatic-timezone.service",
+	"systemd/automatic-timezone.timer",
+})
+
 dots.pacman.install({
 	"base-devel",
 	"git",
@@ -78,3 +83,5 @@ dots.user.add_to_groups(groups)
 
 dots.systemd.enable(systemd_services)
 dots.systemd.start(systemd_services)
+dots.systemd.enable({ "automatic-timezone.timer" })
+dots.systemd.start({ "automatic-timezone.timer" })

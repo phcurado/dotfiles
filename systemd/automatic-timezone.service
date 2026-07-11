@@ -1,0 +1,8 @@
+[Unit]
+Description=Update the system timezone from the public IP address
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'timezone=$(/usr/bin/curl --fail --silent --show-error --max-time 15 https://ipapi.co/timezone/); test -f "/usr/share/zoneinfo/$timezone"; test "$(/usr/bin/timedatectl show --property=Timezone --value)" = "$timezone" || /usr/bin/timedatectl set-timezone "$timezone"'

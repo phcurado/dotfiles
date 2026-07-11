@@ -1,5 +1,9 @@
 dots.user.shell("zsh")
 
+dots.docker.compose("searxng", {
+	file = ".config/searxng/docker-compose.yml",
+})
+
 dots.symlink("~/.config", ".config", {
 	ignore = {
 		"aerospace/**",
