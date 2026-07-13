@@ -197,7 +197,7 @@ function runReviewEditor(
 
   setTPaneState(tmuxPane, "blocked");
 
-  if (hidden) {
+  if (hidden || !config.fullScreenApproval) {
     try {
       return spawnSync(cmd, editorArgs, { stdio: "inherit" });
     } finally {

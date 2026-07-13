@@ -48,6 +48,20 @@ return {
     words = { enabled = true },
     picker = {
       ui_select = true,
+      sources = {
+        explorer = {
+          hidden = true,
+        },
+        files = {
+          hidden = true,
+          ignored = false,
+          follow = false,
+          layout = {
+            preset = "ivy",
+            layout = { position = "bottom", backdrop = 70 },
+          },
+        },
+      },
     },
     terminal = {
       win = {
@@ -116,6 +130,22 @@ return {
         })
       end,
       desc = "Live Grep",
+    },
+    {
+      "<leader>fd",
+      function()
+        Snacks.picker.explorer({
+          win = {
+            list = {
+              keys = {
+                ["<C-f>"] = "picker_files",
+                ["<C-g>"] = "picker_grep",
+              },
+            },
+          },
+        })
+      end,
+      desc = "Find in directory",
     },
     {
       "gb",

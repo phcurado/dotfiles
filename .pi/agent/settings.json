@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.80.6",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "high",
   "theme": "catppuccin-frappe",
   "outputPad": 0,
   "markdown": {
@@ -40,7 +40,9 @@
       "reviewer": {
         "model": "openai-codex/gpt-5.6-sol",
         "thinking": "medium",
-        "fallbackModels": ["openai-codex/gpt-5.6-terra"]
+        "fallbackModels": [
+          "openai-codex/gpt-5.6-terra"
+        ]
       },
       "researcher": {
         "model": "openai-codex/gpt-5.6-sol",
