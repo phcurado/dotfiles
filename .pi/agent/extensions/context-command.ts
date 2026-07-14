@@ -232,7 +232,7 @@ function buildReport(pi: ExtensionAPI, ctx: any): Report {
     ...top(systemRows, 1),
   ].filter((row) => row.tokens > 0);
 
-  const startup = sum(loaded);
+  const startup = sum(systemRows);
   const messages = [...byRole.values()].reduce((total, n) => total + n, 0);
   const estimated = startup + messages;
   const total = Math.max(measured, estimated);

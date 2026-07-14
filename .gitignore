@@ -3,10 +3,6 @@ keys.txt
 *.key
 .dots/
 
-# TPM plugins (managed by TPM, not git)
-.config/tmux/plugins/*
-!.config/tmux/plugins/tpm
-
 .claude/
 
 .pi/agent/*

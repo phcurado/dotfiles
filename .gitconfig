@@ -5,7 +5,7 @@
 [tag]
   sort = version:refname
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [diff]
   algorithm = histogram
   colorMoved = plain
@@ -23,13 +23,14 @@
   autocorrect = prompt
 [commit]
   verbose = true
+  gpgsign = true
 [rerere]
   enabled = true
   autoupdate = true
 [core]
   pager = delta
   excludesfile = ~/.gitignore
-	editor = nvim
+  editor = nvim
 [interactive]
   diffFilter = delta --color-only
 [merge]
@@ -41,47 +42,45 @@
 [pull]
   rebase = true
 [user]
-	email = phcurado@gmail.com
-	name = Paulo Curado
+  email = phcurado@gmail.com
+  name = Paulo Curado
   signingkey = ~/.ssh/id_ed25519.pub
 [gpg]
   format = ssh
 [gpg "ssh"]
   allowedSignersFile = ~/.ssh/allowed_signers
-[commit]
-  gpgsign = true
 [delta]
-    navigate = true
-    dark = true
-    syntax-theme = Catppuccin Frappe
-    file-added-label = [+]
-    file-copied-label = [==]
-    file-modified-label = [*]
-    file-removed-label = [-]
-    file-renamed-label = [->]
-    file-style = omit
-    hunk-header-decoration-style = "#8CAAEE" ul
-    hunk-header-file-style = blue ul bold
-    hunk-header-line-number-style = yellow box bold
-    hunk-header-style = file line-number syntax bold italic
-    plus-style = brightgreen
-    plus-emph-style = black green
-    minus-style = brightred
-    minus-emph-style = black red
-    line-numbers = true
-    line-numbers-minus-style = brightred
-    line-numbers-plus-style = brightgreen
-    line-numbers-left-style = "#8CAAEE"
-    line-numbers-right-style = "#8CAAEE"
-    line-numbers-zero-style = "#737994"
-    zero-style = syntax
-    whitespace-error-style = black bold
-    blame-code-style = syntax
-    blame-format = "{author:<18} {commit:<6} {timestamp:<15}"
-    blame-palette = "#303446" "#292C3C" "#414559"
-    merge-conflict-begin-symbol = ~
-    merge-conflict-end-symbol = ~
-    merge-conflict-ours-diff-header-style = yellow bold
-    merge-conflict-ours-diff-header-decoration-style = "#8CAAEE" box
-    merge-conflict-theirs-diff-header-style = yellow bold
-    merge-conflict-theirs-diff-header-decoration-style = "#8CAAEE" box
+  navigate = true
+  dark = true
+  syntax-theme = Catppuccin Frappe
+  file-added-label = [+]
+  file-copied-label = [==]
+  file-modified-label = [*]
+  file-removed-label = [-]
+  file-renamed-label = [->]
+  file-style = omit
+  hunk-header-decoration-style = "#8CAAEE" ul
+  hunk-header-file-style = blue ul bold
+  hunk-header-line-number-style = yellow box bold
+  hunk-header-style = file line-number syntax bold italic
+  plus-style = brightgreen
+  plus-emph-style = black green
+  minus-style = brightred
+  minus-emph-style = black red
+  line-numbers = true
+  line-numbers-minus-style = brightred
+  line-numbers-plus-style = brightgreen
+  line-numbers-left-style = "#8CAAEE"
+  line-numbers-right-style = "#8CAAEE"
+  line-numbers-zero-style = "#737994"
+  zero-style = syntax
+  whitespace-error-style = black bold
+  blame-code-style = syntax
+  blame-format = "{author:<18} {commit:<6} {timestamp:<15}"
+  blame-palette = "#303446" "#292C3C" "#414559"
+  merge-conflict-begin-symbol = ~
+  merge-conflict-end-symbol = ~
+  merge-conflict-ours-diff-header-style = yellow bold
+  merge-conflict-ours-diff-header-decoration-style = "#8CAAEE" box
+  merge-conflict-theirs-diff-header-style = yellow bold
+  merge-conflict-theirs-diff-header-decoration-style = "#8CAAEE" box

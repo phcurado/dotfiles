@@ -19,7 +19,11 @@ source ~/.config/zsh/.antidote/antidote.zsh
 antidote load
 
 autoload -Uz compinit
-compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 zstyle ':completion:*' menu select
 
