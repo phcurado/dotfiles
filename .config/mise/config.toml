@@ -1,7 +1,7 @@
 [tools]
 awscli = "2.33.19"
 kubectl = "1.35.1"
-terraform = "1.14.5"
+opentofu = "1.12.4"
 kotlin = "2.3.10"
 elixir = "1.19.4-otp-28"
 erlang = "28.3.1"

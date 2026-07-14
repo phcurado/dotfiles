@@ -75,7 +75,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias open="xdg-open"
   # system
   alias jctl="journalctl -p 3 -xb"
-  alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
   alias tb="nc termbin.com 9999"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   alias make="make -j$(sysctl -n hw.ncpu)"
@@ -88,13 +87,4 @@ bindkey "^[[1;5D" backward-word
 zvm_after_init_commands+=('source <(fzf --zsh)')
 zvm_after_init_commands+=('eval "$(atuin init zsh --disable-up-arrow)"')
 
-# pkgfile "command not found" handler (Arch Linux only)
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  source /usr/share/doc/pkgfile/command-not-found.zsh
-fi
-
 eval "$(starship init zsh)"
-
-# >>> Codex installer >>>
-export PATH="/home/phcurado/.local/bin:$PATH"
-# <<< Codex installer <<<

@@ -33,8 +33,8 @@ export default function (pi: ExtensionAPI) {
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       if (!ctx.hasUI) {
         return {
-          content: [{ type: "text", text: "No UI available. Proceed with best guess." }],
-          details: { reason: "no-ui" },
+          content: [{ type: "text", text: "ERROR: No UI available. User input is required;" }],
+          details: { error: "no-ui" },
         };
       }
 

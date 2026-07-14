@@ -18,7 +18,7 @@ cd ~/dotfiles
 ./setup.sh
 ```
 
-`setup.sh` installs `dots` into `~/.local/bin` if needed, then runs:
+`setup.sh` installs the latest `dots` release and runs:
 
 ```sh
 dots apply
@@ -45,7 +45,7 @@ Apply changes:
 dots apply
 ```
 
-Switch profile-specific services:
+Switch Arch profile-specific services:
 
 ```sh
 dots --profile personal apply
@@ -120,7 +120,6 @@ prompted.
 | `Super + Alt + L`  | Lock screen        |
 | `Super + Ctrl + W` | Random wallpaper   |
 | `Print`            | Screenshot         |
-| `Super + Y`        | Voice typing       |
 
 ### Secrets
 

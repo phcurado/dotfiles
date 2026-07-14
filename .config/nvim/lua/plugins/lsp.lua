@@ -10,6 +10,8 @@ return {
     config = function()
       require("mason-tool-installer").setup({
         ensure_installed = {
+          "black",
+          "goimports",
           "markdownlint",
           "prettier",
           "prettierd",
@@ -36,7 +38,7 @@ return {
           "cssls",
           "tailwindcss",
           "harper_ls",
-          "terraformls",
+          "tofu_ls",
           "denols",
           "bashls",
           "basedpyright",
@@ -90,6 +92,7 @@ return {
       vim.lsp.enable("elixirls")
       vim.lsp.enable("rust_analyzer")
       vim.lsp.enable("gopls")
+      vim.lsp.enable("tofu_ls")
       vim.lsp.enable("helm_ls")
       vim.lsp.enable("postgres_lsp")
     end,

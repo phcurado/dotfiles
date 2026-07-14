@@ -23,6 +23,7 @@ local packages = {
 	"niri",
 	"noctalia-git",
 	"obsidian",
+	"playerctl",
 	"polkit-kde-agent",
 	"postgresql",
 	"power-profiles-daemon",
