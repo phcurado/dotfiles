@@ -1,8 +1,9 @@
 {
   "asyncByDefault": true,
   "toolDescriptionMode": "compact",
-  "maxSubagentDepth": 2,
+  "maxSubagentDepth": 1,
   "defaultSessionDir": "~/.pi/agent/sessions/subagents",
+  "singleRunOutputBaseDir": "~/.pi/subagent-outputs",
   "parallel": {
     "maxTasks": 6,
     "concurrency": 4
