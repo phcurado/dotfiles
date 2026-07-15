@@ -15,7 +15,7 @@
 
 - Implement only what was requested, nothing more. Don't combine separate ideas unless asked. If it feels complex, stop and reassess.
 - Before adding validation, fallbacks, timers, background behavior, UI plumbing, config files, or abstractions, ask "Did the user ask for this?" If not, don't.
-- Do the minimal fix. Mention optional extras separately; don't apply unless asked.
+- Do the minimal fix. Mention optional extras separately; don't apply unless asked. Optional extras must be concrete, currently relevant findings supported by evidence—not hypothetical future-proofing or generic best practices.
 
 ## Editing
 
