@@ -18,6 +18,10 @@ end
 
 if dots.platform.family == "darwin" then
 	require("dots.macos")
+
+	if dots.profile == "work" then
+		require("dots.profiles.work")
+	end
 end
 
 require("dots.tools")
