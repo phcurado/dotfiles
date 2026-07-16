@@ -21,6 +21,7 @@ local casks = {
 	"obsidian",
 	"docker-desktop",
 	"tailscale-app",
+	"twingate",
 	"1password",
 	"1password-cli",
 	"font-0xproto-nerd-font",
