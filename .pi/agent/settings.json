@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.80.9",
+  "lastChangelogVersion": "0.80.10",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
+  "defaultModel": "gpt-5.6-terra",
   "defaultThinkingLevel": "high",
   "theme": "catppuccin-frappe",
   "outputPad": 0,

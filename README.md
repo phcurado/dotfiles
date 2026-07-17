@@ -18,34 +18,27 @@ cd ~/dotfiles
 ./setup.sh
 ```
 
-`setup.sh` installs the latest `dots` release and runs:
+`setup.sh` will basically install [dots](https://github.com/phurado/dots), a software to manage dotfiles declaratively and works on both of my Linux and MacOS setup.
+You can install `dots` first and check the changes that will be made on your machine with `dots check`.
 
-```sh
-dots apply
-```
-
-`dots apply` checks the current machine, prints the changes, and asks for
-confirmation before installing packages, linking files, copying fonts, starting
-services, or changing user settings.
-
-On Arch, reboot after the first apply so the shell, groups, display manager, and
-system services all start from a clean login.
+If running on Arch, it's good to reboot after running the scripts because it changes the shell (`bash` to `zsh`), create groups and
+start system services.
 
 ## Daily use
 
-Preview changes:
+If you change something, create symlinks, just run:
 
 ```sh
 dots check
 ```
 
-Apply changes:
+Which will show what settings from this dotfiles that will be applied on your machine. To apply:
 
 ```sh
 dots apply
 ```
 
-Switch Arch profile-specific services:
+I use different profiles in the same machine, for instance I have different VPN configurations depending on projects I'm working on it so I can quickly switch to a profile with these commands:
 
 ```sh
 dots --profile personal apply
@@ -58,15 +51,7 @@ dots --profile company apply
 # Tailscale
 ```
 
-List managed resources:
-
-```sh
-dots state list
-```
-
-## What is managed
-
-Common resources include:
+## Dotfile Setup
 
 - shell: `zsh`
 - config links: Neovim, Ghostty, tmux, zsh, Starship, git, yazi, bat, btop, mise, zoxide
@@ -81,7 +66,7 @@ Arch resources include:
 - desktop packages for niri/noctalia
 - user groups: `docker`, `wheel`
 - system services: Bluetooth, Docker, NetworkManager
-- profile services: Twingate for `work`, Tailscale for `company`
+- profile services: Twingate for `work`, Tailscale for my `company`
 
 macOS resources include:
 
@@ -105,7 +90,7 @@ The Makefile is only a shortcut layer:
 Before using AeroSpace for the first time, turn off **Displays have separate
 Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out
 and back in. Grant Accessibility permissions to AeroSpace and SketchyBar when
-prompted.
+prompted. If I remember correctly, you will get prompted for all this configuration when setting up this dotfiles.
 
 ### Niri keybindings
 
@@ -125,8 +110,26 @@ prompted.
 
 The SOPS AGE key is restored from 1Password by `dots apply`.
 
-To print the current key for backup:
+You can backup using the `make` command.
 
 ```sh
 make secrets.backup
 ```
+
+## AI - pi.dev
+
+I'm using [pi](https://pi.dev) as my agent harness. It is a very customizable harness which fits nicely with my working. You can check my plugins and configurations on `.pi/` folder.
+
+## Tmux
+
+Tmux is terminal multiplexer and probably one of the most important tools in this setup. Since I work in many projects, I create tabs and specific workflows on how things should be opened to improve my experience while coding. I also created my own tool to manage tmux panes: [tpane](https://github.com/phcurado/tpane), which allows me to do all the tmux configuration using the `Lua` language. This tool also keeps a daemon running which stores panes state in memory and allows me to customize how and when things should be opened using the configured shortcuts in `.config/tmux/tpane/`, here are some of the shortcuts:
+
+| Key         | Action                                       |
+| ----------- | -------------------------------------------- |
+| `Super + c` | New tab                                      |
+| `Super + a` | Open or toggle `pi` pane in the right        |
+| `Super + t` | Open or toggle a pane terminal in the bottom |
+
+## Disclaimer
+
+This is my personal configuration, the intent of this project is not to copy but serve as inspiration if anyone wants to use similar tools or just check my config.
