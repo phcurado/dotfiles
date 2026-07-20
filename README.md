@@ -18,27 +18,27 @@ cd ~/dotfiles
 ./setup.sh
 ```
 
-`setup.sh` will basically install [dots](https://github.com/phurado/dots), a software to manage dotfiles declaratively and works on both of my Linux and MacOS setup.
+`setup.sh` will basically install [dots](https://github.com/phcurado/dots), which manages dotfiles declaratively and works on both my Linux and macOS setups.
 You can install `dots` first and check the changes that will be made on your machine with `dots check`.
 
-If running on Arch, it's good to reboot after running the scripts because it changes the shell (`bash` to `zsh`), create groups and
-start system services.
+If you're running Arch, it's good to reboot after running the scripts because the setup changes the shell (`bash` to `zsh`), creates groups, and
+starts system services.
 
 ## Daily use
 
-If you change something, create symlinks, just run:
+Whenever I change something or create symlinks, I just run:
 
 ```sh
 dots check
 ```
 
-Which will show what settings from this dotfiles that will be applied on your machine. To apply:
+This shows which settings from these dotfiles will be applied on the machine. To apply them:
 
 ```sh
 dots apply
 ```
 
-I use different profiles in the same machine, for instance I have different VPN configurations depending on projects I'm working on it so I can quickly switch to a profile with these commands:
+I use different profiles on the same machine. For instance, I have different VPN configurations depending on the project I'm working on, so I can quickly switch profiles with these commands:
 
 ```sh
 dots --profile personal apply
@@ -66,7 +66,7 @@ Arch resources include:
 - desktop packages for niri/noctalia
 - user groups: `docker`, `wheel`
 - system services: Bluetooth, Docker, NetworkManager
-- profile services: Twingate for `work`, Tailscale for my `company`
+- profile services: Twingate for `work`, Tailscale for `company`
 
 macOS resources include:
 
@@ -90,7 +90,7 @@ The Makefile is only a shortcut layer:
 Before using AeroSpace for the first time, turn off **Displays have separate
 Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out
 and back in. Grant Accessibility permissions to AeroSpace and SketchyBar when
-prompted. If I remember correctly, you will get prompted for all this configuration when setting up this dotfiles.
+prompted. If I remember correctly, you will get prompted for all this configuration when setting up these dotfiles.
 
 ### Niri keybindings
 
@@ -118,11 +118,11 @@ make secrets.backup
 
 ## AI - pi.dev
 
-I'm using [pi](https://pi.dev) as my agent harness. It is a very customizable harness which fits nicely with my working. You can check my plugins and configurations on `.pi/` folder.
+I'm using [Pi](https://pi.dev) as my agent harness. It is very customizable and fits nicely into my workflow. You can check my plugins and configuration in the `.pi/` folder.
 
 ## Tmux
 
-Tmux is terminal multiplexer and probably one of the most important tools in this setup. Since I work in many projects, I create tabs and specific workflows on how things should be opened to improve my experience while coding. I also created my own tool to manage tmux panes: [tpane](https://github.com/phcurado/tpane), which allows me to do all the tmux configuration using the `Lua` language. This tool also keeps a daemon running which stores panes state in memory and allows me to customize how and when things should be opened using the configured shortcuts in `.config/tmux/tpane/`, here are some of the shortcuts:
+Tmux is a terminal multiplexer and probably one of the most important tools in this setup. Since I work on many projects, I create tabs and specific workflows for how things should be opened to improve my experience while coding. I also created my own tool to manage tmux panes: [tpane](https://github.com/phcurado/tpane), which allows me to configure tmux using Lua. This tool also keeps a daemon running that stores pane state in memory and allows me to customize how and when things should be opened using the shortcuts in `.config/tmux/tpane/`. Here are some of them:
 
 | Key         | Action                                       |
 | ----------- | -------------------------------------------- |
@@ -132,4 +132,4 @@ Tmux is terminal multiplexer and probably one of the most important tools in thi
 
 ## Disclaimer
 
-This is my personal configuration, the intent of this project is not to copy but serve as inspiration if anyone wants to use similar tools or just check my config.
+This is my personal configuration. The intent of this project is not to be copied, but to serve as inspiration for anyone who wants to use similar tools or just check my config.

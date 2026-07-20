@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.80.10",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-terra",
+  "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
   "theme": "catppuccin-frappe",
   "outputPad": 0,
@@ -9,49 +9,9 @@
     "codeBlockIndent": ""
   },
   "packages": [
-    {
-      "source": "npm:pi-subagents",
-      "skills": []
-    },
     "npm:pi-show-diffs",
     "npm:pi-tool-display",
     "npm:pi-image-tools",
     "npm:@mohndoe/pi-atlas"
-  ],
-  "subagents": {
-    "agentOverrides": {
-      "scout": {
-        "model": "openai-codex/gpt-5.6-sol",
-        "thinking": "medium"
-      },
-      "context-builder": {
-        "disabled": true
-      },
-      "planner": {
-        "model": "openai-codex/gpt-5.6-sol",
-        "thinking": "high"
-      },
-      "oracle": {
-        "model": "openai-codex/gpt-5.6-terra",
-        "thinking": "high"
-      },
-      "worker": {
-        "disabled": true
-      },
-      "reviewer": {
-        "model": "openai-codex/gpt-5.6-sol",
-        "thinking": "medium",
-        "fallbackModels": [
-          "openai-codex/gpt-5.6-terra"
-        ]
-      },
-      "researcher": {
-        "model": "openai-codex/gpt-5.6-sol",
-        "thinking": "medium"
-      },
-      "delegate": {
-        "disabled": true
-      }
-    }
-  }
+  ]
 }
