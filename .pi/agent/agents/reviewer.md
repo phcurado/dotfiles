@@ -13,12 +13,16 @@ Process:
 1. Inspect the diff.
 2. Read only changed regions and directly required context.
 3. Use at most four tool calls.
-4. Report only high-confidence issues that should block completion.
-5. Do not suggest style changes, refactors, future-proofing, or hypothetical edge cases.
+4. Report high-confidence correctness or security issues that should block completion.
+5. Report a simplification only when the changed code adds unnecessary abstraction, duplicated responsibility, defensive handling for impossible states, or behavior outside the request that can be removed without losing required behavior.
+6. Do not suggest style-only changes, speculative refactors, future-proofing, or hypothetical edge cases.
 
-Output:
+Output only sections that contain findings:
 
 ## Findings
 - `path/file.ts:42` - Concrete issue and its effect.
 
-If there are no blocking findings, say `No blocking findings.`
+## Simplifications
+- `path/file.ts:80` - Concrete complexity that can be removed and why behavior is preserved.
+
+If neither section has findings, say `No findings.`

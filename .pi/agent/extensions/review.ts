@@ -13,12 +13,21 @@ import { fileURLToPath } from "node:url";
 
 const CONFIG_PATH = resolve(homedir(), ".pi/agent/review.json");
 
-type Config = { autoApprove: boolean; editor?: string };
+type EditorConfig = { command: string; args: string[] };
+type Config = { autoApprove: boolean; editor?: EditorConfig };
 type Edit = { oldText: string; newText: string };
 
 const DEFAULT_CONFIG: Config = {
   autoApprove: false,
 };
+
+function parseEditorConfig(value: unknown): EditorConfig | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const editor = value as Partial<EditorConfig>;
+  if (typeof editor.command !== "string" || !editor.command.trim()) return undefined;
+  if (!Array.isArray(editor.args) || !editor.args.every((arg) => typeof arg === "string")) return undefined;
+  return { command: editor.command, args: editor.args };
+}
 
 function loadConfig(): Config {
   try {
@@ -28,10 +37,7 @@ function loadConfig(): Config {
         typeof raw.autoApprove === "boolean"
           ? raw.autoApprove
           : DEFAULT_CONFIG.autoApprove,
-      editor:
-        typeof raw.editor === "string" && raw.editor.trim()
-          ? raw.editor
-          : undefined,
+      editor: parseEditorConfig(raw.editor),
     };
   } catch {
     return DEFAULT_CONFIG;
@@ -143,24 +149,17 @@ function compactReplacement(original: string, accepted: string): Edit[] {
     : [{ oldText: original, newText: accepted }];
 }
 
-function parseEditor(command: string): string[] {
-  return command
-    .match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g)
-    ?.map((part) => part.replace(/^["']|["']$/g, "")) ?? [];
-}
-
 function editorInvocation(config: Config, originalFile: string, proposedFile: string) {
-  if (!config.editor) throw new Error(`Configure an editor command in ${CONFIG_PATH}`);
-  const [command, ...args] = parseEditor(config.editor);
-  if (!command) throw new Error(`Configure an editor command in ${CONFIG_PATH}`);
-  if (!args.some((arg) => arg.includes("{original}")))
-    throw new Error("Editor command must include {original}");
-  if (!args.some((arg) => arg.includes("{proposed}")))
-    throw new Error("Editor command must include {proposed}");
+  const editor = config.editor;
+  if (!editor) throw new Error(`Configure an editor command in ${CONFIG_PATH}`);
+  if (!editor.args.some((arg) => arg.includes("{original}")))
+    throw new Error("Editor args must include {original}");
+  if (!editor.args.some((arg) => arg.includes("{proposed}")))
+    throw new Error("Editor args must include {proposed}");
 
   return {
-    command,
-    args: args.map((arg) => arg
+    command: editor.command,
+    args: editor.args.map((arg) => arg
       .replaceAll("{original}", originalFile)
       .replaceAll("{proposed}", proposedFile)),
   };
@@ -261,9 +260,9 @@ async function showSettings(
       {
         id: "editor",
         label: "Editor",
-        currentValue: config.editor ?? "not configured",
+        currentValue: config.editor?.command ?? "not configured",
         values: ["change"],
-        description: "Command containing {original} and {proposed} placeholders.",
+        description: "Executable and argument array containing {original} and {proposed}.",
       },
     ];
 
@@ -286,18 +285,26 @@ async function showSettings(
             return;
           }
 
-          const editor = await ctx.ui.input(
-            "Editor command with {original} and {proposed}:",
-            current.editor,
+          const value = await ctx.ui.editor(
+            "Editor configuration",
+            JSON.stringify(current.editor ?? { command: "", args: ["{original}", "{proposed}"] }, null, 2),
           );
-          if (!editor?.trim()) {
-            settings.updateValue("editor", current.editor ?? "not configured");
-            tui.requestRender();
+          if (value === undefined) return;
+
+          let editor: EditorConfig | undefined;
+          try {
+            editor = parseEditorConfig(JSON.parse(value));
+          } catch {
+            editor = undefined;
+          }
+          if (!editor) {
+            ctx.ui.notify("Editor configuration requires a command and string args array.", "error");
             return;
           }
-          const next = { ...current, editor: editor.trim() };
+
+          const next = { ...current, editor };
           setConfig(next);
-          settings.updateValue("editor", next.editor);
+          settings.updateValue("editor", editor.command);
           await saveConfig(next);
           tui.requestRender();
         })();
