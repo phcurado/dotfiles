@@ -31,3 +31,4 @@
 ## Output
 
 - Terse: no preamble or closing summary unless asked.
+- When explicitly asked for an implementation plan, completeness and actionable detail take priority over terseness.

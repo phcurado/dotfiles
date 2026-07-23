@@ -2,14 +2,13 @@
   "lastChangelogVersion": "0.81.1",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "xhigh",
   "theme": "catppuccin-frappe",
   "outputPad": 0,
   "markdown": {
     "codeBlockIndent": ""
   },
   "packages": [
-    "npm:pi-show-diffs",
     "npm:pi-tool-display",
     "npm:pi-image-tools",
     "npm:@mohndoe/pi-atlas"

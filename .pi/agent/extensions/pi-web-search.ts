@@ -3,8 +3,10 @@ import {
   DEFAULT_MAX_BYTES,
   DEFAULT_MAX_LINES,
   formatSize,
+  keyHint,
   truncateHead,
 } from "@earendil-works/pi-coding-agent";
+import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { execFile } from "node:child_process";
 import { mkdtemp, writeFile } from "node:fs/promises";
@@ -20,11 +22,23 @@ const USER_AGENT = "pi-web-search/1.0 (+https://pi.dev)";
 
 type SearchResult = { title?: string; url?: string; content?: string };
 
+type SearchDetails = {
+  results: SearchResult[];
+};
+
 type FetchResult = {
   url: string;
   contentType: string;
   title?: string;
   text: string;
+};
+
+type FetchDetails = {
+  url: string;
+  contentType: string;
+  title?: string;
+  lines: number;
+  bytes: number;
 };
 
 function withTimeout(signal: AbortSignal | undefined, ms: number): AbortSignal {
@@ -228,7 +242,35 @@ export default function (pi: ExtensionAPI) {
             .map((r, i) => `${i + 1}. ${r.title ?? "(no title)"}\n   ${r.url ?? ""}\n   ${(r.content ?? "").trim()}`)
             .join("\n\n"),
         }],
+        details: { results } satisfies SearchDetails,
       };
+    },
+    renderCall(args, theme) {
+      let text = theme.fg("toolTitle", theme.bold("web_search "));
+      text += theme.fg("muted", `"${args.query}"`);
+      if (args.categories) text += ` ${theme.fg("dim", args.categories)}`;
+      return new Text(text, 0, 0);
+    },
+    renderResult(result, { expanded }, theme) {
+      const details = result.details as SearchDetails | undefined;
+      if (!details) {
+        const content = result.content[0];
+        return new Text(content?.type === "text" ? content.text : "", 0, 0);
+      }
+
+      const count = details.results.length;
+      let text = theme.fg("success", `${count} result${count === 1 ? "" : "s"}`);
+      if (!expanded) {
+        text += ` ${theme.fg("dim", `(${keyHint("app.tools.expand", "to expand")})`)}`;
+        return new Text(text, 0, 0);
+      }
+
+      for (const [index, item] of details.results.entries()) {
+        text += `\n\n${theme.fg("accent", `${index + 1}. ${item.title ?? "(no title)"}`)}`;
+        if (item.url) text += `\n${theme.fg("dim", item.url)}`;
+        if (item.content?.trim()) text += `\n${theme.fg("muted", item.content.trim())}`;
+      }
+      return new Text(text, 0, 0);
     },
   });
 
@@ -245,11 +287,39 @@ export default function (pi: ExtensionAPI) {
       try {
         const result = await fetchPage(params.url, signal);
         if (!result.text) return { content: [{ type: "text", text: "Fetched page but extracted no text." }] };
-        return { content: [{ type: "text", text: await formatFetchResult(result) }] };
+        return {
+          content: [{ type: "text", text: await formatFetchResult(result) }],
+          details: {
+            url: result.url,
+            contentType: result.contentType,
+            title: result.title,
+            lines: result.text.split("\n").length,
+            bytes: Buffer.byteLength(result.text, "utf8"),
+          } satisfies FetchDetails,
+        };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         return { content: [{ type: "text", text: `web_fetch failed: ${message}` }] };
       }
+    },
+    renderCall(args, theme) {
+      return new Text(
+        theme.fg("toolTitle", theme.bold("web_fetch ")) + theme.fg("muted", args.url),
+        0,
+        0,
+      );
+    },
+    renderResult(result, { expanded }, theme) {
+      const details = result.details as FetchDetails | undefined;
+      const content = result.content[0];
+      const output = content?.type === "text" ? content.text : "";
+      if (!details || expanded) return new Text(output, 0, 0);
+
+      const label = details.title ?? details.url;
+      const summary = `${details.lines.toLocaleString()} lines · ${formatSize(details.bytes)} · ${details.contentType}`;
+      const text = theme.fg("success", `Fetched ${label}`)
+        + `\n${theme.fg("dim", `${summary} (${keyHint("app.tools.expand", "to expand")})`)}`;
+      return new Text(text, 0, 0);
     },
   });
 }

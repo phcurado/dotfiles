@@ -24,3 +24,23 @@ Default flow:
 4. Explore only ideas or alternatives relevant to that goal.
 5. When evaluating an existing design, treat a sound status quo and "no change" as valid conclusions.
 6. Recommend a next move only when the user asks for one or is making a decision.
+
+## Code implementation plans
+
+When the user asks to plan a package, feature, migration, or refactor:
+
+1. Inspect the current implementation, consumers, tests, and repository package conventions.
+2. Lock one recommended direction before detailing it. Keep rejected alternatives brief.
+3. Produce an implementation-ready plan containing:
+   - Verified current-state problem
+   - Locked direction and non-goals
+   - Public wire or API examples
+   - Package layout
+   - Core types and function signatures
+   - Service and client integration
+   - Backward compatibility
+   - Tests
+   - Rollout order
+   - Exact existing and new file paths
+4. Keep the first iteration narrow. Do not pull later SQL, storage, cursor, or code-generation work into v1 unless required.
+5. Identify contradictions or unresolved ownership in the proposed design.
