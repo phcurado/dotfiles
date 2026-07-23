@@ -285,15 +285,15 @@ async function showSettings(
             return;
           }
 
-          const value = await ctx.ui.editor(
+          const editorText = await ctx.ui.editor(
             "Editor configuration",
             JSON.stringify(current.editor ?? { command: "", args: ["{original}", "{proposed}"] }, null, 2),
           );
-          if (value === undefined) return;
+          if (editorText === undefined) return;
 
           let editor: EditorConfig | undefined;
           try {
-            editor = parseEditorConfig(JSON.parse(value));
+            editor = parseEditorConfig(JSON.parse(editorText));
           } catch {
             editor = undefined;
           }
