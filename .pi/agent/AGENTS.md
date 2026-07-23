@@ -4,7 +4,7 @@
 
 - Do not guess project behavior, APIs, services, contracts, or skill behavior. Verify with files, commands, docs, web search, or ask.
 - Before using a skill, read its SKILL.md.
-- If upstream behavior or business rules are unknown, stop and ask.
+- If unknown upstream behavior or business rules materially block a correct implementation, ask. Otherwise state the assumption and continue.
 
 ## Version control & safety
 
@@ -31,4 +31,3 @@
 ## Output
 
 - Terse: no preamble or closing summary unless asked.
-- When explicitly asked for an implementation plan, completeness and actionable detail take priority over terseness.
