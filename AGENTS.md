@@ -8,7 +8,7 @@ This repository contains cross-platform dotfiles for Arch Linux and macOS.
 - Main bootstrap entrypoint is `./setup.sh`.
 - `setup.sh` installs `dots` if needed, then runs `dots apply`.
 - `dots.lua` loads normal Lua modules under `dots/`.
-- Cross-platform configs include Neovim, Ghostty, tmux, zsh, starship, git, yazi, bat, btop, mise, and zoxide.
+- Cross-platform configs include Neovim, Ghostty, tmux, zsh, starship, git, bat, btop, mise, and zoxide.
 - Arch-specific configs include niri and noctalia.
 - macOS-specific configs include AeroSpace, SketchyBar, and Borders.
 - Pi config is tracked under `.pi/agent/` and linked to `~/.pi/agent/` by `dots`.

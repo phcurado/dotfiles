@@ -15,6 +15,10 @@ setopt HIST_IGNORE_SPACE
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 source ~/.config/zsh/.antidote/antidote.zsh
 antidote load
 
@@ -31,10 +35,6 @@ zstyle ':completion:*' menu select
 
 ## JJ
 source <(jj util completion zsh)
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
 
 eval "$(zoxide init zsh)"
 eval "$(mise activate zsh)"

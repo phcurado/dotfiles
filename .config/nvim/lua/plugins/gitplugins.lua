@@ -34,19 +34,6 @@ return {
     },
   },
   {
-    "NicholasZolton/neojj",
-    lazy = true,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "esmuellert/codediff.nvim",
-      "folke/snacks.nvim",
-    },
-    cmd = "Neojj",
-    keys = {
-      { "<leader>J", "<cmd>Neojj<cr>", desc = "Show Neojj UI" },
-    },
-  },
-  {
     "nicolasgb/jj.nvim",
     version = "*",
     config = function()

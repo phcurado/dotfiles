@@ -5,7 +5,7 @@ return {
   priority = 2000,
   config = function()
     require("core.theme_persistence").setup({
-      default_colorscheme = "catppuccin-mocha",
+      default_colorscheme = "catppuccin-frappe",
       default_transparent = true,
     })
   end,

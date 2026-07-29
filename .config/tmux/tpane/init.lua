@@ -6,7 +6,7 @@ tpane.use("yank")
 tpane.use("open-url")
 tpane.use("agents")
 
-tpane.theme("Catppuccin Mocha", { transparent = true })
+tpane.theme("Catppuccin Frappe", { transparent = true })
 
 tpane.on("window:close", function(window)
 	tpane.tmux.cleanup(window)

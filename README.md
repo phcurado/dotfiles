@@ -54,7 +54,7 @@ dots --profile company apply
 ## Dotfile Setup
 
 - shell: `zsh`
-- config links: Neovim, Ghostty, tmux, zsh, Starship, git, yazi, bat, btop, mise, zoxide
+- config links: Neovim, Ghostty, tmux, zsh, Starship, git, bat, btop, mise, zoxide
 - fonts from `fonts/`
 - mise tools
 - local commands such as `pi`, `tree-sitter`, `weather`, and `tpane`

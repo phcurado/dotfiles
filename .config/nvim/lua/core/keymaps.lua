@@ -26,15 +26,7 @@ vim.keymap.set("n", "q:", "<Nop>", opts) -- Disable accidental command-line wind
 -- undotree (built-in 0.12)
 vim.keymap.set("n", "<leader>u", ":Undotree<CR>", opts)
 
--- goto-preview
-vim.keymap.set("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
-vim.keymap.set("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", { noremap = true })
-vim.keymap.set("n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
-vim.keymap.set("n", "gpD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>", { noremap = true })
-vim.keymap.set("n", "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>", { noremap = true })
-vim.keymap.set("n", "gpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
-
--- Exra commands
+-- Extra commands
 
 -- vim.keymap.set("n", "<leader>cp", ":let @+=@%<cr>", opts)
 

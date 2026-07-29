@@ -9,7 +9,7 @@
 ## Version control & safety
 
 - If `.jj/` exists, prefer jj over git.
-- Propose mutating or outward-facing commands (installs, pushes, deletes); let me run them, don't auto-run.
+- Auto-run safe bash (reads, builds, tests, status). Propose installs, pushes, deletes, and other outward-facing or destructive commands; let me run them.
 
 ## Scope — only what was asked
 
