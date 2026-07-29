@@ -6,25 +6,7 @@ local workspace_ids = { 1, 2, 3, 4 }
 local spaces = {}
 
 sbar.add("event", "aerospace_workspace_change")
-
-local function refresh_windows(sid)
-  sbar.exec("aerospace list-windows --workspace " .. sid .. " --format '%{app-name}'", function(out)
-    local icon_line = ""
-    local seen = {}
-    for app in out:gmatch("[^\n]+") do
-      if not seen[app] then
-        seen[app] = true
-        local glyph = app_icons[app] or app_icons["Default"]
-        icon_line = icon_line .. " " .. glyph
-      end
-    end
-    if icon_line == "" then
-      spaces[sid]:set({ label = { drawing = false } })
-    else
-      spaces[sid]:set({ label = { string = icon_line, drawing = true } })
-    end
-  end)
-end
+sbar.add("event", "aerospace_windows_change")
 
 local function refresh_focus(focused)
   for _, sid in ipairs(workspace_ids) do
@@ -63,12 +45,40 @@ for _, sid in ipairs(workspace_ids) do
     click_script = "aerospace workspace " .. sid,
   })
   spaces[sid] = space
-
-  space:subscribe("aerospace_workspace_change", function(env)
-    refresh_focus(tonumber(env.FOCUSED_WORKSPACE))
-    refresh_windows(sid)
-  end)
 end
+
+local function refresh_all_windows()
+  sbar.exec(
+    "aerospace list-windows --workspace 1 2 3 4 --json --format '%{workspace} %{app-name}'",
+    function(windows)
+      local labels = { "", "", "", "" }
+      local seen = {}
+
+      for _, window in ipairs(windows) do
+        local sid = tonumber(window.workspace)
+        local app = window["app-name"]
+        local key = sid .. "\0" .. app
+        if not seen[key] then
+          seen[key] = true
+          labels[sid] = labels[sid] .. " " .. (app_icons[app] or app_icons["Default"])
+        end
+      end
+
+      for _, sid in ipairs(workspace_ids) do
+        spaces[sid]:set({
+          label = { string = labels[sid], drawing = labels[sid] ~= "" },
+        })
+      end
+    end
+  )
+end
+
+spaces[1]:subscribe("aerospace_workspace_change", function(env)
+  refresh_focus(tonumber(env.FOCUSED_WORKSPACE))
+  refresh_all_windows()
+end)
+
+spaces[1]:subscribe({ "aerospace_windows_change", "space_windows_change", "front_app_switched" }, refresh_all_windows)
 
 -- Group all spaces in one rounded bracket
 sbar.add("bracket", "spaces.bracket", { "space.1", "space.2", "space.3", "space.4" }, {
@@ -84,7 +94,5 @@ sbar.add("bracket", "spaces.bracket", { "space.1", "space.2", "space.3", "space.
 -- Initial paint
 sbar.exec("aerospace list-workspaces --focused", function(focused)
   refresh_focus(tonumber((focused:gsub("%s+", ""))))
-  for _, sid in ipairs(workspace_ids) do
-    refresh_windows(sid)
-  end
+  refresh_all_windows()
 end)

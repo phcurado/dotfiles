@@ -1,4 +1,4 @@
--- SF Symbols glyphs (ported from the shell config; needs SF Pro / sf-symbols)
+-- SF Symbols and Nerd Font glyphs used by SketchyBar
 return {
   apple = "􀣺",
   preferences = "􀺽",
@@ -6,12 +6,32 @@ return {
   lock = "􀒳",
 
   battery = {
-    _100 = "􀛨",
-    _75 = "􀺸",
-    _50 = "􀺶",
-    _25 = "􀛩",
-    _0 = "􀛪",
-    charging = "􀢋",
+    levels = {
+      [0] = "󰂎",
+      [10] = "󰁺",
+      [20] = "󰁻",
+      [30] = "󰁼",
+      [40] = "󰁽",
+      [50] = "󰁾",
+      [60] = "󰁿",
+      [70] = "󰂀",
+      [80] = "󰂁",
+      [90] = "󰂂",
+      [100] = "󰁹",
+    },
+    charging = {
+      [0] = "󰢟",
+      [10] = "󰢜",
+      [20] = "󰂆",
+      [30] = "󰂇",
+      [40] = "󰂈",
+      [50] = "󰢝",
+      [60] = "󰂉",
+      [70] = "󰢞",
+      [80] = "󰂊",
+      [90] = "󰂋",
+      [100] = "󰂅",
+    },
   },
 
   volume = {

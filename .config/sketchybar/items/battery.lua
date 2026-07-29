@@ -1,10 +1,9 @@
 local icons = require("icons")
 local colors = require("colors")
-local settings = require("settings")
 
 local battery = sbar.add("item", "battery", {
 	position = "right",
-	icon = { font = { family = settings.font.text, style = settings.font.style_map["Regular"], size = 19.0 } },
+	icon = { font = { family = "0xProto Nerd Font", style = "Regular", size = 19.0 } },
 	label = { drawing = false },
 	update_freq = 120,
 	padding_right = 12,
@@ -16,26 +15,18 @@ local function update()
 		if not charge then
 			return
 		end
-		local charging = batt:find("AC Power") ~= nil
+		local plugged_in = batt:find("AC Power", 1, true) ~= nil
 
-		local icon, color
-		if charging then
-			icon = icons.battery.charging
+		local level = math.min(100, math.floor((charge + 5) / 10) * 10)
+		local icon = (plugged_in and icons.battery.charging or icons.battery.levels)[level]
+		local color
+		if plugged_in then
 			color = colors.green
-		elseif charge > 80 then
-			icon = icons.battery._100
-			color = colors.white
-		elseif charge > 60 then
-			icon = icons.battery._75
-			color = colors.white
 		elseif charge > 40 then
-			icon = icons.battery._50
 			color = colors.white
 		elseif charge > 20 then
-			icon = icons.battery._25
 			color = colors.orange
 		else
-			icon = icons.battery._0
 			color = colors.red
 		end
 

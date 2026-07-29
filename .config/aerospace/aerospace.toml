@@ -158,10 +158,10 @@ alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
 
 # move window to workspace (niri Mod+Ctrl+N)
-alt-ctrl-1 = 'move-node-to-workspace 1'
-alt-ctrl-2 = 'move-node-to-workspace 2'
-alt-ctrl-3 = 'move-node-to-workspace 3'
-alt-ctrl-4 = 'move-node-to-workspace 4'
+alt-ctrl-1 = ['move-node-to-workspace 1', 'exec-and-forget sketchybar --trigger aerospace_windows_change']
+alt-ctrl-2 = ['move-node-to-workspace 2', 'exec-and-forget sketchybar --trigger aerospace_windows_change']
+alt-ctrl-3 = ['move-node-to-workspace 3', 'exec-and-forget sketchybar --trigger aerospace_windows_change']
+alt-ctrl-4 = ['move-node-to-workspace 4', 'exec-and-forget sketchybar --trigger aerospace_windows_change']
 
 # workspace back-and-forth (niri Mod+Tab)
 alt-tab = 'workspace-back-and-forth'
