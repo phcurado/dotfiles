@@ -57,9 +57,6 @@ return {
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { "lsp", "path", "snippets", "buffer", "emoji" },
-        per_filetype = {
-          sql = { "snippets", "dadbod", "buffer" },
-        },
         providers = {
           emoji = {
             module = "blink-emoji",
@@ -67,7 +64,6 @@ return {
             score_offset = 15, -- Tune by preference
             opts = { insert = true }, -- Insert emoji (default) or complete its name
           },
-          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
       completion = {

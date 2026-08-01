@@ -23,6 +23,12 @@ dots.command("tree-sitter-cli", {
 	needs = { mise_tools },
 })
 
+dots.command("jj-starship", {
+	check = "jj-starship --version",
+	apply = "mise exec -- cargo install jj-starship@0.7.1 --locked",
+	needs = { mise_tools },
+})
+
 dots.command("weather", {
 	check = [[
 		bin="$HOME/.local/bin/weather"

@@ -8,10 +8,15 @@ case "${1:-}" in
     test -s "$key" && test ! -L "$key"
     ;;
   apply)
-    mkdir -p "$(dirname "$key")"
-    [ ! -L "$key" ] || rm "$key"
-    op read "op://Personal/SOPS AGE Key/notes" > "$key"
-    chmod 600 "$key"
+    dir=$(dirname "$key")
+    mkdir -p "$dir"
+    tmp=$(mktemp "$dir/keys.txt.XXXXXX")
+    trap 'rm -f "$tmp"' 0 HUP INT TERM
+    op read "op://Personal/SOPS AGE Key/notes" > "$tmp"
+    test -s "$tmp"
+    chmod 600 "$tmp"
+    mv -f "$tmp" "$key"
+    trap - 0 HUP INT TERM
     ;;
   *)
     echo "usage: $0 check|apply" >&2

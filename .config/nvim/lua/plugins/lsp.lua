@@ -56,6 +56,12 @@ return {
         },
       })
 
+      vim.lsp.config["harper_ls"] = {
+        settings = {
+          ["harper-ls"] = {},
+        },
+      }
+
       -- luals
       vim.lsp.config["lua_ls"] = {
         cmd = { "lua-language-server" },

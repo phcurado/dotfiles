@@ -2,8 +2,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { existsSync } from "node:fs";
-import { basename, join } from "node:path";
+import { basename } from "node:path";
 
 const exec = promisify(execFile);
 
@@ -102,7 +101,7 @@ export default function (pi: ExtensionAPI) {
   pi.on("session_start", async (_event, ctx) => {
     repoCwd = ctx.cwd;
     sessionCost = 0;
-    isJj = existsSync(join(ctx.cwd, ".jj"));
+    isJj = Boolean(await out("jj", ["--ignore-working-copy", "root"]));
     await refresh();
 
     ctx.ui.setFooter((_tui, theme, footerData) => ({

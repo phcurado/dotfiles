@@ -31,6 +31,7 @@ local packages = {
 	"qt6-wayland",
 	"sddm",
 	"slurp",
+	"spotify-launcher",
 	"tailscale",
 	"twingate",
 	"ttf-0xproto-nerd",

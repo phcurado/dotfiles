@@ -22,6 +22,10 @@ if dots.platform.family == "darwin" then
 	if dots.profile == "work" then
 		require("dots.profiles.work")
 	end
+
+	if dots.profile == "company" then
+		require("dots.profiles.company")
+	end
 end
 
 require("dots.tools")
