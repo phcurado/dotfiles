@@ -12,6 +12,7 @@ return {
 	"fzf",
 	"git-delta",
 	"imagemagick",
+	"jq",
 	"luarocks",
 	"mise",
 	"procs",
@@ -20,8 +21,8 @@ return {
 	"starship",
 	"syncthing",
 	"tmux",
-	"tree",
 	"xh",
+	"yq",
 	"zoxide",
 	"zsh",
 }

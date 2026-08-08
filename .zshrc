@@ -60,6 +60,7 @@ export EDITOR=nvim
 alias tmux="tmux -2"
 alias t="tmux"
 alias ls="eza --icons=always"
+alias tree="eza --tree --icons=always"
 alias cat="bat"
 alias du="dust"
 alias n="nvim"

@@ -34,6 +34,10 @@ return {
     },
   },
   {
+    "rafikdraoui/jj-diffconflicts",
+    cmd = "JJDiffConflicts",
+  },
+  {
     "nicolasgb/jj.nvim",
     version = "*",
     config = function()
