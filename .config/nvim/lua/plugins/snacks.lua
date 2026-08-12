@@ -1,3 +1,15 @@
+local function open_in_oil(picker, item)
+  local path = item and Snacks.picker.util.path(item)
+  if not path then
+    return
+  end
+
+  picker:close()
+  vim.schedule(function()
+    require("oil").open_float(vim.fs.dirname(path))
+  end)
+end
+
 return {
   "folke/snacks.nvim",
   priority = 1000,
@@ -107,6 +119,21 @@ return {
           layout = {
             preset = "ivy",
             layout = { position = "bottom", backdrop = 70 },
+          },
+          actions = {
+            open_in_oil = open_in_oil,
+          },
+          win = {
+            input = {
+              keys = {
+                ["-"] = { "open_in_oil", mode = "n" },
+              },
+            },
+            list = {
+              keys = {
+                ["-"] = "open_in_oil",
+              },
+            },
           },
         })
       end,
