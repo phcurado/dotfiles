@@ -20,7 +20,6 @@ local casks = {
 	"discord",
 	"obsidian",
 	"docker-desktop",
-	"tailscale-app",
 	"1password",
 	"1password-cli",
 	"font-0xproto-nerd-font",
