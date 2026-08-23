@@ -37,7 +37,7 @@ zstyle ':completion:*' menu select
 source <(jj util completion zsh)
 
 eval "$(zoxide init zsh)"
-eval "$(mise activate zsh)"
+eval "$(~/.local/bin/mise activate zsh)"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 

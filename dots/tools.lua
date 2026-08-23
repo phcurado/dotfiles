@@ -1,6 +1,12 @@
+local mise = dots.command("mise", {
+	check = '"$HOME/.local/bin/mise" --version',
+	apply = "curl -fsSL https://mise.run | sh",
+})
+
 local mise_tools = dots.command("mise tools", {
 	check = 'test -z "$(mise ls --current --missing --no-header)"',
 	apply = "mise install --yes",
+	needs = { mise },
 })
 
 dots.command("pi", {

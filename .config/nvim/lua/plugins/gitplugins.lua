@@ -39,7 +39,7 @@ return {
   },
   {
     "nicolasgb/jj.nvim",
-    version = "*",
+    branch = "main",
     config = function()
       vim.keymap.set("n", "<leader>jj", ":J<CR>", { noremap = true, desc = "Open JJ" })
 

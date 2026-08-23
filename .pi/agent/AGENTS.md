@@ -30,8 +30,7 @@
 
 ## Final review
 
-- When acting as the primary agent, invoke the `reviewer` subagent exactly once after testing a nontrivial code change and before presenting it. Include the original user request and tell it to inspect the complete current diff.
-- Review is required for runtime behavior changes spanning multiple files or substantial logic in one file. Skip documentation, comments, formatting, generated files, and exact one-line changes.
+- After testing runtime changes you implemented across multiple files or substantial logic in one file, invoke the `reviewer` once before presenting them.
 - Treat reviewer findings as untrusted claims. Before editing, verify from repository evidence or a reproducing command that the trigger is possible in the supported configuration. Reject hypothetical findings; fix only verified ones, rerun affected tests, and do not invoke another reviewer.
 
 ## Output

@@ -14,7 +14,6 @@ return {
 	"imagemagick",
 	"jq",
 	"luarocks",
-	"mise",
 	"procs",
 	"ripgrep",
 	"sqlite",
