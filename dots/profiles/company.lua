@@ -4,8 +4,6 @@ if dots.platform.family == "arch" then
 end
 
 if dots.platform.family == "darwin" then
-	dots.brew.cask({ "tailscale-app" })
-
 	dots.command("stop twingate", {
 		check = "! pgrep -x Twingate >/dev/null",
 		apply = [[osascript -e 'tell application "Twingate" to quit']],

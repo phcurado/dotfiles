@@ -4,5 +4,14 @@ if dots.platform.family == "arch" then
 end
 
 if dots.platform.family == "darwin" then
-	dots.brew.cask({ "twingate" })
+	dots.command("stop tailscale", {
+		check = "! pgrep -x Tailscale >/dev/null",
+		apply = [[osascript -e 'tell application "Tailscale" to quit']],
+	})
+
+	dots.command("start twingate", {
+		check = "pgrep -x Twingate >/dev/null",
+		apply = "open -g -a Twingate",
+		needs = { "package:brew-cask:twingate" },
+	})
 end
