@@ -18,21 +18,19 @@ cd ~/dotfiles
 ./setup.sh
 ```
 
-`setup.sh` will basically install [dots](https://github.com/phcurado/dots), which manages dotfiles declaratively and works on both my Linux and macOS setups.
-You can install `dots` first and check the changes that will be made on your machine with `dots check`.
+`setup.sh` installs [dots](https://github.com/phcurado/dots), then runs `dots apply`. The same script handles my Arch and macOS setups. To inspect changes first, install `dots` manually and run `dots check`.
 
-If you're running Arch, it's good to reboot after running the scripts because the setup changes the shell (`bash` to `zsh`), creates groups, and
-starts system services.
+On Arch, reboot after setup because it changes the default shell from `bash` to `zsh`, creates groups, and starts system services.
 
 ## Daily use
 
-Whenever I change something or create symlinks, I just run:
+After changing a setting or adding a symlink, run:
 
 ```sh
 dots check
 ```
 
-This shows which settings from these dotfiles will be applied on the machine. To apply them:
+`dots check` previews what would change. To apply it:
 
 ```sh
 dots apply
@@ -51,7 +49,7 @@ dots --profile company apply
 # Tailscale
 ```
 
-## Dotfile Setup
+## Dotfile setup
 
 - shell: `zsh`
 - config links: Neovim, Ghostty, tmux, zsh, Starship, git, bat, btop, mise, zoxide
@@ -90,7 +88,7 @@ The Makefile is only a shortcut layer:
 Before using AeroSpace for the first time, turn off **Displays have separate
 Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out
 and back in. Grant Accessibility permissions to AeroSpace and SketchyBar when
-prompted. If I remember correctly, you will get prompted for all this configuration when setting up these dotfiles.
+prompted.
 
 ### Niri keybindings
 
@@ -110,13 +108,13 @@ prompted. If I remember correctly, you will get prompted for all this configurat
 
 The SOPS AGE key is restored from 1Password by `dots apply`.
 
-You can backup using the `make` command.
+Back up the key with:
 
 ```sh
 make secrets.backup
 ```
 
-## AI - pi.dev
+## Pi
 
 I'm using [Pi](https://pi.dev) as my agent harness. It is very customizable and fits nicely into my workflow. You can check my plugins and configuration in the `.pi/` folder.
 
