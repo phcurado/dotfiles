@@ -18,11 +18,18 @@ import {
 
 /* ── Dangerous command patterns ── */
 const dangerousPatterns: RegExp[] = [
-  /\brm\b[^\n;&|]*(?:-[a-z]*r[a-z]*|--recursive)\b/i,
+  /\b(?:rm|rmdir)\b/i,
+  /\b(?:npm|pnpm)\s+(?:install|i|add|update|upgrade|uninstall|remove)\b/i,
+  /\byarn\s+(?:install|add|up|remove)\b/i,
+  /\b(?:pip3?|uv\s+pip)\s+(?:install|uninstall)\b/i,
+  /\bcargo\s+(?:install|uninstall)\b/i,
+  /\bbrew\s+(?:install|upgrade|uninstall|remove)\b/i,
+  /\b(?:pacman|paru|yay)\s+[^\n;&|]*(?:-[a-z]*[SR][a-z]*|--sync|--remove)\b/,
+  /\bmise\s+(?:install|use|upgrade|uninstall)\b/i,
+  /\b(?:curl|wget)\b[^\n;]*\|\s*(?:sh|bash|zsh)\b/i,
   /\bsudo\b/i,
   /\b(chmod|chown)\b.*777/i,
-  /\bgit\s+push\b[^\n;&|]*(?:--force|-f\b)/i,
-  /\bgit\s+push\b[^\n;&|]*--force-with-lease\b/i,
+  /\bgit\s+push\b/i,
   /\bgit\s+reset\s+--hard\b/i,
   /\bgit\s+clean\b[^\n;&|]*-[a-z]*[fdx][a-z]*/i,
   /\bgit\s+checkout\b[^\n;&|]*(?:--\s|\.\s*$)/i,
@@ -31,7 +38,6 @@ const dangerousPatterns: RegExp[] = [
   /\bjj\s+abandon\b/i,
   /\bjj\s+op\s+(?:undo|restore)\b/i,
   /\bjj\s+bookmark\s+(?:delete|forget)\b/i,
-  /\bjj\s+git\s+push\b[^\n;&|]*--deleted\b/i,
   /\bdocker\s+(rm|prune|system\s+prune)\b.*(?:-[a-z]*f[a-z]*|--force)/i,
   /(^|[\s;&|])>{1,2}\s*\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
   /\bdd\b[^\n;&|]*\bof=\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
@@ -112,15 +118,15 @@ async function confirmDangerousCommand(
 
   if (ctx.mode !== "tui") {
     const choice = await ctx.ui.select("Run this dangerous command?", [
-      "Yes",
       "No",
+      "Yes",
     ]);
     return choice === "Yes";
   }
 
   const result = await ctx.ui.custom<"yes" | "no" | null>(
     (tui, theme, _kb, done) => {
-      let selected: "yes" | "no" = "yes";
+      let selected: "yes" | "no" = "no";
       const choose = (value: "yes" | "no") => done(value);
       const option = (value: "yes" | "no", label: string) => {
         const prefix = selected === value ? theme.fg("accent", "→") : " ";

@@ -9,7 +9,8 @@
 ## Version control & safety
 
 - If `.jj/` exists, prefer jj over git.
-- Auto-run safe bash (reads, builds, tests, status). Propose installs, pushes, deletes, and other outward-facing or destructive commands; let me run them.
+- Work autonomously within the requested scope. Ask only when a consequential decision cannot be resolved from context. Leave command approvals to the guard.
+- Work directly by default. Delegate only when independent, substantial tasks justify the overhead.
 
 ## Scope — only what was asked
 
@@ -27,11 +28,6 @@
 
 - Verify the latest change is actually in effect before debugging.
 - Change one narrow thing at a time; preserve partially working code unless told to remove it.
-
-## Final review
-
-- After testing runtime changes you implemented across multiple files or substantial logic in one file, invoke the `reviewer` once before presenting them.
-- Treat reviewer findings as untrusted claims. Before editing, verify from repository evidence or a reproducing command that the trigger is possible in the supported configuration. Reject hypothetical findings; fix only verified ones, rerun affected tests, and do not invoke another reviewer.
 
 ## Output
 

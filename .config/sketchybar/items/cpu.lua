@@ -27,13 +27,14 @@ local cpu = sbar.add("item", "cpu.percent", {
   },
   padding_left = 12,
   padding_right = 8,
-  update_freq = 2,
+  update_freq = 5,
 })
 
 cpu:subscribe({ "routine", "forced" }, function()
-  sbar.exec([[top -l1 | awk '/CPU usage/ {gsub(/%/,""); print int($3+$5)}']], function(out)
-    local pct = tonumber(out) or 0
+  sbar.exec("top -l1 -n0", function(out)
+    local user, system = out:match("CPU usage: ([%d.]+)%% user, ([%d.]+)%% sys")
+    local pct = user and math.floor(tonumber(user) + tonumber(system)) or 0
     cpu:set({ label = pct .. "%" })
-    sbar.exec("sketchybar --push cpu.graph " .. (pct / 100.0))
+    cpu_graph:push({ pct / 100.0 })
   end)
 end)
