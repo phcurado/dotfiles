@@ -15,7 +15,7 @@ return {
 			require("neotest").setup({
 				adapters = {
 					require("neotest-elixir"),
-					require("neotest-vim-test")({ allow_file_types = { "elixir", "javascript", "typescript" } }),
+					require("neotest-vim-test")({ allow_file_types = { "javascript", "typescript" } }),
 				},
 			})
 		end,

@@ -1,15 +1,12 @@
 {
   "lastChangelogVersion": "0.85.1",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "gpt-6-astra",
+  "defaultThinkingLevel": "medium",
   "theme": "catppuccin-frappe",
   "outputPad": 0,
   "markdown": {
     "codeBlockIndent": ""
   },
-  "packages": [
-    "npm:pi-tool-display",
-    "npm:pi-image-tools"
-  ]
+  "packages": ["npm:pi-tool-display", "npm:pi-image-tools"]
 }

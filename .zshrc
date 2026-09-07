@@ -74,8 +74,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   alias make="make -j$(nproc)"
   # paru/pacman
   alias rmpkg="paru -Rsn"
-  alias cleancache="paru -Scc"
-  alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+  alias cleancache="paru -Sc"
   alias cleanup='paru -Rsn $(paru -Qtdq)'
   alias open="xdg-open"
   # system
