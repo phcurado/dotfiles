@@ -1,5 +1,5 @@
 // Context usage dashboard.
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
 import {
   Key,
   matchesKey,
@@ -12,11 +12,11 @@ type Signal = { level: "warning" | "info"; text: string };
 type Report = {
   model: string;
   limit: number;
-  measured: number;
+  measured: number | null;
   total: number;
+  estimated: number;
   startup: number;
   messages: number;
-  other: number;
   categories: Row[];
   loaded: Row[];
   byRole: Row[];
@@ -97,12 +97,12 @@ function buildSignals(report: Omit<Report, "signals">): Signal[] {
     report.byRole.find((row) => row.label === "assistant")?.tokens ?? 0;
   const usedRatio = report.limit ? report.total / report.limit : 0;
 
-  if (toolResult > report.total * 0.5)
+  if (toolResult > report.estimated * 0.5)
     signals.push({
       level: "warning",
       text: "Tool results dominate context; avoid dumping long docs/logs unless needed.",
     });
-  if (assistant > report.total * 0.25)
+  if (assistant > report.estimated * 0.25)
     signals.push({
       level: "warning",
       text: "Assistant messages are a large share; compact or start fresh after long planning.",
@@ -117,12 +117,12 @@ function buildSignals(report: Omit<Report, "signals">): Signal[] {
       level: "info",
       text: "Context is moderate; watch large reads/tool outputs.",
     });
-  if (report.largest[0]?.tokens > report.total * 0.08)
+  if (report.largest[0]?.tokens > report.estimated * 0.08)
     signals.push({
       level: "warning",
       text: "One or more entries are very large; targeted reads beat full-file/doc dumps.",
     });
-  if (report.startup < report.total * 0.05)
+  if (report.startup < report.estimated * 0.05)
     signals.push({
       level: "info",
       text: "Startup context is fine; loaded rules/skills are not the problem.",
@@ -138,13 +138,11 @@ function buildSignals(report: Omit<Report, "signals">): Signal[] {
       ];
 }
 
-function buildReport(pi: ExtensionAPI, ctx: any): Report {
-  const options = ctx.getSystemPromptOptions?.() ?? {};
-  const usage = ctx.getContextUsage?.();
-  const measured = usage?.tokens ?? 0;
-  const limit =
-    ctx.model?.contextWindow ??
-    (usage?.percent ? Math.round((measured / usage.percent) * 100) : 0);
+function buildReport(pi: ExtensionAPI, ctx: ExtensionCommandContext): Report {
+  const options = ctx.getSystemPromptOptions();
+  const usage = ctx.getContextUsage();
+  const measured = usage?.tokens ?? null;
+  const limit = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
   const model = `${ctx.model?.provider ? `${ctx.model.provider}/` : ""}${ctx.model?.id ?? "unknown"}`;
 
   const systemRows: Row[] = [
@@ -178,11 +176,10 @@ function buildReport(pi: ExtensionAPI, ctx: any): Report {
   const toolUse = new Map<string, number>();
   const largest: Row[] = [];
 
-  for (const entry of ctx.sessionManager.getBranch?.() ?? []) {
-    if (entry.type !== "message") continue;
-    const message = entry.message ?? {};
-    const role = message.role ?? "message";
-    const body = textContent(message.content ?? message);
+  for (const message of ctx.sessionManager.buildSessionContext().messages) {
+    if (message.role === "system") continue;
+    const role = message.role;
+    const body = textContent("content" in message ? message.content : message);
     const n = tokens(
       role === "toolResult"
         ? `${message.toolName ?? "toolResult"}\n${body}`
@@ -235,8 +232,7 @@ function buildReport(pi: ExtensionAPI, ctx: any): Report {
   const startup = sum(systemRows);
   const messages = [...byRole.values()].reduce((total, n) => total + n, 0);
   const estimated = startup + messages;
-  const total = Math.max(measured, estimated);
-  const other = Math.max(0, total - estimated);
+  const total = measured ?? estimated;
 
   const byRoleRows = [...byRole.entries()]
     .map(([label, n]) => ({ label, tokens: n }))
@@ -246,12 +242,11 @@ function buildReport(pi: ExtensionAPI, ctx: any): Report {
     limit,
     measured,
     total,
+    estimated,
     startup,
     messages,
-    other,
     categories: [
       { label: "messages/tool output", tokens: messages },
-      { label: "runtime overhead", tokens: other },
       { label: "startup context", tokens: startup },
     ].filter((row) => row.tokens > 0),
     loaded: top(loaded, 5),
@@ -272,12 +267,12 @@ function buildReport(pi: ExtensionAPI, ctx: any): Report {
 function plainReport(report: Report): string {
   return [
     `Context · ${report.model}`,
-    `${fmt(report.total)} / ${fmt(report.limit)} · ${pct(report.total, report.limit)} used · ${fmt(Math.max(0, report.limit - report.total))} free`,
+    `${fmt(report.total)} / ${fmt(report.limit)} · ${pct(report.total, report.limit)} used · ${fmt(Math.max(0, report.limit - report.total))} free${report.measured === null ? " · estimated" : ""}`,
     "",
-    "Where it went",
+    "Estimated breakdown · text characters / 4",
     ...report.categories.map(
       (row) =>
-        `  ${row.label}: ${fmt(row.tokens)} (${pct(row.tokens, report.total)})`,
+        `  ${row.label}: ${fmt(row.tokens)} (${pct(row.tokens, report.estimated)})`,
     ),
     "",
     "Biggest offenders",
@@ -320,7 +315,7 @@ function dashboard(report: Report, theme: any, width: number): string[] {
   const add = (line = "") => lines.push(fit(line, w));
   const muted = (s: string) => theme.fg("dim", s);
   const heading = (s: string) => add(theme.fg("accent", theme.bold(s)));
-  const amount = (n: number, base = report.total) =>
+  const amount = (n: number, base = report.estimated) =>
     `${theme.fg("accent", fmt(n))} ${muted(pct(n, base))}`;
   const row = (label: string, n: number, detail = "") =>
     add(
@@ -331,12 +326,12 @@ function dashboard(report: Report, theme: any, width: number): string[] {
     `${theme.fg("accent", theme.bold("Context"))} ${muted("·")} ${theme.fg("text", report.model)}`,
   );
   add(
-    `${theme.fg("text", `${fmt(report.total)} / ${fmt(report.limit)}`)}  ${theme.fg(ratioColor, `${pct(report.total, report.limit)} used`)}  ${muted(`${fmt(Math.max(0, report.limit - report.total))} free`)}`,
+    `${theme.fg("text", `${fmt(report.total)} / ${fmt(report.limit)}`)}  ${theme.fg(ratioColor, `${pct(report.total, report.limit)} used`)}  ${muted(`${fmt(Math.max(0, report.limit - report.total))} free${report.measured === null ? " · estimated" : ""}`)}`,
   );
   add(theme.fg(ratioColor, bar(report.total, report.limit, Math.floor(w / 2))));
   add("");
 
-  heading("Where it went");
+  heading("Estimated breakdown · text characters / 4");
   for (const item of report.categories) row(item.label, item.tokens);
   add("");
 
@@ -347,7 +342,7 @@ function dashboard(report: Report, theme: any, width: number): string[] {
 
   heading("Loaded at startup");
   for (const item of report.loaded) row(item.label, item.tokens, item.detail);
-  if (report.startup < report.total * 0.03)
+  if (report.startup < report.estimated * 0.03)
     add(muted("  startup is small; hidden details omitted"));
   add("");
 

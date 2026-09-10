@@ -38,6 +38,7 @@ dots.symlink("~/.local/share", ".local/share")
 dots.symlink("~/.pi/agent", ".pi/agent", {
 	ignore = {
 		"auth.json",
+		"mcp-auth.json",
 		"sessions/**",
 		"tmp/**",
 		"cache/**",

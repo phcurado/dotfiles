@@ -10,8 +10,11 @@ local mise_tools = dots.command("mise tools", {
 })
 
 dots.command("pi", {
-	check = "mise which pi",
-	apply = "mise exec node@25 -- npm install -g --ignore-scripts @earendil-works/pi-coding-agent@latest",
+	check = [[
+		latest=$(mise exec -- npm view @earendil-works/pi-coding-agent@latest version) &&
+		test "$(mise exec -- pi --version)" = "$latest"
+	]],
+	apply = "mise exec -- npm install -g --ignore-scripts @earendil-works/pi-coding-agent@latest",
 	needs = { mise_tools },
 })
 

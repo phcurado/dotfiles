@@ -1,12 +1,20 @@
 {
-  "lastChangelogVersion": "0.85.1",
-  "defaultProvider": "openai-codex",
+  "lastChangelogVersion": "0.99.1",
+  "defaultProvider": "openai",
   "defaultModel": "gpt-6-astra",
   "defaultThinkingLevel": "medium",
-  "theme": "catppuccin-frappe",
+  "defaultTools": [
+    "+codemode",
+    "+grep",
+    "+find",
+    "+ls"
+  ],
   "outputPad": 0,
   "markdown": {
     "codeBlockIndent": ""
   },
-  "packages": ["npm:pi-tool-display", "npm:pi-image-tools"]
+  "packages": [
+    "npm:pi-image-tools"
+  ],
+  "deviceId": "fa363c22-5c74-4ef7-892e-b07289b80626"
 }

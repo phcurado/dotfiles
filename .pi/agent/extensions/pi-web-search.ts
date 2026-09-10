@@ -202,6 +202,13 @@ async function formatFetchResult(result: FetchResult): Promise<string> {
 export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "web_search",
+    outputSchema: Type.Object({
+      results: Type.Array(Type.Object({
+        title: Type.Optional(Type.String()),
+        url: Type.Optional(Type.String()),
+        content: Type.Optional(Type.String()),
+      })),
+    }),
     label: "Web search",
     description:
       "Search the web via local SearXNG. Returns ranked results (title, URL, snippet). "
@@ -218,7 +225,7 @@ export default function (pi: ExtensionAPI) {
     }),
     async execute(_id, params, signal) {
       if (!(await ensureSearxng(signal))) {
-        return { content: [{ type: "text", text: `SearXNG unreachable at ${BASE_URL}. Check Docker and ${COMPOSE_FILE}.` }] };
+        throw new Error(`SearXNG unreachable at ${BASE_URL}. Check Docker and ${COMPOSE_FILE}.`);
       }
 
       const cat = params.categories ? `&categories=${params.categories}` : "";
@@ -227,21 +234,22 @@ export default function (pi: ExtensionAPI) {
       try {
         res = await fetch(url, { signal: withTimeout(signal, 15000) });
       } catch (e) {
-        return { content: [{ type: "text", text: `SearXNG unreachable at ${BASE_URL} (${String(e)})` }] };
+        throw new Error(`SearXNG unreachable at ${BASE_URL} (${String(e)})`);
       }
       if (!res.ok) {
-        return { content: [{ type: "text", text: `SearXNG returned HTTP ${res.status}` }] };
+        throw new Error(`SearXNG returned HTTP ${res.status}`);
       }
       const data = (await res.json()) as { results?: SearchResult[] };
       const results = (data.results ?? []).slice(0, params.maxResults ?? 8);
-      if (!results.length) return { content: [{ type: "text", text: "No results." }] };
+
       return {
         content: [{
           type: "text",
           text: results
             .map((r, i) => `${i + 1}. ${r.title ?? "(no title)"}\n   ${r.url ?? ""}\n   ${(r.content ?? "").trim()}`)
-            .join("\n\n"),
+            .join("\n\n") || "No results.",
         }],
+        structuredContent: { results },
         details: { results } satisfies SearchDetails,
       };
     },
@@ -276,6 +284,12 @@ export default function (pi: ExtensionAPI) {
 
   pi.registerTool({
     name: "web_fetch",
+    outputSchema: Type.Object({
+      url: Type.String(),
+      contentType: Type.String(),
+      title: Type.Optional(Type.String()),
+      text: Type.String(),
+    }),
     label: "Web fetch",
     description:
       "Fetch and extract readable text from an HTTP(S) page. Use after web_search when snippets are insufficient. "
@@ -286,9 +300,14 @@ export default function (pi: ExtensionAPI) {
     async execute(_id, params, signal) {
       try {
         const result = await fetchPage(params.url, signal);
-        if (!result.text) return { content: [{ type: "text", text: "Fetched page but extracted no text." }] };
         return {
-          content: [{ type: "text", text: await formatFetchResult(result) }],
+          content: [{ type: "text", text: result.text ? await formatFetchResult(result) : "Fetched page but extracted no text." }],
+          structuredContent: {
+            url: result.url,
+            contentType: result.contentType,
+            ...(result.title !== undefined ? { title: result.title } : {}),
+            text: result.text,
+          },
           details: {
             url: result.url,
             contentType: result.contentType,
@@ -299,7 +318,7 @@ export default function (pi: ExtensionAPI) {
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        return { content: [{ type: "text", text: `web_fetch failed: ${message}` }] };
+        throw new Error(`web_fetch failed: ${message}`);
       }
     },
     renderCall(args, theme) {

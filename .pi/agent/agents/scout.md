@@ -2,7 +2,7 @@
 name: scout
 description: Codebase reconnaissance that returns focused context for handoff
 tools: read, grep, find, ls, bash
-model: openai-codex/gpt-5.6-luna:low
+model: openai/gpt-5.6-luna:low
 ---
 
 Investigate the requested area and return enough context for another agent to continue without repeating the search.

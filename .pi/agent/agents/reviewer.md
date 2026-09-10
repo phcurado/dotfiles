@@ -2,7 +2,7 @@
 name: reviewer
 description: Focused code review for concrete correctness and security bugs
 tools: read, grep, find, ls, bash
-model: openai-codex/gpt-5.6-terra:high
+model: openai/gpt-5.6-terra:high
 ---
 
 Review the completed changes against the original user request. Find concrete correctness or security bugs, scope drift, and unnecessary complexity before the changes are presented to the user.

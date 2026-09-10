@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ContextUsage, ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
@@ -9,9 +9,6 @@ const exec = promisify(execFile);
 type FooterTheme = {
   fg(c: "accent" | "dim" | "success" | "warning" | "error", t: string): string;
 };
-type ContextUsage = { percent: number | null; tokens?: number | null } | null | undefined;
-
-let sessionCost = 0;
 let jjLabel = "";
 let ins = 0;
 let del = 0;
@@ -61,11 +58,11 @@ function buildLeft(cwd: string, vcs: string | null | undefined, model: string, e
   return " " + segs.join(t.fg("dim", " · "));
 }
 
-function buildRight(usage: ContextUsage, limit: number, cost: number, t: FooterTheme): string {
-  const pct = usage && usage.percent !== null ? Math.round(usage.percent) : 0;
-  const tokens = usage?.tokens ?? 0;
-  const pctColor = pct < 50 ? "success" : pct < 80 ? "warning" : "error";
-  const tok = limit > 0 ? `${toK(tokens)}/${toK(limit)}` : toK(tokens);
+function buildRight(usage: ContextUsage | undefined, limit: number, cost: number, t: FooterTheme): string {
+  const pct = usage?.percent == null ? "?" : Math.round(usage.percent);
+  const tokens = usage?.tokens == null ? "?" : toK(usage.tokens);
+  const pctColor = pct === "?" ? "dim" : pct < 50 ? "success" : pct < 80 ? "warning" : "error";
+  const tok = limit > 0 ? `${tokens}/${toK(limit)}` : tokens;
   return (
     [t.fg("dim", `$${cost.toFixed(2)}`), t.fg("dim", tok), t.fg(pctColor, `${pct}%`)].join(t.fg("dim", " · ")) + " "
   );
@@ -78,12 +75,6 @@ function compose(width: number, left: string, right: string): string {
 
 export default function (pi: ExtensionAPI) {
   if (process.env.PI_SUBAGENT_CHILD === "1") return;
-
-  pi.on("message_end", async (event) => {
-    if (event.message?.role !== "assistant") return;
-    const c = event.message.usage?.cost;
-    if (c) sessionCost += c.total ?? ((c.input ?? 0) + (c.output ?? 0) + (c.cacheRead ?? 0) + (c.cacheWrite ?? 0));
-  });
 
   pi.on("turn_end", async () => {
     await refresh();
@@ -100,19 +91,39 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", async (_event, ctx) => {
     repoCwd = ctx.cwd;
-    sessionCost = 0;
     isJj = Boolean(await out("jj", ["--ignore-working-copy", "root"]));
     await refresh();
+
+    let cachedSessionId: string | undefined;
+    let cachedLeafId: string | null | undefined;
+    let sessionCost = 0;
 
     ctx.ui.setFooter((_tui, theme, footerData) => ({
       dispose: () => {},
       invalidate() {},
       render(width: number): string[] {
+        const sessionId = ctx.sessionManager.getSessionId();
+        const leafId = ctx.sessionManager.getLeafId();
+        if (sessionId !== cachedSessionId || leafId !== cachedLeafId) {
+          // Match Pi's cumulative total, including entries before compaction and on other branches.
+          sessionCost = 0;
+          for (const entry of ctx.sessionManager.getEntries()) {
+            if (entry.type === "message") {
+              if (entry.message.role === "assistant" || entry.message.role === "toolResult") {
+                sessionCost += entry.message.usage?.cost.total ?? 0;
+              }
+            } else if (entry.type === "usage" || entry.type === "compaction" || entry.type === "branch_summary") {
+              sessionCost += entry.usage?.cost.total ?? 0;
+            }
+          }
+          cachedSessionId = sessionId;
+          cachedLeafId = leafId;
+        }
         const usage = ctx.getContextUsage();
-        const limit =
-          ctx.model?.contextWindow ?? (usage && usage.percent ? Math.round((usage.tokens ?? 0) / usage.percent * 100) : 0);
+        const limit = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
         const vcs = isJj ? jjLabel : footerData.getGitBranch();
-        const left = buildLeft(basename(ctx.cwd), vcs, ctx.model?.id ?? "no-model", pi.getThinkingLevel(), theme);
+        const model = ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : "no-model";
+        const left = buildLeft(basename(ctx.cwd), vcs, model, pi.getThinkingLevel(), theme);
         const right = buildRight(usage, limit, sessionCost, theme);
         return [compose(width, left, right)];
       },

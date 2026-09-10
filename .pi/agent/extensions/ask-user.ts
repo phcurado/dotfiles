@@ -13,6 +13,7 @@ export default function (pi: ExtensionAPI) {
 
   pi.registerTool({
     name: "ask_user",
+    exposure: "model-only",
     label: "Ask user",
     description:
       "Ask the user a clarifying question via TUI. Use when intent is ambiguous, multiple options exist, or a destructive action needs explicit approval. Returns user's answer as text.",
