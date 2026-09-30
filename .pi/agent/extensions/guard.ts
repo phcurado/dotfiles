@@ -196,9 +196,14 @@ export default function (pi: ExtensionAPI) {
           };
         }
 
-        if (!(await confirmDangerousCommand(ctx, command))) {
-          ctx.abort();
-          return { block: true, reason: "Denied by user" };
+        pi.events.emit("pi:approval", { active: true });
+        try {
+          if (!(await confirmDangerousCommand(ctx, command))) {
+            ctx.abort();
+            return { block: true, reason: "Denied by user" };
+          }
+        } finally {
+          pi.events.emit("pi:approval", { active: false });
         }
       }
       return undefined;

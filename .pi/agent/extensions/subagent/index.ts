@@ -17,7 +17,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import type { AgentToolResult } from "@earendil-works/pi-agent-core";
-import type { Message } from "@earendil-works/pi-ai";
+import type { Message, Usage } from "@earendil-works/pi-ai";
 import { StringEnum } from "@earendil-works/pi-ai";
 import {
 	CONFIG_DIR_NAME,
@@ -154,6 +154,7 @@ interface SingleResult {
 	messages: Message[];
 	stderr: string;
 	usage: UsageStats;
+	billing?: Usage;
 	model?: string;
 	stopReason?: string;
 	errorMessage?: string;
@@ -165,6 +166,26 @@ interface SubagentDetails {
 	agentScope: AgentScope;
 	projectAgentsDir: string | null;
 	results: SingleResult[];
+}
+
+function sumUsage(usages: (Usage | undefined)[]): Usage {
+	const total: Usage = {
+		input: 0, output: 0, cacheRead: 0, cacheWrite: 0, totalTokens: 0,
+		cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
+	};
+	for (const usage of usages) {
+		if (!usage) continue;
+		for (const key of ["input", "output", "cacheRead", "cacheWrite", "totalTokens"] as const) {
+			total[key] += usage[key];
+		}
+		for (const key of ["input", "output", "cacheRead", "cacheWrite", "total"] as const) {
+			total.cost[key] += usage.cost[key];
+		}
+		for (const key of ["reasoning", "cacheWrite1h"] as const) {
+			if (usage[key] !== undefined) total[key] = (total[key] ?? 0) + usage[key];
+		}
+	}
+	return total;
 }
 
 function getFinalOutput(messages: Message[]): string {
@@ -310,6 +331,15 @@ async function runSingleAgent(
 		step,
 	};
 
+	const recordUsage = (usage: Usage) => {
+		currentResult.billing = sumUsage([currentResult.billing, usage]);
+		currentResult.usage.input += usage.input;
+		currentResult.usage.output += usage.output;
+		currentResult.usage.cacheRead += usage.cacheRead;
+		currentResult.usage.cacheWrite += usage.cacheWrite;
+		currentResult.usage.cost += usage.cost.total;
+	};
+
 	const emitUpdate = () => {
 		if (onUpdate) {
 			onUpdate({
@@ -353,17 +383,12 @@ async function runSingleAgent(
 					const msg = event.message as Message;
 					currentResult.messages.push(msg);
 
+					if ((msg.role === "assistant" || msg.role === "toolResult") && msg.usage) {
+						recordUsage(msg.usage);
+					}
 					if (msg.role === "assistant") {
 						currentResult.usage.turns++;
-						const usage = msg.usage;
-						if (usage) {
-							currentResult.usage.input += usage.input || 0;
-							currentResult.usage.output += usage.output || 0;
-							currentResult.usage.cacheRead += usage.cacheRead || 0;
-							currentResult.usage.cacheWrite += usage.cacheWrite || 0;
-							currentResult.usage.cost += usage.cost?.total || 0;
-							currentResult.usage.contextTokens = usage.totalTokens || 0;
-						}
+						currentResult.usage.contextTokens = msg.usage.totalTokens;
 						if (!currentResult.model && msg.model) currentResult.model = msg.model;
 						if (msg.stopReason) currentResult.stopReason = msg.stopReason;
 						if (msg.errorMessage) currentResult.errorMessage = msg.errorMessage;
@@ -371,8 +396,8 @@ async function runSingleAgent(
 					emitUpdate();
 				}
 
-				if (event.type === "tool_result_end" && event.message) {
-					currentResult.messages.push(event.message as Message);
+				if (event.type === "compaction_end" && event.result?.usage) {
+					recordUsage(event.result.usage);
 					emitUpdate();
 				}
 			};
@@ -526,10 +551,16 @@ export default function (pi: ExtensionAPI) {
 
 					const names = projectAgentsRequested.map((a) => a.name).join(", ");
 					const dir = discovery.projectAgentsDir ?? "(unknown)";
-					const ok = await ctx.ui.confirm(
-						"Run project-local agents?",
-						`Agents: ${names}\nSource: ${dir}\n\nProject agents are repo-controlled. Only continue for trusted repositories.`,
-					);
+					let ok: boolean;
+					pi.events.emit("pi:approval", { active: true });
+					try {
+						ok = await ctx.ui.confirm(
+							"Run project-local agents?",
+							`Agents: ${names}\nSource: ${dir}\n\nProject agents are repo-controlled. Only continue for trusted repositories.`,
+						);
+					} finally {
+						pi.events.emit("pi:approval", { active: false });
+					}
 					if (!ok)
 						return {
 							content: [{ type: "text", text: "Canceled: project-local agents not approved." }],
@@ -580,6 +611,7 @@ export default function (pi: ExtensionAPI) {
 						return {
 							content: [{ type: "text", text: `Chain stopped at step ${i + 1} (${step.agent}): ${errorMsg}` }],
 							details: makeDetails("chain")(results),
+							usage: sumUsage(results.map((r) => r.billing)),
 							isError: true,
 						};
 					}
@@ -588,6 +620,7 @@ export default function (pi: ExtensionAPI) {
 				return {
 					content: [{ type: "text", text: getFinalOutput(results[results.length - 1].messages) || "(no output)" }],
 					details: makeDetails("chain")(results),
+					usage: sumUsage(results.map((r) => r.billing)),
 				};
 			}
 
@@ -671,6 +704,7 @@ export default function (pi: ExtensionAPI) {
 						},
 					],
 					details: makeDetails("parallel")(results),
+					usage: sumUsage(results.map((r) => r.billing)),
 				};
 			}
 
@@ -692,12 +726,14 @@ export default function (pi: ExtensionAPI) {
 					return {
 						content: [{ type: "text", text: `Agent ${result.stopReason || "failed"}: ${errorMsg}` }],
 						details: makeDetails("single")([result]),
+						usage: result.billing,
 						isError: true,
 					};
 				}
 				return {
 					content: [{ type: "text", text: getFinalOutput(result.messages) || "(no output)" }],
 					details: makeDetails("single")([result]),
+					usage: result.billing,
 				};
 			}
 

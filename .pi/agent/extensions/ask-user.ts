@@ -3,11 +3,11 @@ import { Type } from "typebox";
 
 export default function (pi: ExtensionAPI) {
   async function withBlocked<T>(label: string, fn: () => Promise<T>): Promise<T> {
-    pi.events.emit("herdr:blocked", { active: true, label });
+    pi.events.emit("pi:approval", { active: true, label });
     try {
       return await fn();
     } finally {
-      pi.events.emit("herdr:blocked", { active: false, label });
+      pi.events.emit("pi:approval", { active: false, label });
     }
   }
 

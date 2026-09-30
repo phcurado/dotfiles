@@ -69,6 +69,23 @@ export default function (pi: ExtensionAPI) {
   let ctx: ExtensionContext | undefined;
   let server: Server | undefined;
   let socketPath: string | undefined;
+  let working = false;
+  let approvals = 0;
+  let unsubscribeApproval: (() => void) | undefined;
+
+  function publishState() {
+    setPaneOption("@tpane_push_state", approvals > 0 ? "approval" : working ? "working" : "idle");
+  }
+
+  pi.on("agent_start", () => {
+    working = true;
+    publishState();
+  });
+
+  pi.on("agent_settled", () => {
+    working = false;
+    publishState();
+  });
 
   function stopServer() {
     server?.close();
@@ -119,11 +136,22 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", async (_event, nextCtx) => {
     ctx = nextCtx;
+    working = !ctx.isIdle();
+    approvals = 0;
+    unsubscribeApproval = pi.events.on("pi:approval", (data) => {
+      const { active } = data as { active: boolean };
+      approvals += active ? 1 : -1;
+      publishState();
+    });
     startServer();
+    publishState();
   });
 
   pi.on("session_shutdown", async () => {
+    unsubscribeApproval?.();
+    unsubscribeApproval = undefined;
     ctx = undefined;
     stopServer();
+    setPaneOption("@tpane_push_state");
   });
 }

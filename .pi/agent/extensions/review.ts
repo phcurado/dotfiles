@@ -385,6 +385,7 @@ export default function (pi: ExtensionAPI) {
     }
 
     let accepted: string | null;
+    pi.events.emit("pi:approval", { active: true });
     try {
       accepted = await reviewChange(ctx, config, displayPath, reviewOriginal, proposed);
     } catch (error) {
@@ -392,6 +393,8 @@ export default function (pi: ExtensionAPI) {
         block: true,
         reason: `review: ${error instanceof Error ? error.message : String(error)}`,
       };
+    } finally {
+      pi.events.emit("pi:approval", { active: false });
     }
 
     if (accepted === null) {
