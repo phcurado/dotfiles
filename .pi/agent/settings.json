@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.99.2",
+  "lastChangelogVersion": "1.0.0",
   "defaultProvider": "openai",
   "defaultModel": "gpt-6-astra",
   "defaultThinkingLevel": "medium",
@@ -16,5 +16,6 @@
   "packages": [
     "npm:pi-image-tools"
   ],
-  "deviceId": "fa363c22-5c74-4ef7-892e-b07289b80626"
+  "deviceId": "fa363c22-5c74-4ef7-892e-b07289b80626",
+  "tuiMode": "regular"
 }
