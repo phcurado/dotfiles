@@ -1,0 +1,13 @@
+{
+  "autoApprove": false,
+  "editor": {
+    "command": "nvim",
+    "args": [
+      "-d",
+      "{original}",
+      "{proposed}",
+      "-S",
+      "~/.config/nvim/lua/review.lua"
+    ]
+  }
+}
