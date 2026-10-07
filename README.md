@@ -45,7 +45,7 @@ dots --profile personal apply
 dots --profile work apply
 # Twingate
 
-dots --profile company apply
+dots --profile business apply
 # Tailscale
 ```
 
@@ -64,7 +64,7 @@ Arch resources include:
 - desktop packages for niri/noctalia
 - user groups: `docker`, `wheel`
 - system services: Bluetooth, Docker, NetworkManager
-- profile services: Twingate for `work`, Tailscale for `company`
+- profile services: Twingate for `work`, Tailscale for `business`
 
 macOS resources include:
 

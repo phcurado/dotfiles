@@ -1,3 +1,6 @@
 [submodule ".config/zsh/.antidote"]
 	path = .config/zsh/.antidote
 	url = https://github.com/mattmc3/antidote.git
+[submodule "private/incard"]
+	path = private/incard
+	url = git@github.com:phcurado/incard-dots.git

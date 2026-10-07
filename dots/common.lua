@@ -26,9 +26,11 @@ dots.symlink("~/.config", ".config", {
 		"sketchybar/**",
 		"sops/**",
 		"wallpapers/**",
+		"zsh/.antidote/**",
 	},
 })
 
+dots.symlink("~/.config/zsh/.antidote/antidote.zsh", ".config/zsh/.antidote/antidote.zsh")
 dots.symlink("~/.zshrc", ".zshrc")
 dots.symlink("~/.zsh_plugins.txt", ".zsh_plugins.txt")
 dots.symlink("~/.gitconfig", ".gitconfig")

@@ -11,8 +11,8 @@ if dots.platform.family == "arch" then
 		require("dots.profiles.work")
 	end
 
-	if dots.profile == "company" then
-		require("dots.profiles.company")
+	if dots.profile == "business" then
+		require("dots.profiles.business")
 	end
 end
 
@@ -23,8 +23,8 @@ if dots.platform.family == "darwin" then
 		require("dots.profiles.work")
 	end
 
-	if dots.profile == "company" then
-		require("dots.profiles.company")
+	if dots.profile == "business" then
+		require("dots.profiles.business")
 	end
 end
 

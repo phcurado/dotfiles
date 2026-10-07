@@ -34,8 +34,8 @@ make secrets.backup
 - `dots.arch` declares Arch packages, user groups, Linux-only links, and common systemd services.
 - `dots.macos` declares Homebrew packages, casks, taps, macOS-only links, commands, and services.
 - `dots.profiles.personal` declares no VPN service.
-- `dots.profiles.work` starts Twingate.
-- `dots.profiles.company` starts Tailscale.
+- `dots.profiles.work` loads the private work config.
+- `dots.profiles.business` starts Tailscale.
 - `dots.tools` declares shared command resources, including local tools and the SOPS AGE key restore.
 - Local machine state is stored in `.dots/state.json` and is not committed.
 
