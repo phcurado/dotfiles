@@ -135,16 +135,22 @@ alt-shift-f = 'macos-native-fullscreen'
 alt-q = 'close'
 alt-v = 'layout floating tiling'
 
-# focus (niri Mod+HJKL)
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
-# move window
-alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
-alt-shift-l = 'move right'
+# Focus windows across monitor boundaries (niri Mod+HJKL)
+alt-h = 'focus --boundaries all-monitors-outer-frame left'
+alt-j = 'focus --boundaries all-monitors-outer-frame down'
+alt-k = 'focus --boundaries all-monitors-outer-frame up'
+alt-l = 'focus --boundaries all-monitors-outer-frame right'
+# Move windows within the workspace
+alt-ctrl-h = 'move left'
+alt-ctrl-j = 'move down'
+alt-ctrl-k = 'move up'
+alt-ctrl-l = 'move right'
+
+# Move windows to another monitor and follow them
+alt-shift-h = 'move-node-to-monitor --focus-follows-window left'
+alt-shift-j = 'move-node-to-monitor --focus-follows-window down'
+alt-shift-k = 'move-node-to-monitor --focus-follows-window up'
+alt-shift-l = 'move-node-to-monitor --focus-follows-window right'
 
 # resize (niri Mod+R cycles presets; aerospace has no preset cycle → mode)
 alt-r = 'mode resize'
