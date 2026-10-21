@@ -39,6 +39,7 @@ local services = {
 dots.symlink("~/.config/aerospace", ".config/aerospace")
 dots.symlink("~/.config/borders", ".config/borders")
 dots.symlink("~/.config/sketchybar", ".config/sketchybar")
+dots.symlink("~/.config/rex", ".config/rex")
 
 dots.brew.enable()
 

@@ -23,6 +23,7 @@ dots.symlink("~/.config", ".config", {
 		"borders/**",
 		"niri/**",
 		"noctalia/**",
+		"rex/**",
 		"sketchybar/**",
 		"sops/**",
 		"wallpapers/**",

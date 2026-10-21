@@ -128,6 +128,20 @@ Tmux is a terminal multiplexer and probably one of the most important tools in t
 | `Super + a` | Open or toggle `pi` pane in the right        |
 | `Super + t` | Open or toggle a pane terminal in the bottom |
 
+## Rex
+
+[Rex](https://www.superlogical.com/rex/docs/installation) is an optional macOS alternative to Ghostty/tmux, configured in [.config/rex/](.config/rex/). Same pane layout as tpane, one Pi and one terminal per tab:
+
+| Key            | Action                             |
+| -------------- | ---------------------------------- |
+| `Ctrl-a a`     | Toggle `pi` pane on the right      |
+| `Ctrl-a t`     | Toggle terminal pane at the bottom |
+| `Ctrl-a c`     | New tab                            |
+| `Ctrl-a n/p`   | Next or previous tab               |
+| `Ctrl-a s`     | Switch session                     |
+| `Ctrl-h/j/k/l` | Focus pane                         |
+| `Ctrl-g`       | Zoom pane                          |
+
 ## Disclaimer
 
 This is my personal configuration. The intent of this project is not to be copied, but to serve as inspiration for anyone who wants to use similar tools or just check my config.

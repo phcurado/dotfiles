@@ -1,6 +1,7 @@
 import type {
   ExtensionAPI,
   ExtensionContext,
+  ToolCallEvent,
 } from "@earendil-works/pi-coding-agent";
 import { getSettingsListTheme } from "@earendil-works/pi-coding-agent";
 import { Container, type SettingItem, SettingsList, Spacer, Text } from "@earendil-works/pi-tui";
@@ -329,6 +330,13 @@ export default function (pi: ExtensionAPI) {
   if (process.env.PI_SUBAGENT_CHILD === "1") return;
 
   let config = loadConfig();
+  let cancelled = false;
+  let reviewQueue: Promise<void> = Promise.resolve();
+
+  pi.on("session_start", () => { cancelled = false; });
+  pi.on("before_agent_start", (event) => {
+    if (event.messageType === "user") cancelled = false;
+  });
 
   pi.registerCommand("review", {
     description: "Configure the edit/write review gate",
@@ -339,10 +347,19 @@ export default function (pi: ExtensionAPI) {
     },
   });
 
-  pi.on("tool_call", async (event, ctx) => {
-    if (config.autoApprove) return undefined;
+  pi.on("tool_call", (event, ctx) => {
     if (event.toolName !== "edit" && event.toolName !== "write")
       return undefined;
+    const signal = ctx.signal;
+    const pending = reviewQueue.then(() => reviewToolCall(event, ctx, signal));
+    reviewQueue = pending.then(() => {}, () => {});
+    return pending;
+  });
+
+  async function reviewToolCall(event: ToolCallEvent, ctx: ExtensionContext, signal: AbortSignal | undefined) {
+    if (cancelled || signal?.aborted)
+      return { block: true, reason: "review: run cancelled; remaining edits skipped" };
+    if (config.autoApprove) return undefined;
 
     const input = event.input as Record<string, unknown>;
     if (typeof input.path !== "string") return undefined;
@@ -384,6 +401,10 @@ export default function (pi: ExtensionAPI) {
       };
     }
 
+    // Pi can dispatch queued tool hooks even after the run was aborted.
+    if (cancelled || signal?.aborted)
+      return { block: true, reason: "review: run cancelled; remaining edits skipped" };
+
     let accepted: string | null;
     pi.events.emit("pi:approval", { active: true });
     try {
@@ -397,9 +418,18 @@ export default function (pi: ExtensionAPI) {
       pi.events.emit("pi:approval", { active: false });
     }
 
+    if (cancelled || signal?.aborted)
+      return { block: true, reason: "review: run cancelled; remaining edits skipped" };
+
     if (accepted === null) {
+      cancelled = true;
       ctx.abort();
-      return { block: true, reason: "review: cancelled" };
+      pi.sendMessage({
+        customType: "review-cancelled",
+        content: `User cancelled review of ${displayPath}. Skip remaining edits; do not retry unless asked.`,
+        display: false,
+      }, { triggerTurn: false });
+      return { block: true, reason: "review: cancelled by user" };
     }
 
     if (event.toolName === "write") {
@@ -412,5 +442,5 @@ export default function (pi: ExtensionAPI) {
     }
 
     return undefined;
-  });
+  }
 }
