@@ -69,7 +69,7 @@ Arch resources include:
 macOS resources include:
 
 - Homebrew and Homebrew taps
-- AeroSpace, SketchyBar, Borders, Ghostty, Brave, Discord, Obsidian, Docker Desktop, Tailscale, 1Password
+- OmniWM, SketchyBar, Borders, Ghostty, Brave, Discord, Obsidian, Docker Desktop, Tailscale, 1Password
 - SketchyBar Lua bindings
 - Homebrew services for SketchyBar and Borders
 
@@ -85,10 +85,8 @@ The Makefile is only a shortcut layer:
 
 ### macOS window management
 
-Before using AeroSpace for the first time, turn off **Displays have separate
-Spaces** in `System Settings > Desktop & Dock > Mission Control`, then log out
-and back in. Grant Accessibility permissions to AeroSpace and SketchyBar when
-prompted.
+Enable "Displays have separate Spaces" in System Settings → Desktop & Dock →
+Mission Control. Allow OmniWM Accessibility and Input Monitoring access when prompted.
 
 ### Niri keybindings
 

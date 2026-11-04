@@ -19,10 +19,10 @@ dots.docker.compose("searxng", {
 
 dots.symlink("~/.config", ".config", {
 	ignore = {
-		"aerospace/**",
 		"borders/**",
 		"niri/**",
 		"noctalia/**",
+		"omniwm/**",
 		"rex/**",
 		"sketchybar/**",
 		"sops/**",

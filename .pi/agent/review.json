@@ -1,5 +1,5 @@
 {
-  "autoApprove": false,
+  "autoApprove": true,
   "editor": {
     "command": "nvim",
     "args": [

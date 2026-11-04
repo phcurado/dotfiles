@@ -14,7 +14,7 @@ local packages = {
 }
 
 local casks = {
-	"nikitabobko/tap/aerospace",
+	"omniwm",
 	"ghostty",
 	"brave-browser",
 	"discord",
@@ -36,7 +36,8 @@ local services = {
 	"borders",
 }
 
-dots.symlink("~/.config/aerospace", ".config/aerospace")
+dots.symlink("~/.config/omniwm", ".config/omniwm")
+dots.symlink("~/Library/LaunchAgents/local.omniwm-sketchybar.plist", ".config/omniwm/local.omniwm-sketchybar.plist")
 dots.symlink("~/.config/borders", ".config/borders")
 dots.symlink("~/.config/sketchybar", ".config/sketchybar")
 dots.symlink("~/.config/rex", ".config/rex")
@@ -69,3 +70,18 @@ dots.command("sbarlua", {
 })
 
 dots.brew.service.start(services)
+
+dots.command("omniwm login", {
+	check = [[osascript -e 'tell application "System Events" to get name of every login item' | grep -qw OmniWM]],
+	apply = [[osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/OmniWM.app", hidden:false}']],
+	needs = { "package:brew-cask:omniwm" },
+})
+
+dots.command("omniwm sketchybar events", {
+	check = [[launchctl print "gui/$(id -u)/local.omniwm-sketchybar" >/dev/null 2>&1]],
+	apply = [[launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.omniwm-sketchybar.plist"]],
+	needs = {
+		"package:brew-cask:omniwm",
+		"package:brew:sketchybar",
+	},
+})

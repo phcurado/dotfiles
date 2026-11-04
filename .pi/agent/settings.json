@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.4.0",
+  "lastChangelogVersion": "1.5.2",
   "defaultProvider": "openai",
   "defaultModel": "gpt-6-astra",
   "defaultThinkingLevel": "medium",
@@ -17,5 +17,8 @@
     "npm:pi-image-tools"
   ],
   "deviceId": "fa363c22-5c74-4ef7-892e-b07289b80626",
-  "tuiMode": "regular"
+  "tuiMode": "regular",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-image-tools\",\"scope\":\"user\"}": "1.4.0"
+  }
 }

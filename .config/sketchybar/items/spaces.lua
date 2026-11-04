@@ -5,8 +5,7 @@ local app_icons = require("helpers.app_icons")
 local workspace_ids = { 1, 2, 3, 4 }
 local spaces = {}
 
-sbar.add("event", "aerospace_workspace_change")
-sbar.add("event", "aerospace_windows_change")
+sbar.add("event", "omniwm_change")
 
 local function refresh_focus(focused)
   for _, sid in ipairs(workspace_ids) do
@@ -42,43 +41,49 @@ for _, sid in ipairs(workspace_ids) do
     padding_left = 2,
     padding_right = 2,
     background = { height = 26, corner_radius = 8, drawing = false },
-    click_script = "aerospace workspace " .. sid,
+    click_script = "omniwmctl command switch-workspace " .. sid,
   })
   spaces[sid] = space
 end
 
-local function refresh_all_windows()
-  sbar.exec(
-    "aerospace list-windows --workspace 1 2 3 4 --json --format '%{workspace} %{app-name}'",
-    function(windows)
-      local labels = { "", "", "", "" }
-      local seen = {}
+local function refresh()
+  sbar.exec("omniwmctl query workspace-bar", function(response, exit_code)
+    if exit_code ~= 0 or not response.ok then
+      return
+    end
 
-      for _, window in ipairs(windows) do
-        local sid = tonumber(window.workspace)
-        local app = window["app-name"]
-        local key = sid .. "\0" .. app
-        if not seen[key] then
-          seen[key] = true
-          labels[sid] = labels[sid] .. " " .. (app_icons[app] or app_icons["Default"])
+    local state = response.result.payload
+    local labels = { "", "", "", "" }
+    local focused
+    for _, monitor in ipairs(state.monitors) do
+      for _, workspace in ipairs(monitor.workspaces) do
+        local sid = workspace.number
+        if spaces[sid] then
+          if monitor.id == state.interactionMonitorId and workspace.isFocused then
+            focused = sid
+          end
+          local seen = {}
+          for _, window in ipairs(workspace.windows) do
+            local app = window.appName
+            if not seen[app] then
+              seen[app] = true
+              labels[sid] = labels[sid] .. " " .. (app_icons[app] or app_icons["Default"])
+            end
+          end
         end
       end
-
-      for _, sid in ipairs(workspace_ids) do
-        spaces[sid]:set({
-          label = { string = labels[sid], drawing = labels[sid] ~= "" },
-        })
-      end
     end
-  )
+
+    refresh_focus(focused)
+    for _, sid in ipairs(workspace_ids) do
+      spaces[sid]:set({
+        label = { string = labels[sid], drawing = labels[sid] ~= "" },
+      })
+    end
+  end)
 end
 
-spaces[1]:subscribe("aerospace_workspace_change", function(env)
-  refresh_focus(tonumber(env.FOCUSED_WORKSPACE))
-  refresh_all_windows()
-end)
-
-spaces[1]:subscribe({ "aerospace_windows_change", "space_windows_change", "front_app_switched" }, refresh_all_windows)
+spaces[1]:subscribe({ "omniwm_change", "system_woke" }, refresh)
 
 -- Group all spaces in one rounded bracket
 sbar.add("bracket", "spaces.bracket", { "space.1", "space.2", "space.3", "space.4" }, {
@@ -92,7 +97,4 @@ sbar.add("bracket", "spaces.bracket", { "space.1", "space.2", "space.3", "space.
 })
 
 -- Initial paint
-sbar.exec("aerospace list-workspaces --focused", function(focused)
-  refresh_focus(tonumber((focused:gsub("%s+", ""))))
-  refresh_all_windows()
-end)
+refresh()

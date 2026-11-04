@@ -10,7 +10,7 @@ This repository contains cross-platform dotfiles for Arch Linux and macOS.
 - `dots.lua` loads normal Lua modules under `dots/`.
 - Cross-platform configs include Neovim, Ghostty, tmux, zsh, starship, git, bat, btop, mise, and zoxide.
 - Arch-specific configs include niri and noctalia.
-- macOS-specific configs include AeroSpace, SketchyBar, and Borders.
+- macOS-specific configs include OmniWM, SketchyBar, and Borders.
 - Pi config is tracked under `.pi/agent/` and linked to `~/.pi/agent/` by `dots`.
 
 ## Common commands
