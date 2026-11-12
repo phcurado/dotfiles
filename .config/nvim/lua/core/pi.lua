@@ -33,7 +33,7 @@ local function bridge_socket()
     "list-panes",
     "-a",
     "-F",
-    "#{window_id}\t#{@agent_sidebar}\t#{@agent_sidebar_home}\t#{@pi_nvim_bridge_socket}",
+    "#{window_id}\t#{@tpane_kind}\t#{@tpane_home}\t#{@pi_nvim_bridge_socket}",
   })
   if not panes then
     return nil, "could not list tmux panes"
@@ -42,8 +42,8 @@ local function bridge_socket()
   local hidden
   local pi_pane_found = false
   for _, line in ipairs(panes) do
-    local pane_window, sidebar, home, socket = line:match("^([^\t]*)\t([^\t]*)\t([^\t]*)\t(.*)$")
-    if sidebar == "1" and (pane_window == window or home == window) then
+    local pane_window, kind, home, socket = line:match("^([^\t]*)\t([^\t]*)\t([^\t]*)\t(.*)$")
+    if kind == "pi" and (pane_window == window or home == window) then
       pi_pane_found = true
     end
     if socket and socket ~= "" then
@@ -67,20 +67,66 @@ local function bridge_socket()
   return nil, "no Pi pane found for this tmux window. Use tmux prefix+a to open the sidebar."
 end
 
+-- Atlas PR diffs run on CodeDiff; their events carry the PR head that the
+-- LSP worktree shows as CodeDiff's "WORKING" side.
+local atlas_diffs = {}
+
+-- CodeDiff has no public session API yet; this reads its lifecycle module.
+local function diff_context(buf)
+  local lifecycle = package.loaded["codediff.ui.lifecycle"]
+  local tabpage = lifecycle and lifecycle.find_tabpage_by_buffer(buf)
+  if not tabpage then
+    return nil
+  end
+
+  local session = lifecycle.get_session(tabpage)
+  local name = vim.api.nvim_buf_get_name(buf)
+  local commit, path
+  if name:match("^codediff://") then
+    _, commit, path = require("codediff.core.virtual_file").parse_url(name)
+  else
+    path = name:match("^atlas%-diff://%d+/%d+/(.+)$") or (session.git_root and vim.fs.relpath(session.git_root, name))
+  end
+  if not path then
+    return nil
+  end
+
+  local atlas = atlas_diffs[tabpage]
+  local function revision(value)
+    if atlas and value == "WORKING" then
+      return atlas.head_revision
+    end
+    return value or "WORKING"
+  end
+  local base, head = revision(session.original_revision), revision(session.modified_revision)
+
+  return {
+    tool = atlas and "atlas" or "codediff",
+    root = atlas and atlas.root or session.git_root,
+    base = base ~= head and base or nil,
+    head = head,
+    -- Virtual buffers name their own revision; real files are the head side.
+    linesFrom = commit or (buf == session.original_bufnr and base or head),
+    path = path,
+  }
+end
+
 local function context_from_range(start_line, end_line)
-  local buf = 0
+  local buf = vim.api.nvim_get_current_buf()
   local file = vim.api.nvim_buf_get_name(buf)
   local cursor = vim.api.nvim_win_get_cursor(0)
   local lines = vim.api.nvim_buf_get_lines(buf, start_line - 1, end_line, false)
+  local diff = diff_context(buf)
 
   return {
     cwd = vim.fn.getcwd(),
     file = file,
-    relativeFile = vim.fn.fnamemodify(file, ":."),
+    relativeFile = diff and diff.path or vim.fn.fnamemodify(file, ":."),
     filetype = vim.bo.filetype,
     cursor = { line = cursor[1], column = cursor[2] + 1 },
     range = { startLine = start_line, endLine = end_line },
     text = table.concat(lines, "\n"),
+    diff = diff,
   }
 end
 
@@ -179,6 +225,12 @@ function M.command(opts)
     payload = context_from_lines(false)
   end
 
+  if opts.args ~= "" then
+    payload.prompt = opts.args
+    send_payload(payload)
+    return
+  end
+
   vim.ui.input({ prompt = "Ask Pi: " }, function(input)
     if not input or input == "" then
       return
@@ -204,9 +256,24 @@ function M.command_abbrev()
 end
 
 function M.setup()
-  vim.api.nvim_create_user_command("Pi", M.command, { range = true, desc = "Ask Pi about current line or range" })
+  vim.api.nvim_create_user_command("Pi", M.command, { range = true, nargs = "*", desc = "Ask Pi about current line or range" })
   vim.cmd([[cnoreabbrev <expr> pi v:lua.require('core.pi').command_abbrev()]])
 
+  local group = vim.api.nvim_create_augroup("PiAtlasDiff", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = { "AtlasDiffOpened", "AtlasDiffFileChanged" },
+    callback = function(event)
+      atlas_diffs[event.data.tabpage] = event.data
+    end,
+  })
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = "AtlasDiffClosed",
+    callback = function(event)
+      atlas_diffs[event.data.tabpage] = nil
+    end,
+  })
 end
 
 return M

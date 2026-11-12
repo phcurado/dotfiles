@@ -4,6 +4,15 @@ import { chmodSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
+type DiffContext = {
+  tool: "atlas" | "codediff";
+  root?: string;
+  base?: string;
+  head: string;
+  linesFrom: string;
+  path: string;
+};
+
 type NvimRequest = {
   prompt?: string;
   cwd?: string;
@@ -13,7 +22,22 @@ type NvimRequest = {
   cursor?: { line: number; column: number };
   range?: { startLine: number; endLine: number };
   text?: string;
+  diff?: DiffContext;
 };
+
+function revisionLabel(revision: string): string {
+  return revision === "WORKING" ? "working copy" : revision;
+}
+
+function formatDiff(diff: DiffContext): string[] {
+  return [
+    diff.tool === "atlas" ? "Diff: Atlas pull request review" : "Diff: CodeDiff",
+    diff.root ? `Repo: ${diff.root}` : undefined,
+    diff.base ? `Base: ${revisionLabel(diff.base)}` : undefined,
+    `Head: ${revisionLabel(diff.head)}`,
+    `Lines from: ${revisionLabel(diff.linesFrom)}`,
+  ].filter((line): line is string => line !== undefined);
+}
 
 function tmuxPane(): string | undefined {
   return process.env.TMUX_PANE || undefined;
@@ -53,6 +77,7 @@ function formatRequest(request: NvimRequest): string {
     `Range: ${range}`,
     `Cursor: ${cursor}`,
     request.cwd ? `Cwd: ${request.cwd}` : undefined,
+    ...(request.diff ? formatDiff(request.diff) : []),
     "",
     openingFence,
     request.text || "",
