@@ -36,7 +36,7 @@ local services = {
 	"borders",
 }
 
-dots.symlink("~/.config/omniwm", ".config/omniwm")
+dots.symlink("~/.config/omniwm/settings.toml", ".config/omniwm/settings.toml")
 dots.symlink("~/Library/LaunchAgents/local.omniwm-sketchybar.plist", ".config/omniwm/local.omniwm-sketchybar.plist")
 dots.symlink("~/.config/borders", ".config/borders")
 dots.symlink("~/.config/sketchybar", ".config/sketchybar")
