@@ -21,6 +21,17 @@ vim.opt.laststatus = 2
 local original_buf = vim.fn.bufnr(original)
 local proposed_buf = vim.fn.bufnr(proposed)
 
+-- Side by side when there's room; original above proposed on narrow panes (phone, Pi sidebar).
+local function layout()
+  local win = vim.fn.win_findbuf(original_buf)[1]
+  if win then
+    vim.api.nvim_win_call(win, function()
+      vim.cmd(vim.o.columns < 120 and "wincmd K" or "wincmd H")
+    end)
+  end
+  vim.cmd("wincmd =")
+end
+
 local function approve()
   if proposed_buf <= 0 then
     vim.notify("Review: proposed buffer not found", vim.log.levels.ERROR)
@@ -106,11 +117,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     vim.cmd("qall!")
   end,
 })
-vim.api.nvim_create_autocmd("VimResized", {
-  callback = function()
-    vim.cmd("wincmd =")
-  end,
-})
+vim.api.nvim_create_autocmd("VimResized", { callback = layout })
 
 vim.bo[original_buf].readonly = true
 vim.bo[original_buf].modifiable = false
@@ -133,5 +140,5 @@ for _, win in ipairs(vim.fn.win_findbuf(proposed_buf)) do
 end
 
 vim.cmd("diffupdate")
-vim.cmd("wincmd =")
+layout()
 pcall(vim.cmd, "normal! ]czz")

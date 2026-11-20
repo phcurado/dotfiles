@@ -31,4 +31,5 @@
 
 ## Output
 
-- Terse: no preamble or closing summary unless asked.
+- Answer in plain, conversational sentences. Start with the answer and leave out anything the user doesn't need to act on it.
+- No preamble or closing summary unless asked.

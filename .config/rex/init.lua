@@ -15,7 +15,8 @@ rex.bind("ctrl+a>t", "toggle_term")
 rex.bind("ctrl+a>c", "client.tab.new")
 rex.bind("ctrl+a>n", "client.tab.next")
 rex.bind("ctrl+a>p", "client.tab.previous")
-rex.bind("ctrl+a>s", "session.switch")rex.bind("ctrl+a>ctrl+a", "pane.send_key", { key = "ctrl+a" })
+rex.bind("ctrl+a>s", "session.switch")
+rex.bind("ctrl+a>ctrl+a", "pane.send_key", { key = "ctrl+a" })
 rex.bind("ctrl+g", "pane.zoom")
 
 -- vim-navigator: when nvim is in front, pass the key through; nvim moves

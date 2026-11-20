@@ -1,54 +1,16 @@
-import type {
-  ExtensionAPI,
-  ExtensionContext,
-  ToolCallEvent,
-} from "@earendil-works/pi-coding-agent";
-import { getSettingsListTheme } from "@earendil-works/pi-coding-agent";
-import { Container, type SettingItem, SettingsList, Spacer, Text } from "@earendil-works/pi-tui";
-import { readFileSync } from "node:fs";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import type { AgentToolResult, ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
+import { createEditToolDefinition, createWriteToolDefinition } from "@earendil-works/pi-coding-agent";
+import { constants } from "node:fs";
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { homedir, tmpdir } from "node:os";
-import { basename, dirname, extname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { basename, extname, join, relative } from "node:path";
 
-const CONFIG_PATH = resolve(homedir(), ".pi/agent/review.json");
+const REVIEW_SCRIPT = join(homedir(), ".config/nvim/lua/review.lua");
+// Local to this machine; not part of the dotfiles.
+const STATE_PATH = join(homedir(), ".pi/agent/review-state.json");
 
-type EditorConfig = { command: string; args: string[] };
-type Config = { autoApprove: boolean; editor?: EditorConfig };
-type Edit = { oldText: string; newText: string };
-
-const DEFAULT_CONFIG: Config = {
-  autoApprove: false,
-};
-
-function parseEditorConfig(value: unknown): EditorConfig | undefined {
-  if (!value || typeof value !== "object") return undefined;
-  const editor = value as Partial<EditorConfig>;
-  if (typeof editor.command !== "string" || !editor.command.trim()) return undefined;
-  if (!Array.isArray(editor.args) || !editor.args.every((arg) => typeof arg === "string")) return undefined;
-  return { command: editor.command, args: editor.args };
-}
-
-function loadConfig(): Config {
-  try {
-    const raw = JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
-    return {
-      autoApprove:
-        typeof raw.autoApprove === "boolean"
-          ? raw.autoApprove
-          : DEFAULT_CONFIG.autoApprove,
-      editor: parseEditorConfig(raw.editor),
-    };
-  } catch {
-    return DEFAULT_CONFIG;
-  }
-}
-
-async function saveConfig(config: Config) {
-  await mkdir(dirname(CONFIG_PATH), { recursive: true });
-  await writeFile(CONFIG_PATH, JSON.stringify(config, null, 2) + "\n", "utf8");
-}
+type Save = (path: string, content: string) => Promise<void>;
 
 async function readText(path: string): Promise<string> {
   try {
@@ -59,111 +21,12 @@ async function readText(path: string): Promise<string> {
   }
 }
 
-function cleanPath(path: string): string {
-  return path.startsWith("@") ? path.slice(1) : path;
-}
-
-function resolveToolPath(path: string, cwd: string): string {
-  const normalized = cleanPath(path).replace(/[\u00A0\u2000-\u200A\u202F\u205F\u3000]/g, " ");
-  if (normalized === "~") return homedir();
-  if (normalized.startsWith("~/")) return join(homedir(), normalized.slice(2));
-  if (normalized.startsWith("file://")) return fileURLToPath(normalized);
-  return resolve(cwd, normalized);
-}
-
-function normalizeToLf(text: string): string {
-  return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-}
-
-function normalizeEditableContent(text: string): string {
-  return normalizeToLf(text.startsWith("\uFEFF") ? text.slice(1) : text);
-}
-
-function applyEdits(original: string, edits: Edit[]): string {
-  const ranges: Array<{ start: number; end: number; newText: string }> = [];
-
-  for (const edit of edits) {
-    const start = original.indexOf(edit.oldText);
-    if (start === -1) throw new Error("oldText not found");
-    if (original.indexOf(edit.oldText, start + edit.oldText.length) !== -1)
-      throw new Error("oldText is not unique");
-    ranges.push({
-      start,
-      end: start + edit.oldText.length,
-      newText: edit.newText,
-    });
+async function loadEnabled(): Promise<boolean> {
+  try {
+    return JSON.parse(await readFile(STATE_PATH, "utf8")).enabled !== false;
+  } catch {
+    return true;
   }
-
-  ranges.sort((a, b) => a.start - b.start);
-  for (let i = 1; i < ranges.length; i++) {
-    if (ranges[i].start < ranges[i - 1].end)
-      throw new Error("edit ranges overlap");
-  }
-
-  let out = "";
-  let cursor = 0;
-  for (const range of ranges) {
-    out += original.slice(cursor, range.start) + range.newText;
-    cursor = range.end;
-  }
-  return out + original.slice(cursor);
-}
-
-function compactReplacement(original: string, accepted: string): Edit[] {
-  if (original === accepted) return [];
-
-  let start = 0;
-  while (
-    start < original.length &&
-    start < accepted.length &&
-    original[start] === accepted[start]
-  )
-    start++;
-
-  let endOriginal = original.length;
-  let endAccepted = accepted.length;
-  while (
-    endOriginal > start &&
-    endAccepted > start &&
-    original[endOriginal - 1] === accepted[endAccepted - 1]
-  ) {
-    endOriginal--;
-    endAccepted--;
-  }
-
-  start = original.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
-  const originalLineEnd = original.indexOf("\n", endOriginal);
-  const acceptedLineEnd = accepted.indexOf("\n", endAccepted);
-  endOriginal = originalLineEnd === -1 ? original.length : originalLineEnd + 1;
-  endAccepted = acceptedLineEnd === -1 ? accepted.length : acceptedLineEnd + 1;
-
-  const oldText = original.slice(start, endOriginal);
-  const newText = accepted.slice(start, endAccepted);
-  const first = oldText ? original.indexOf(oldText) : -1;
-  const unique =
-    oldText &&
-    first !== -1 &&
-    original.indexOf(oldText, first + oldText.length) === -1;
-
-  return unique
-    ? [{ oldText, newText }]
-    : [{ oldText: original, newText: accepted }];
-}
-
-function editorInvocation(config: Config, originalFile: string, proposedFile: string) {
-  const editor = config.editor;
-  if (!editor) throw new Error(`Configure an editor command in ${CONFIG_PATH}`);
-  if (!editor.args.some((arg) => arg.includes("{original}")))
-    throw new Error("Editor args must include {original}");
-  if (!editor.args.some((arg) => arg.includes("{proposed}")))
-    throw new Error("Editor args must include {proposed}");
-
-  return {
-    command: editor.command,
-    args: editor.args.map((arg) => arg
-      .replaceAll("{original}", originalFile)
-      .replaceAll("{proposed}", proposedFile)),
-  };
 }
 
 function tempName(prefix: string, displayPath: string): string {
@@ -175,7 +38,6 @@ function tempName(prefix: string, displayPath: string): string {
 
 async function reviewInEditor(
   ctx: ExtensionContext,
-  config: Config,
   displayPath: string,
   original: string,
   proposed: string,
@@ -188,12 +50,11 @@ async function reviewInEditor(
   try {
     await writeFile(originalFile, original, "utf8");
     await writeFile(proposedFile, proposed, "utf8");
-    const { command, args } = editorInvocation(config, originalFile, proposedFile);
     let spawnError: Error | undefined;
     const status = await ctx.ui.custom<number | null>((tui, _theme, _kb, done) => {
       tui.stop();
       try {
-        const result = spawnSync(command, args, {
+        const result = spawnSync("nvim", ["-d", originalFile, proposedFile, "-S", REVIEW_SCRIPT], {
           stdio: "inherit",
           env: {
             ...process.env,
@@ -226,200 +87,65 @@ async function reviewInEditor(
 
 async function reviewChange(
   ctx: ExtensionContext,
-  config: Config,
   displayPath: string,
   original: string,
   proposed: string,
 ): Promise<string | null> {
-  if (!ctx.hasUI) return null;
-  if (ctx.mode === "tui")
-    return reviewInEditor(ctx, config, displayPath, original, proposed);
-  return (
-    (await ctx.ui.editor(
-      `Review proposed content: ${displayPath}`,
-      proposed,
-    )) ?? null
-  );
+  if (ctx.mode === "tui") return reviewInEditor(ctx, displayPath, original, proposed);
+  return (await ctx.ui.editor(`Review proposed content: ${displayPath}`, proposed)) ?? null;
 }
 
-async function showSettings(
-  ctx: ExtensionContext,
-  getConfig: () => Config,
-  setConfig: (config: Config) => void,
-) {
-  await ctx.ui.custom((tui, theme, _kb, done) => {
-    const config = getConfig();
-    let settings: SettingsList;
-    const items: SettingItem[] = [
-      {
-        id: "autoApprove",
-        label: "Auto-approve",
-        currentValue: config.autoApprove ? "on" : "off",
-        values: ["on", "off"],
-        description: "When on, edit/write changes apply directly.",
-      },
-      {
-        id: "editor",
-        label: "Editor",
-        currentValue: config.editor?.command ?? "not configured",
-        values: ["change"],
-        description: "Executable and argument array containing {original} and {proposed}.",
-      },
-    ];
-
-    const container = new Container();
-    container.addChild(new Text(theme.fg("accent", theme.bold("review settings")), 0, 0));
-    container.addChild(new Text(`${theme.fg("dim", "Config:")} ${CONFIG_PATH}`, 0, 0));
-    container.addChild(new Spacer(1));
-
-    settings = new SettingsList(
-      items,
-      Math.min(items.length + 2, 12),
-      getSettingsListTheme(),
-      (id, value) => {
-        void (async () => {
-          const current = getConfig();
-          if (id === "autoApprove") {
-            const next = { ...current, autoApprove: value === "on" };
-            setConfig(next);
-            await saveConfig(next);
-            return;
-          }
-
-          const editorText = await ctx.ui.editor(
-            "Editor configuration",
-            JSON.stringify(current.editor ?? { command: "", args: ["{original}", "{proposed}"] }, null, 2),
-          );
-          if (editorText === undefined) return;
-
-          let editor: EditorConfig | undefined;
-          try {
-            editor = parseEditorConfig(JSON.parse(editorText));
-          } catch {
-            editor = undefined;
-          }
-          if (!editor) {
-            ctx.ui.notify("Editor configuration requires a command and string args array.", "error");
-            return;
-          }
-
-          const next = { ...current, editor };
-          setConfig(next);
-          settings.updateValue("editor", editor.command);
-          await saveConfig(next);
-          tui.requestRender();
-        })();
-      },
-      () => done(undefined),
-    );
-    container.addChild(settings);
-    container.addChild(new Spacer(1));
-
-    return {
-      render: (width) => container.render(width),
-      invalidate: () => container.invalidate(),
-      handleInput: (data) => {
-        settings.handleInput?.(data);
-        tui.requestRender();
-      },
-    };
-  });
-}
-
+// Pi's own edit and write tools compute the final file content (including fuzzy
+// matching and line endings) and call `save` with it; the review happens there.
 export default function (pi: ExtensionAPI) {
   if (process.env.PI_SUBAGENT_CHILD === "1") return;
 
-  let config = loadConfig();
+  let enabled = true;
   let cancelled = false;
-  let reviewQueue: Promise<void> = Promise.resolve();
+  let reviewQueue: Promise<unknown> = Promise.resolve();
 
-  pi.on("session_start", () => { cancelled = false; });
+  function showStatus(ctx: ExtensionContext) {
+    ctx.ui.setStatus("review", enabled ? "review on" : "review off");
+  }
+
+  pi.on("session_start", async (_event, ctx) => {
+    cancelled = false;
+    enabled = await loadEnabled();
+    showStatus(ctx);
+  });
   pi.on("before_agent_start", (event) => {
     if (event.messageType === "user") cancelled = false;
   });
 
   pi.registerCommand("review", {
-    description: "Configure the edit/write review gate",
-    handler: async (_args, ctx) => {
-      await showSettings(ctx, () => config, (next) => {
-        config = next;
-      });
+    description: "Review edits in Neovim: /review on, /review off, or /review to toggle",
+    handler: async (args, ctx) => {
+      const arg = args.trim();
+      if (arg && arg !== "on" && arg !== "off") {
+        ctx.ui.notify("Usage: /review [on|off]", "error");
+        return;
+      }
+      enabled = arg ? arg === "on" : !enabled;
+      await writeFile(STATE_PATH, JSON.stringify({ enabled }) + "\n", "utf8");
+      showStatus(ctx);
     },
   });
 
-  pi.on("tool_call", (event, ctx) => {
-    if (event.toolName !== "edit" && event.toolName !== "write")
-      return undefined;
-    const signal = ctx.signal;
-    const pending = reviewQueue.then(() => reviewToolCall(event, ctx, signal));
-    reviewQueue = pending.then(() => {}, () => {});
-    return pending;
-  });
+  async function review(ctx: ExtensionContext, signal: AbortSignal | undefined, path: string, proposed: string) {
+    // Nobody can approve without a UI (print mode, background runs), so the change goes through.
+    if (!enabled || !ctx.hasUI) return proposed;
+    // Pi can run queued tool calls even after the run was aborted.
+    if (cancelled || signal?.aborted) throw new Error("review: run cancelled; remaining edits skipped");
 
-  async function reviewToolCall(event: ToolCallEvent, ctx: ExtensionContext, signal: AbortSignal | undefined) {
-    if (cancelled || signal?.aborted)
-      return { block: true, reason: "review: run cancelled; remaining edits skipped" };
-    if (config.autoApprove) return undefined;
-
-    const input = event.input as Record<string, unknown>;
-    if (typeof input.path !== "string") return undefined;
-
-    const displayPath = cleanPath(input.path);
-    const absPath = resolveToolPath(input.path, ctx.cwd);
-    const original = await readText(absPath);
-    let reviewOriginal = original;
-
-    let proposed: string;
-    try {
-      if (event.toolName === "write") {
-        if (typeof input.content !== "string")
-          return {
-            block: true,
-            reason: "review: write content is not a string",
-          };
-        proposed = input.content;
-      } else {
-        const edits = input.edits as Edit[] | undefined;
-        if (!Array.isArray(edits))
-          return {
-            block: true,
-            reason: "review: edit input has no edits array",
-          };
-        reviewOriginal = normalizeEditableContent(original);
-        proposed = applyEdits(
-          reviewOriginal,
-          edits.map((edit) => ({
-            oldText: normalizeToLf(edit.oldText),
-            newText: normalizeToLf(edit.newText),
-          })),
-        );
-      }
-    } catch (error) {
-      return {
-        block: true,
-        reason: `review: preview failed (${error instanceof Error ? error.message : String(error)})`,
-      };
-    }
-
-    // Pi can dispatch queued tool hooks even after the run was aborted.
-    if (cancelled || signal?.aborted)
-      return { block: true, reason: "review: run cancelled; remaining edits skipped" };
-
+    const displayPath = relative(ctx.cwd, path);
+    const original = await readText(path);
     let accepted: string | null;
     pi.events.emit("pi:approval", { active: true });
     try {
-      accepted = await reviewChange(ctx, config, displayPath, reviewOriginal, proposed);
-    } catch (error) {
-      return {
-        block: true,
-        reason: `review: ${error instanceof Error ? error.message : String(error)}`,
-      };
+      accepted = await reviewChange(ctx, displayPath, original, proposed);
     } finally {
       pi.events.emit("pi:approval", { active: false });
     }
-
-    if (cancelled || signal?.aborted)
-      return { block: true, reason: "review: run cancelled; remaining edits skipped" };
 
     if (accepted === null) {
       cancelled = true;
@@ -429,18 +155,55 @@ export default function (pi: ExtensionAPI) {
         content: `User cancelled review of ${displayPath}. Skip remaining edits; do not retry unless asked.`,
         display: false,
       }, { triggerTurn: false });
-      return { block: true, reason: "review: cancelled by user" };
+      throw new Error("review: cancelled by user");
     }
-
-    if (event.toolName === "write") {
-      input.content = accepted;
-    } else if (accepted !== proposed) {
-      const replacement = compactReplacement(reviewOriginal, accepted);
-      if (replacement.length === 0)
-        return { block: true, reason: "review: no accepted changes" };
-      input.edits = replacement;
-    }
-
-    return undefined;
+    return accepted;
   }
+
+  async function runReviewed<T>(
+    ctx: ExtensionContext,
+    signal: AbortSignal | undefined,
+    execute: (save: Save) => Promise<AgentToolResult<T>>,
+  ): Promise<AgentToolResult<T>> {
+    let changedByUser = false;
+    const result = await execute(async (path, proposed) => {
+      // One review at a time, even when the model sends several edits at once.
+      const pending = reviewQueue.then(() => review(ctx, signal, path, proposed));
+      reviewQueue = pending.catch(() => {});
+      const accepted = await pending;
+      changedByUser = accepted !== proposed;
+      await writeFile(path, accepted, "utf8");
+    });
+    if (changedByUser)
+      result.content.push({
+        type: "text",
+        text: "The user changed this edit before approving it. Re-read the file before editing it again.",
+      });
+    return result;
+  }
+
+  pi.registerTool({
+    ...createEditToolDefinition(process.cwd()),
+    execute: (id, params, signal, onUpdate, ctx) =>
+      runReviewed(ctx, signal, (save) =>
+        createEditToolDefinition(ctx.cwd, {
+          operations: {
+            readFile: (path) => readFile(path),
+            access: (path) => access(path, constants.R_OK | constants.W_OK),
+            writeFile: save,
+          },
+        }).execute(id, params, signal, onUpdate, ctx)),
+  });
+
+  pi.registerTool({
+    ...createWriteToolDefinition(process.cwd()),
+    execute: (id, params, signal, onUpdate, ctx) =>
+      runReviewed(ctx, signal, (save) =>
+        createWriteToolDefinition(ctx.cwd, {
+          operations: {
+            mkdir: async (dir) => { await mkdir(dir, { recursive: true }); },
+            writeFile: save,
+          },
+        }).execute(id, params, signal, onUpdate, ctx)),
+  });
 }
