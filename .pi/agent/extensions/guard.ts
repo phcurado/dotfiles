@@ -12,13 +12,32 @@ import type {
 import {
   Key,
   matchesKey,
+  truncateToWidth,
   visibleWidth,
   wrapTextWithAnsi,
 } from "@earendil-works/pi-tui";
 
 /* ── Dangerous command patterns ── */
+const wrappers =
+  "sudo|doas|xargs|env|exec|command|nohup|time|nice|eval|then|do|else";
+// Global options before a subcommand: `git -C dir`, `jj --repository x`.
+const globalOpts = String.raw`(?:\s+-\S+(?:\s+(?:"[^"]*"|'[^']*'|[^\s"'-]\S*))?)*`;
+// Rest of the current simple command, ending at whitespace.
+const rest = String.raw`[^;&|\n]*\s`;
+
+const tool = (name: string, sub: string, flags = "i") =>
+  new RegExp(String.raw`\b${name}${globalOpts}\s+${sub}`, flags);
+
+// `names` in command position: start, after a separator, or after sudo/xargs/sh -c/….
+const command = (names: string) =>
+  new RegExp(
+    String.raw`(?:^|[;&|({\n\`]|\b(?:${wrappers})\s+(?:-\S+\s+(?:[^\s-]\S*\s+)?)*|\b(?:sh|bash|zsh)\s+-\w*c\s+)["']?\s*(?:\w+=\S*\s+)*\\?(?:\S*\/)?(?:${names})(?=[\s;&|)"']|$)`,
+    "i",
+  );
+
 const dangerousPatterns: RegExp[] = [
-  /\b(?:rm|rmdir)\b/i,
+  command("rm|rmdir|unlink"),
+  /\bfind\b[^;&|\n]*\s-(?:delete|exec(?:dir)?\s+(?:\S*\/)?(?:rm|rmdir|unlink))\b/i,
   /\b(?:npm|pnpm)\s+(?:install|i|add|update|upgrade|uninstall|remove)\b/i,
   /\byarn\s+(?:install|add|up|remove)\b/i,
   /\b(?:pip3?|uv\s+pip)\s+(?:install|uninstall)\b/i,
@@ -27,19 +46,31 @@ const dangerousPatterns: RegExp[] = [
   /\b(?:pacman|paru|yay)\s+[^\n;&|]*(?:-[a-z]*[SR][a-z]*|--sync|--remove)\b/,
   /\bmise\s+(?:install|use|upgrade|uninstall)\b/i,
   /\b(?:curl|wget)\b[^\n;]*\|\s*(?:sh|bash|zsh)\b/i,
+  /\b(?:sh|bash|zsh|eval|source)\b[^;&|\n]*(?:\$\(|<\()\s*(?:curl|wget)\b/i,
   /\bsudo\b/i,
   /\b(chmod|chown)\b.*777/i,
-  /\bgit\s+push\b/i,
-  /\bgit\s+reset\s+--hard\b/i,
-  /\bgit\s+clean\b[^\n;&|]*-[a-z]*[fdx][a-z]*/i,
-  /\bgit\s+checkout\b[^\n;&|]*(?:--\s|\.\s*$)/i,
-  /\bgit\s+restore\b/i,
-  /\bgit\s+stash\s+(?:drop|clear)\b/i,
-  /\bjj\s+git\s+push\b/i,
-  /\bjj\s+(?:abandon|restore)\b/i,
-  /\bjj\s+op\s+(?:undo|restore)\b/i,
-  /\bjj\s+bookmark\s+(?:delete|forget)\b/i,
-  /\bdocker\s+(rm|prune|system\s+prune)\b.*(?:-[a-z]*f[a-z]*|--force)/i,
+  tool("git", String.raw`push\b`),
+  tool("git", String.raw`reset\b${rest}--hard\b`),
+  tool("git", String.raw`clean\b${rest}-(?:-force\b|[a-z]*[fdx])`),
+  tool(
+    "git",
+    String.raw`checkout\b${rest}(?:--(?=\s|$)|--force\b|-[a-z]*f\b|\.(?:\/\S*)?(?=[\s;&|)]|$))`,
+  ),
+  tool("git", String.raw`switch\b${rest}(?:--force|--discard-changes|-[a-z]*f)\b`),
+  tool("git", String.raw`branch\b${rest}-[a-zA-Z]*D\b`, ""),
+  tool("git", String.raw`restore\b`),
+  tool("git", String.raw`stash\s+(?:drop|clear)\b`),
+  tool("jj", String.raw`git\s+push\b`),
+  tool("jj", String.raw`(?:abandon|restore|undo)\b`),
+  tool("jj", String.raw`op(?:eration)?\s+(?:abandon|restore|revert)\b`),
+  tool("jj", String.raw`(?:bookmark|b)\s+(?:delete|d|forget|f)\b`),
+  tool("docker", String.raw`(?:volume|image|system|container|network)\s+prune\b`),
+  tool("docker", String.raw`volume\s+rm\b`),
+  tool("docker", String.raw`(?:(?:container|image)\s+)?rmi?\b${rest}(?:--force|-[a-z]*f)\b`),
+  new RegExp(
+    String.raw`\bdocker(?:-compose|${globalOpts}\s+compose)\b${rest}down\b${rest}(?:--volumes|-[a-z]*v)\b`,
+    "i",
+  ),
   /(^|[\s;&|])>{1,2}\s*\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
   /\bdd\b[^\n;&|]*\bof=\/dev\/(?:sd[a-z]|nvme\d+n\d+|disk\d+)/i,
   /\bmkfs\./i,
@@ -47,61 +78,73 @@ const dangerousPatterns: RegExp[] = [
   /\bcryptsetup\b[^\n;&|]*\bluksFormat\b/i,
 ];
 
-/* ── Protected path fragments ── */
-const protectedPathFragments: string[] = [
-  ".env",
-  ".git/",
-  "node_modules/",
-  ".ssh/",
-  ".gnupg/",
-  ".config/sops/",
-  ".aws/",
-  ".kube/",
-  "keys.txt",
-  "age.txt",
-  ".pi/agent/auth.json",
-  "credentials",
-  "id_rsa",
-  "id_ed25519",
-  "id_ecdsa",
+/* ── Protected paths ── */
+const protectedPathPatterns: RegExp[] = [
+  /(?:^|\/)\.env(?:\.(?!(?:example|sample|template)$)[^/]+)?$/i,
+  /(?:^|\/)(?:\.git|\.ssh|\.gnupg|\.config\/sops|\.aws|\.kube)(?:\/|$)/i,
+  /(?:^|\/)(?:keys|age)\.txt$/i,
+  /(?:^|\/)\.pi\/agent\/auth\.json$/i,
+  /(?:^|[/_.-])credentials(?:\.(?:json|toml|ya?ml))?$/i,
+  /(?:^|\/)id_(?:rsa|ed25519|ecdsa)[^/]*$/i,
 ];
 
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// Pi must not edit dependencies, but deleting node_modules for a clean reinstall only needs the rm prompt.
+const editOnlyProtected = /(?:^|\/)node_modules(?:\/|$)/i;
+
+function isProtectedPath(path: string): boolean {
+  return protectedPathPatterns.some((pattern) => pattern.test(path));
 }
 
-const protectedPathPattern = new RegExp(
-  protectedPathFragments.map(escapeRegExp).join("|"),
-  "i",
-);
+const leadingWord = new RegExp(String.raw`^(?:${wrappers})$|^-|^\w+=`);
+const writesAnyArg =
+  /^(?:rm|rmdir|unlink|shred|mv|touch|mkdir|chmod|chown|truncate|tee)$/;
+const writesLastArg = /^(?:cp|ln|rsync|install)$/;
 
-const protectedPathRedirectionPattern = new RegExp(
-  String.raw`(^|[\s;&|])\d*>{1,2}\s*["']?[^\s"';&|]*(?:${protectedPathFragments
-    .map(escapeRegExp)
-    .join("|")})`,
-  "i",
-);
-
-const protectedPathWritePatterns: RegExp[] = [
-  /\b(?:rm|mv|cp|touch|mkdir|rmdir|chmod|chown|install|ln|rsync|truncate)\b/i,
-  /\b(?:sed|perl)\b[^\n;&|]*\s-i(?:\s|$)/i,
-  /\btee\b/i,
-  /\bdd\b[^\n;&|]*\bof=/i,
-];
-
-function touchesProtectedPath(value: string): boolean {
-  return protectedPathPattern.test(value);
+/** Paths a bash command writes: redirect targets and write-command arguments. */
+function bashWriteTargets(command: string): string[] {
+  const targets = [
+    ...command.matchAll(/(?<![-=<>])>>?[|&]?\s*["']?([^\s;&|<>()"']+)/g),
+  ].map((match) => match[1]);
+  for (const segment of command.match(/(?:"[^"]*"|'[^']*'|[^;&|\n()`"'])+/g) ??
+    []) {
+    const words = (segment.match(/"[^"]*"|'[^']*'|\S+/g) ?? []).map((word) =>
+      word.replace(/["']/g, ""),
+    );
+    while (words.length > 1 && leadingWord.test(words[0])) words.shift();
+    const [cmd = "", ...args] = words;
+    const name = cmd.slice(cmd.lastIndexOf("/") + 1);
+    const paths = args.filter((arg) => !arg.startsWith("-"));
+    const inPlace =
+      /^(?:sed|perl)$/.test(name) &&
+      args.some((arg) => /^(?:-[a-z]*i|--in-place)/i.test(arg));
+    if (name === "dd") {
+      targets.push(
+        ...args.filter((arg) => arg.startsWith("of=")).map((arg) => arg.slice(3)),
+      );
+    } else if (writesLastArg.test(name)) {
+      targets.push(...paths.slice(-1));
+    } else if (writesAnyArg.test(name) || inPlace) {
+      targets.push(...paths);
+    }
+  }
+  return targets;
 }
 
-function mutatesProtectedPath(command: string): boolean {
-  if (protectedPathRedirectionPattern.test(command)) return true;
-  if (!touchesProtectedPath(command)) return false;
-  return protectedPathWritePatterns.some((pattern) => pattern.test(command));
+/* ── Confirmation prompt ── */
+const promptTitle = "Run this dangerous command?";
+const maxPromptLines = 10;
+
+function capLines(lines: string[]): string[] {
+  if (lines.length <= maxPromptLines) return lines;
+  return [
+    ...lines.slice(0, maxPromptLines),
+    `… (${lines.length - maxPromptLines} more lines)`,
+  ];
 }
 
 function commandBox(command: string, width: number, theme: any): string[] {
   const maxInner = Math.max(1, width - 6);
-  const wrapped = wrapTextWithAnsi(command, maxInner);
+  const wrapped = capLines(wrapTextWithAnsi(command, maxInner));
   const inner = Math.min(maxInner, Math.max(...wrapped.map(visibleWidth), 1));
   const border = theme.fg("dim", `  ┌${"─".repeat(inner + 2)}┐`);
   const lines = wrapped.map((line) => {
@@ -115,14 +158,8 @@ async function confirmDangerousCommand(
   ctx: ExtensionContext,
   command: string,
 ): Promise<boolean> {
-  if (!ctx.hasUI) return false;
-
   if (ctx.mode !== "tui") {
-    const choice = await ctx.ui.select("Run this dangerous command?", [
-      "No",
-      "Yes",
-    ]);
-    return choice === "Yes";
+    return ctx.ui.confirm(promptTitle, capLines(command.split("\n")).join("\n"));
   }
 
   const result = await ctx.ui.custom<"yes" | "no" | null>(
@@ -138,14 +175,14 @@ async function confirmDangerousCommand(
       return {
         render(width: number) {
           return [
-            theme.fg("warning", theme.bold("Run this dangerous command?")),
+            theme.fg("warning", theme.bold(promptTitle)),
             "",
             ...commandBox(command, width, theme),
             "",
             option("yes", "1. Yes"),
             option("no", "2. No"),
             "",
-          ];
+          ].map((line) => truncateToWidth(line, width));
         },
         invalidate() {},
         handleInput(data: string) {
@@ -164,6 +201,7 @@ async function confirmDangerousCommand(
         },
       };
     },
+    { blocked: { kind: "permission", message: promptTitle } },
   );
 
   return result === "yes";
@@ -176,14 +214,18 @@ export default function (pi: ExtensionAPI) {
       const command = event.input.command;
       if (typeof command !== "string") return undefined;
 
-      if (mutatesProtectedPath(command)) {
+      const target = bashWriteTargets(command).find(isProtectedPath);
+      if (target) {
         if (ctx.hasUI) {
           ctx.ui.notify(
-            `Blocked bash write to protected path: ${command}`,
+            `Blocked bash write to protected path: ${target}`,
             "warning",
           );
         }
-        return { block: true, reason: "Bash command mutates a protected path" };
+        return {
+          block: true,
+          reason: `Bash command writes to protected path ${target}`,
+        };
       }
 
       const isDangerous = dangerousPatterns.some((p) => p.test(command));
@@ -199,6 +241,7 @@ export default function (pi: ExtensionAPI) {
         pi.events.emit("pi:approval", { active: true });
         try {
           if (!(await confirmDangerousCommand(ctx, command))) {
+            // Stop the whole run so the user can rethink the approach with the model.
             ctx.abort();
             return { block: true, reason: "Denied by user" };
           }
@@ -213,9 +256,8 @@ export default function (pi: ExtensionAPI) {
     if (event.toolName === "write" || event.toolName === "edit") {
       const path = event.input.path;
       if (typeof path !== "string") return undefined;
-      const isProtected = touchesProtectedPath(path);
 
-      if (isProtected) {
+      if (isProtectedPath(path) || editOnlyProtected.test(path)) {
         if (ctx.hasUI) {
           ctx.ui.notify(
             `Blocked ${event.toolName} to protected path: ${path}`,

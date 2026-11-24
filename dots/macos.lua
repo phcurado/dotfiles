@@ -77,6 +77,12 @@ dots.command("omniwm login", {
 	needs = { "package:brew-cask:omniwm" },
 })
 
+-- Rex only puts its CLI on PATH inside Rex panes (REX_BIN_DIR); link it for Pi and other shells.
+dots.command("rex cli", {
+	check = [[test -x "$HOME/.local/bin/rex"]],
+	apply = [[ln -sf "$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex" "$HOME/.local/bin/rex"]],
+})
+
 dots.command("omniwm sketchybar events", {
 	check = [[launchctl print "gui/$(id -u)/local.omniwm-sketchybar" >/dev/null 2>&1]],
 	apply = [[launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.omniwm-sketchybar.plist"]],

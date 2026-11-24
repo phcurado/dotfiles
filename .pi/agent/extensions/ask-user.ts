@@ -14,6 +14,7 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "ask_user",
     exposure: "model-only",
+    executionMode: "sequential",
     label: "Ask user",
     description:
       "Ask the user a clarifying question via TUI. Use when intent is ambiguous, multiple options exist, or a destructive action needs explicit approval. Returns user's answer as text.",
@@ -36,13 +37,14 @@ export default function (pi: ExtensionAPI) {
         return {
           content: [{ type: "text", text: "ERROR: No UI available. User input is required;" }],
           details: { error: "no-ui" },
+          isError: true,
         };
       }
 
       const kind = params.kind ?? "input";
 
       if (kind === "confirm") {
-        const ok = await withBlocked("approval", () => ctx.ui.confirm("Question", params.question));
+        const ok = await withBlocked("approval", () => ctx.ui.confirm(params.question, ""));
         return {
           content: [{ type: "text", text: ok ? "yes" : "no" }],
           details: { kind, answer: ok ? "yes" : "no" },
@@ -55,6 +57,7 @@ export default function (pi: ExtensionAPI) {
           return {
             content: [{ type: "text", text: "ERROR: select kind requires options." }],
             details: { error: "missing-options" },
+            isError: true,
           };
         }
         const choice = await withBlocked("approval", () => ctx.ui.select(params.question, opts));

@@ -16,9 +16,9 @@ interface TodoDetails {
 }
 
 const TodoParams = Type.Object({
-	action: StringEnum(["list", "add", "update", "toggle", "clear"] as const),
+	action: StringEnum(["list", "add", "update", "clear"] as const),
 	text: Type.Optional(Type.String({ description: "Task text (add or update)" })),
-	id: Type.Optional(Type.Number({ description: "Task ID (update or toggle)" })),
+	id: Type.Optional(Type.Number({ description: "Task ID (update)" })),
 	status: Type.Optional(StringEnum(["pending", "in_progress", "completed"] as const)),
 });
 
@@ -86,7 +86,7 @@ export default function (pi: ExtensionAPI) {
 	pi.registerTool({
 		name: "todo",
 		label: "Tasks",
-		description: "Manage the persistent task list. Actions: list, add (text, optional status), update (id, status and/or text), toggle (id), clear.",
+		description: "Manage the persistent task list. Actions: list, add (text, optional status), update (id, status and/or text), clear.",
 		exposure: "model-only",
 		executionMode: "sequential",
 		promptGuidelines: ["Use todo for multi-step work. Set a task to in_progress when starting it and completed when finished. Leave completed tasks visible; clear only when replacing the list for a new task."],
@@ -100,13 +100,11 @@ export default function (pi: ExtensionAPI) {
 					if (!params.text?.trim()) error = "text required for add";
 					else todos.push({ id: nextId++, text: params.text.trim(), status: params.status ?? "pending" });
 					break;
-				case "update":
-				case "toggle": {
+				case "update": {
 					const todo = todos.find((todo) => todo.id === params.id);
-					if (!todo) error = `Task #${params.id} not found`;
-					else if (params.action === "toggle") {
-						todo.status = todo.status === "completed" ? "pending" : "completed";
-					} else if (params.text !== undefined && !params.text.trim()) {
+					if (params.id === undefined) error = "id required for update";
+					else if (!todo) error = `Task #${params.id} not found`;
+					else if (params.text !== undefined && !params.text.trim()) {
 						error = "Task text cannot be empty";
 					} else if (params.text === undefined && params.status === undefined) {
 						error = "text or status required for update";

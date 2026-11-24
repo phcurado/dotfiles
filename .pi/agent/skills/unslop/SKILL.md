@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Must always apply.
+description: Use when writing or editing prose for people to read, such as docs, READMEs, PR descriptions, commit messages, posts, or emails. Removes AI writing patterns. Not for code or regular chat answers.
 license: MIT
 ---
 

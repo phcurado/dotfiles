@@ -16,6 +16,7 @@ let isJj = false;
 let repoCwd = "";
 let lastRefresh = 0;
 const REFRESH_DEBOUNCE = 300;
+let requestRender: (() => void) | undefined;
 
 async function out(cmd: string, args: string[]): Promise<string> {
   try {
@@ -42,19 +43,31 @@ async function refresh(): Promise<void> {
   } else {
     [ins, del] = parseDiff(await out("git", ["diff", "--shortstat", "HEAD"]));
   }
+  requestRender?.();
 }
 
 function toK(n: number): string {
   return n >= 1000 ? `${Math.round(n / 1000)}k` : `${n}`;
 }
 
-function buildLeft(cwd: string, vcs: string | null | undefined, model: string, effort: string, t: FooterTheme): string {
+function buildLeft(
+  cwd: string,
+  vcs: string | null | undefined,
+  model: string,
+  effort: string,
+  statuses: ReadonlyMap<string, string>,
+  t: FooterTheme,
+): string {
   const segs = [t.fg("accent", cwd)];
   if (vcs) {
     const diff = ins || del ? ` ${t.fg("success", `+${ins}`)}${t.fg("dim", "/")}${t.fg("error", `-${del}`)}` : "";
     segs.push(t.fg("dim", vcs) + diff);
   }
   segs.push(t.fg("dim", model), t.fg("dim", effort));
+  // Statuses other extensions set with ctx.ui.setStatus(), e.g. "review on".
+  for (const [, text] of [...statuses].sort(([a], [b]) => a.localeCompare(b))) {
+    segs.push(t.fg("dim", text.replace(/\s+/g, " ")));
+  }
   return " " + segs.join(t.fg("dim", " · "));
 }
 
@@ -98,35 +111,43 @@ export default function (pi: ExtensionAPI) {
     let cachedLeafId: string | null | undefined;
     let sessionCost = 0;
 
-    ctx.ui.setFooter((_tui, theme, footerData) => ({
-      dispose: () => {},
-      invalidate() {},
-      render(width: number): string[] {
-        const sessionId = ctx.sessionManager.getSessionId();
-        const leafId = ctx.sessionManager.getLeafId();
-        if (sessionId !== cachedSessionId || leafId !== cachedLeafId) {
-          // Match Pi's cumulative total, including entries before compaction and on other branches.
-          sessionCost = 0;
-          for (const entry of ctx.sessionManager.getEntries()) {
-            if (entry.type === "message") {
-              if (entry.message.role === "assistant" || entry.message.role === "toolResult") {
-                sessionCost += entry.message.usage?.cost.total ?? 0;
+    ctx.ui.setFooter((tui, theme, footerData) => {
+      requestRender = () => tui.requestRender();
+      const unsubscribe = footerData.onBranchChange(() => tui.requestRender());
+      return {
+        dispose: () => {
+          unsubscribe();
+          requestRender = undefined;
+        },
+        invalidate() {},
+        render(width: number): string[] {
+          const sessionId = ctx.sessionManager.getSessionId();
+          const leafId = ctx.sessionManager.getLeafId();
+          if (sessionId !== cachedSessionId || leafId !== cachedLeafId) {
+            // Match Pi's cumulative total, including entries before compaction and on other branches.
+            sessionCost = 0;
+            for (const entry of ctx.sessionManager.getEntries()) {
+              if (entry.type === "message") {
+                if (entry.message.role === "assistant" || entry.message.role === "toolResult") {
+                  sessionCost += entry.message.usage?.cost.total ?? 0;
+                }
+              } else if (entry.type === "usage" || entry.type === "compaction" || entry.type === "branch_summary") {
+                sessionCost += entry.usage?.cost.total ?? 0;
               }
-            } else if (entry.type === "usage" || entry.type === "compaction" || entry.type === "branch_summary") {
-              sessionCost += entry.usage?.cost.total ?? 0;
             }
+            cachedSessionId = sessionId;
+            cachedLeafId = leafId;
           }
-          cachedSessionId = sessionId;
-          cachedLeafId = leafId;
-        }
-        const usage = ctx.getContextUsage();
-        const limit = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
-        const vcs = isJj ? jjLabel : footerData.getGitBranch();
-        const model = ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : "no-model";
-        const left = buildLeft(basename(ctx.cwd), vcs, model, pi.getThinkingLevel(), theme);
-        const right = buildRight(usage, limit, sessionCost, theme);
-        return [compose(width, left, right)];
-      },
-    }));
+          const usage = ctx.getContextUsage();
+          const limit = usage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
+          const vcs = isJj ? jjLabel : footerData.getGitBranch();
+          const model = ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : "no-model";
+          const statuses = footerData.getExtensionStatuses();
+          const left = buildLeft(basename(ctx.cwd), vcs, model, pi.getThinkingLevel(), statuses, theme);
+          const right = buildRight(usage, limit, sessionCost, theme);
+          return [compose(width, left, right)];
+        },
+      };
+    });
   });
 }

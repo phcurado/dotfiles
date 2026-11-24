@@ -3,7 +3,6 @@
 ## Research first
 
 - Do not guess project behavior, APIs, services, contracts, or skill behavior. Verify with files, commands, docs, web search, or ask.
-- Before using a skill, read its SKILL.md.
 - If unknown upstream behavior or business rules materially block a correct implementation, ask. Otherwise state the assumption and continue.
 
 ## Version control & safety
@@ -33,3 +32,4 @@
 
 - Answer in plain, conversational sentences. Start with the answer and leave out anything the user doesn't need to act on it.
 - No preamble or closing summary unless asked.
+- Use plain words. No em dashes, no chatbot phrases ("Great question", "I hope this helps"), no filler like "leverage", "utilize", or "delve".

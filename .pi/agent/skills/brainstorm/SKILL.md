@@ -19,8 +19,6 @@ When brainstorming with the user:
 Default flow:
 
 1. Identify the user's concrete goal, problem, constraint, or decision.
-2. If it is unclear, ask for the missing context.
-3. Research relevant unknowns.
-4. Explore only ideas or alternatives relevant to that goal.
-5. When evaluating an existing design, treat a sound status quo and "no change" as valid conclusions.
-6. Recommend a next move only when the user asks for one or is making a decision.
+2. Research relevant unknowns.
+3. Explore only ideas or alternatives relevant to that goal.
+4. End with one concrete recommendation; "keep as is" counts.

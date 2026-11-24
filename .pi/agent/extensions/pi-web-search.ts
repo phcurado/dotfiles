@@ -60,15 +60,15 @@ async function healthy(signal?: AbortSignal): Promise<boolean> {
   }
 }
 
-async function startSearxng(): Promise<void> {
-  await exec("docker", ["compose", "-f", COMPOSE_FILE, "up", "-d"]);
+async function startSearxng(signal?: AbortSignal): Promise<void> {
+  await exec("docker", ["compose", "-f", COMPOSE_FILE, "up", "-d"], { signal, timeout: 60_000 });
 }
 
 async function ensureSearxng(signal?: AbortSignal): Promise<boolean> {
   if (await healthy(signal)) return true;
 
   try {
-    await startSearxng();
+    await startSearxng(signal);
   } catch {
     return false;
   }
@@ -163,7 +163,9 @@ async function fetchPage(url: string, signal?: AbortSignal): Promise<FetchResult
   }
 
   const raw = await res.text();
-  if (contentType.includes("html") || raw.trimStart().startsWith("<!DOCTYPE") || raw.includes("<html")) {
+  // Trust the content type; sniff only when the server sent none.
+  const looksHtml = contentType === "unknown" && /^<!doctype html|^<html/i.test(raw.trimStart());
+  if (contentType.includes("html") || looksHtml) {
     const { title, text } = htmlToText(raw);
     return { url: res.url, contentType, title, text };
   }

@@ -37,7 +37,6 @@ return {
           "ts_ls",
           "cssls",
           "tailwindcss",
-          "harper_ls",
           "tofu_ls",
           "denols",
           "bashls",
@@ -55,12 +54,6 @@ return {
           },
         },
       })
-
-      vim.lsp.config["harper_ls"] = {
-        settings = {
-          ["harper-ls"] = {},
-        },
-      }
 
       -- luals
       vim.lsp.config["lua_ls"] = {

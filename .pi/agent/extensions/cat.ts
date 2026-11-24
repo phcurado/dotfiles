@@ -123,8 +123,9 @@ function render(ctx: ExtensionContext): void {
       : `${ctx.ui.theme.fg("muted", phrase)}  ${ctx.ui.theme.fg("accent", "✦")} ${ctx.ui.theme.fg("accent", shown.toFixed(1))} ${ctx.ui.theme.fg("dim", "tokens/s")}`;
   ctx.ui.setWorkingMessage(text);
 
-  const next = delay(raw);
-  if (Math.abs(next - intervalMs) < 10) return;
+  // Changing the indicator restarts the animation at frame 0, so only change pace on a real difference.
+  const next = delay(shown);
+  if (Math.abs(next - intervalMs) < intervalMs * 0.25) return;
   const indicator: WorkingIndicatorOptions = {
     frames: frames.map((frame) => ctx.ui.theme.fg("accent", frame)),
     intervalMs: next,

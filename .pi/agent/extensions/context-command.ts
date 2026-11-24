@@ -16,11 +16,9 @@ type Report = {
   total: number;
   estimated: number;
   startup: number;
-  messages: number;
   categories: Row[];
   loaded: Row[];
   byRole: Row[];
-  toolUse: Row[];
   largest: Row[];
   signals: Signal[];
 };
@@ -164,16 +162,16 @@ function buildReport(pi: ExtensionAPI, ctx: ExtensionCommandContext): Report {
     .filter((tool: any) => active.size === 0 || active.has(tool.name))
     .map((tool: any) => ({
       label: tool.name,
-      tokens: tokens(
-        [tool.name, tool.description, ...(tool.promptGuidelines ?? [])]
-          .filter(Boolean)
-          .join("\n"),
-      ),
+      tokens:
+        tokens(
+          [tool.name, tool.description, ...(tool.promptGuidelines ?? [])]
+            .filter(Boolean)
+            .join("\n"),
+        ) + tokens(tool.parameters),
       detail: tool.sourceInfo?.source ?? "tool",
     }));
 
   const byRole = new Map<string, number>();
-  const toolUse = new Map<string, number>();
   const largest: Row[] = [];
 
   for (const message of ctx.sessionManager.buildSessionContext().messages) {
@@ -187,19 +185,6 @@ function buildReport(pi: ExtensionAPI, ctx: ExtensionCommandContext): Report {
     );
 
     push(byRole, role, n);
-    if (role === "toolResult" && message.toolName)
-      push(toolUse, `${message.toolName} result`, n);
-    if (role === "assistant" && Array.isArray(message.content)) {
-      for (const part of message.content) {
-        if (part?.type === "toolCall" && part.name)
-          push(
-            toolUse,
-            part.name,
-            tokens(part.arguments ?? {}) + tokens(part.name),
-          );
-      }
-    }
-
     largest.push({
       label:
         role === "toolResult" && message.toolName
@@ -229,7 +214,8 @@ function buildReport(pi: ExtensionAPI, ctx: ExtensionCommandContext): Report {
     ...top(systemRows, 1),
   ].filter((row) => row.tokens > 0);
 
-  const startup = sum(systemRows);
+  // Tool declarations are sent with every request, next to the system prompt.
+  const startup = sum(systemRows) + sum(toolRows);
   const messages = [...byRole.values()].reduce((total, n) => total + n, 0);
   const estimated = startup + messages;
   const total = measured ?? estimated;
@@ -244,17 +230,12 @@ function buildReport(pi: ExtensionAPI, ctx: ExtensionCommandContext): Report {
     total,
     estimated,
     startup,
-    messages,
     categories: [
       { label: "messages/tool output", tokens: messages },
       { label: "startup context", tokens: startup },
     ].filter((row) => row.tokens > 0),
     loaded: top(loaded, 5),
     byRole: byRoleRows,
-    toolUse: top(
-      [...toolUse.entries()].map(([label, n]) => ({ label, tokens: n })),
-      5,
-    ),
     largest: top(largest, 6),
   };
 
@@ -364,8 +345,10 @@ export default function (pi: ExtensionAPI) {
     description: "Show what is consuming the context window for this session",
     handler: async (_args, ctx) => {
       const report = buildReport(pi, ctx);
-      if (!ctx.hasUI || ctx.mode !== "tui") {
-        console.log(plainReport(report));
+      if (ctx.mode !== "tui") {
+        // Outside the TUI, console output goes to stderr, which RPC clients don't show.
+        if (ctx.hasUI) ctx.ui.notify(plainReport(report), "info");
+        else console.log(plainReport(report));
         return;
       }
 

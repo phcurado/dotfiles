@@ -4,5 +4,6 @@
   "app.session.toggleNamedFilter": [],
   "app.session.togglePath": [],
   "app.model.cycleForward": [],
-  "app.model.cycleBackward": []
+  "app.model.cycleBackward": [],
+  "app.models.toggleProvider": []
 }
